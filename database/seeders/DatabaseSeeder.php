@@ -3,6 +3,12 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\AttendanceStatus;
+use App\Models\FurloughType;
+use App\Models\StatusHire;
+use App\Models\Team;
+use App\Models\WorkPermit;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,11 +20,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            RolePermissionSeeder::class,
+            StatusHireSeeder::class,
+            EmployeeSeeder::class,
+            AttendanceStatusSeeder::class,
+            AttendanceSeeder::class,
+            WorkPermitSeeder::class,
+            PartnerSeeder::class,
+            FurloughTypeSeeder::class,
+            FurloughSeeder::class,
+            TeamSeeder::class,
+            TeamMemberSeeder::class,
+        ]);
     }
 }
