@@ -27,6 +27,6 @@ class Partner extends Model
 
     public function employee()
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(Employee::class,'assignedBy', 'employeeId');
     }
 }

@@ -12,13 +12,18 @@ class TeamMember extends Model
 
     protected $primaryKey = 'memberId';
 
-    public function employee()
+    public function memberDetail()
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(Employee::class, 'empId', 'employeeId');
+    }
+
+    public function assignedBy()
+    {
+        return $this->hasMany(Employee::class, 'assignedBy', 'employeeId');
     }
 
     public function team()
     {
-        return $this->hasMany(Team::class);
+        return $this->hasMany(Team::class, 'teamId');
     }
 }
