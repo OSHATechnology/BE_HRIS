@@ -18,4 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
+Route::prefix('employee')->group(function () {
+    Route::controller(EmployeeController::class)->group(function () {
+        Route::get('/', 'index')->name('employee.index');
+        Route::get('/add', 'create')->name('employee.create');
+        Route::get('/store', 'store')->name('employee.store');
+        Route::get('/show/{id}', 'show')->name('employee.show');
+        Route::get('/edit', 'edit')->name('employee.edit');
+        Route::get('/update', 'update')->name('employee.update');
+    });
+});
