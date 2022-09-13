@@ -15,10 +15,14 @@ class Attendance extends Model
 
     public function employee()
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(Employee::class, 'employeeId');
+    }
+    public function submitedById()
+    {
+        return $this->hasMany(Employee::class, 'submitedById','employeeId');
     }
     public function attendanceStatus()
     {
-        return $this->hasMany(AttendanceStatus::class);
+        return $this->hasMany(AttendanceStatus::class, 'attendanceStatusId');
     }
 }

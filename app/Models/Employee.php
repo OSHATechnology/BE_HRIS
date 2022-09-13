@@ -48,11 +48,11 @@ class Employee extends Authenticatable
 
     public function role()
     {
-        return $this->hasOne(Role::class);
+        return $this->hasOne(Role::class, 'roleId', 'roleId');
     }
 
     public function statusHire()
     {
-        return $this->hasOne(StatusHire::class);
+        return $this->hasOne(StatusHire::class, 'statusHireId', 'statusHireId');
     }
 }
