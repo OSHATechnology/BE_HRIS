@@ -10,11 +10,11 @@ class StatusHire extends Model
     use HasFactory;
 
     protected $fillable = [
-        'statusHireId',
+        'StatusHireId',
         'name',
         'created_at',
         'updated_at'
     ];
 
-    protected $primaryKey = 'statusHireId';
+    protected $primaryKey = 'StatusHireId';
 }

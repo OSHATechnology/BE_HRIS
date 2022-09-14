@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\StatusHireController;
+use App\Models\StatusHire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,10 +32,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     });
 // });
 
-Route::get('',[EmployeeController::class,'index']);
-Route::post('/add',[EmployeeController::class,'create']);
-Route::post('/store',[EmployeeController::class,'store']);
-Route::get('/show/{id}',[EmployeeController::class,'show']);
-Route::get('/edit/{id}',[EmployeeController::class,'edit']);
-Route::put('/update/{id}',[EmployeeController::class,'update']);
-Route::delete('/destroy/{id}',[EmployeeController::class,'destroy']);
+Route::get('/employee',[EmployeeController::class,'index']);
+Route::get('/employee/add',[EmployeeController::class,'create']);
+Route::post('/employee/store',[EmployeeController::class,'store']);
+Route::get('/employee/show/{id}',[EmployeeController::class,'show']);
+Route::get('/employee/edit/{id}',[EmployeeController::class,'edit']);
+Route::put('/employee/update/{id}',[EmployeeController::class,'update']);
+Route::delete('/employee/destroy/{id}',[EmployeeController::class,'destroy']);
+
+Route::get('/status_hire',[StatusHireController::class,'index']);
+Route::get('/status_hire/add',[StatusHireController::class,'add']);
+Route::post('/status_hire/store',[StatusHireController::class,'store']);
+Route::get('/status_hire/show/{id}',[StatusHireController::class,'show']);
+Route::get('/status_hire/edit/{id}',[StatusHireController::class,'edit']);
+Route::put('/status_hire/update/{id}',[StatusHireController::class,'update']);
+Route::delete('status_hire/destroy/{id}',[StatusHireController::class,'destroy']);

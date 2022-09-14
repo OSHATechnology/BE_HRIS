@@ -14,7 +14,13 @@ class StatusHireController extends Controller
      */
     public function index()
     {
-        //
+        $statusHires = StatusHire::all();
+        // return view('status.index', compact('status' ));
+        return response()->json([
+            'code' => '200',
+            'status'=> 'OK',
+            'data' => $statusHires
+        ]);
     }
 
     /**
@@ -25,6 +31,7 @@ class StatusHireController extends Controller
     public function create()
     {
         //
+        return view('status.create');
     }
 
     /**
@@ -35,7 +42,19 @@ class StatusHireController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+
+        $status = new StatusHire;
+        $status->name = $request->name;
+        $status->save();
+        // return redirect()->route('/');
+        return response()->json([
+            'code' => '200',
+            'status'=> 'OK',
+            'data' => $status
+        ]);
     }
 
     /**
@@ -44,9 +63,15 @@ class StatusHireController extends Controller
      * @param  \App\Models\StatusHire  $statusHire
      * @return \Illuminate\Http\Response
      */
-    public function show(StatusHire $statusHire)
+    public function show($id)
     {
-        //
+        $status = StatusHire::find($id);
+        // return view('status.show', compact('status'));
+        return response()->json([
+            'code' => '200',
+            'status'=> 'OK',
+            'data' => $status
+        ]);
     }
 
     /**
@@ -55,9 +80,15 @@ class StatusHireController extends Controller
      * @param  \App\Models\StatusHire  $statusHire
      * @return \Illuminate\Http\Response
      */
-    public function edit(StatusHire $statusHire)
+    public function edit($id)
     {
-        //
+        $status = StatusHire::find($id);
+        // return view('status.edit', compact('status'));
+        return response()->json([
+            'code' => '200',
+            'status'=> 'OK',
+            'data' => $status
+        ]);
     }
 
     /**
@@ -67,9 +98,22 @@ class StatusHireController extends Controller
      * @param  \App\Models\StatusHire  $statusHire
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StatusHire $statusHire)
+    public function update($id, Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+
+        $status = StatusHire::find($id);
+        $status->name = $request->name;
+        $status->save();
+        // return redirect()->route('status.index')
+        return response()->json([
+            'code' => '200',
+            'status'=> 'OK',
+            'message' => 'update success',
+            'data' => $status
+        ]);
     }
 
     /**
@@ -78,8 +122,18 @@ class StatusHireController extends Controller
      * @param  \App\Models\StatusHire  $statusHire
      * @return \Illuminate\Http\Response
      */
-    public function destroy(StatusHire $statusHire)
+    public function destroy($id)
     {
-        //
+        $status = StatusHire::find($id);
+        if ($status->delete()) {
+            return response()->json([
+                "message" => "detele success",
+            ]);
+        } else {
+            dd("error");
+        }
+        
+        // dd($status);
+        // return redirect()->route('/');
     }
 }

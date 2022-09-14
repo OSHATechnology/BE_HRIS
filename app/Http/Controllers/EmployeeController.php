@@ -92,7 +92,9 @@ class EmployeeController extends Controller
         $employee->save();
         // return redirect()->route('/');
         return response()->json([
-            $employee
+            "code" => 200,
+            "status" => "success",
+            "data" => $employee
         ]);
     }
 
@@ -107,14 +109,10 @@ class EmployeeController extends Controller
         $employee = Employee::find($id);
         // return view('employee.show', compact('employee'));
         return response()->json([
-            $employee
+            "code" => 200,
+            "status" => "success",
+            "data" => $employee
         ]);
-    }
-    public function showEmployeeById($id)
-    {
-        $employee = Employee::find($id);
-        // return view('employee.show', compact('employee'));
-        return $employee;
     }
 
     /**
@@ -195,7 +193,9 @@ class EmployeeController extends Controller
         $employee->save();
         // return redirect()->route('employee.index')
         return response()->json([
-            $employee
+            "code" => 200,
+            "status" => "success",
+            "data" => $employee
         ]);
     }
 
@@ -211,6 +211,8 @@ class EmployeeController extends Controller
         $employee->delete();
         // return redirect()->route('/');
         return response()->json([
+            "code" => 200,
+            "status" => "success",
             "message" => "detele success",
         ]);
     }
