@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Role;
 use App\Models\StatusHire;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class EmployeeController extends Controller
 {
@@ -43,14 +44,39 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'phoneName' => 'required|string|max:255',
+            'email' => 'required|string|unique|max:255',
+            'password' => 'required|password|max:255',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+            'gander' => 'required|enum|max:255',
+            'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'nation' => 'required|string|max:255',
+            'roleId' => 'required|integer',
+            'isActive' => 'required|boolean',
+            'emailVerifiedAt' => 'date',
+            'joinedAt' => 'date',
+            'resignedAt' => 'date',
+            'statusHireId' => 'required|boolean',
+        ]);
+
         $employee = new Employee;
         $employee->firstName = $request->firstName;
         $employee->lastName = $request->lastName;
         $employee->phone = $request->phone;
         $employee->email = $request->email;
-        $employee->password = $request->password;
-        $employee->photo = $request->photo;
+        $employee->password = bcrypt($request->password);
+        if($request->hasFile('photo')){
+            $imageName = time().'.'.$request->photo->extension();
+            $path = $request->file('photo')->storeAs('public/employee_image', $imageName);
+            $employee->photo = 'storage/public/employee_image/' . $imageName;
+        }else{
+            $employee->photo = $request->photo;
+        }
+            
         $employee->gender = $request->gender;
         $employee->birthDate = $request->birthDate;
         $employee->address = $request->address;
@@ -58,15 +84,15 @@ class EmployeeController extends Controller
         $employee->nation = $request->nation;
         $employee->roleId = $request->roleId;
         $employee->isActive = $request->isActive;
-        $employee->emailVerified = $request->emailVerified;
-        $employee->remberToken = $request->firstName;
+        $employee->emailVerifiedAt = $request->emailVerifiedAt;
+        $employee->remember_token = $request->remember_token;
         $employee->joinedAt = $request->joinedAt;
         $employee->resignedAt = $request->resignedAt;
         $employee->statusHireId = $request->statusHireId;
-        // $employee->save();
+        $employee->save();
         // return redirect()->route('/');
         return response()->json([
-            'message' => $request->firstName
+            $employee
         ]);
     }
 
@@ -78,11 +104,17 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee = Employee::where('employeeId', $id)->first();
+        $employee = Employee::find($id);
         // return view('employee.show', compact('employee'));
         return response()->json([
             $employee
         ]);
+    }
+    public function showEmployeeById($id)
+    {
+        $employee = Employee::find($id);
+        // return view('employee.show', compact('employee'));
+        return $employee;
     }
 
     /**
@@ -91,10 +123,9 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, Request $request)
+    public function edit($id)
     {
-        $employee = Employee::where('id', $id)
-                    ->get();
+        $employee = Employee::find($id);
         $roles = Role::all();
         $statusHires = StatusHire::all();
         return view('employee.edit', compact('employee', 'roles', 'statusHires'));
@@ -109,13 +140,46 @@ class EmployeeController extends Controller
      */
     public function update($id, Request $request)
     {
+        $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'phoneName' => 'required|string|max:255',
+            'email' => 'required|string|unique|max:255',
+            'password' => 'required|password|max:255',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+            'gander' => 'required|enum|max:255',
+            'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'nation' => 'required|string|max:255',
+            'roleId' => 'required|integer',
+            'isActive' => 'required|boolean',
+            'emailVerifiedAt' => 'date',
+            'joinedAt' => 'date',
+            'resignedAt' => 'date',
+            'statusHireId' => 'required|boolean',
+        ]);
+
         $employee = Employee::find($id);
         $employee->firstName = $request->firstName;
         $employee->lastName = $request->lastName;
         $employee->phone = $request->phone;
         $employee->email = $request->email;
-        $employee->password = $request->password;
-        $employee->photo = $request->photo;
+        $employee->password = bcrypt($request->password);
+        
+        $employee->firstName = $request->firstName;
+        $employee->lastName = $request->lastName;
+        $employee->phone = $request->phone;
+        $employee->email = $request->email;
+        $employee->password = bcrypt($request->password);
+
+        if($employee->photo == $request->photo) {
+            $employee->photo = $request->photo;
+        } else {
+            $imageName = time().'.'.$request->photo->extension();
+            $path = $request->file('photo')->storeAs('public/employee_image', $imageName);
+            $employee->photo = 'storage/public/employee_image/' . $imageName;
+        }
+
         $employee->gender = $request->gender;
         $employee->birthDate = $request->birthDate;
         $employee->address = $request->address;
@@ -123,13 +187,16 @@ class EmployeeController extends Controller
         $employee->nation = $request->nation;
         $employee->roleId = $request->roleId;
         $employee->isActive = $request->isActive;
-        $employee->emailVerified = $request->emailVerified;
-        $employee->remberToken = $request->firstName;
+        $employee->emailVerifiedAt = $request->emailVerifiedAt;
+        $employee->remember_token = $request->remember_token;
         $employee->joinedAt = $request->joinedAt;
         $employee->resignedAt = $request->resignedAt;
         $employee->statusHireId = $request->statusHireId;
         $employee->save();
-        return redirect()->route('/');
+        // return redirect()->route('employee.index')
+        return response()->json([
+            $employee
+        ]);
     }
 
     /**
@@ -142,6 +209,9 @@ class EmployeeController extends Controller
     {
         $employee = Employee::find($id);
         $employee->delete();
-        return redirect()->route('/');
+        // return redirect()->route('/');
+        return response()->json([
+            "message" => "detele success",
+        ]);
     }
 }
