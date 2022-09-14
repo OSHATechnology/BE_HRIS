@@ -9,12 +9,12 @@ class Permission extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['permissionId','namePermission', 'description', 'tag', 'slug', 'created_at', 'updated_at'];
+    protected $fillable = ['permissionId', 'namePermission', 'description', 'tag', 'slug', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'permissionId';
 
-    public function role()
+    public function roles()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class, 'role_permissions', 'permissionId', 'roleId');
     }
 }
