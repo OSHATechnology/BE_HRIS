@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\RolePermission;
 use Illuminate\Http\Request;
 
@@ -14,17 +16,24 @@ class RolePermissionController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        try {
+            $rolePermissions = RolePermission::all();
+            return response()->json([
+                'code' => 200,
+                'message' => 'success',
+                'data' => [
+                    $rolePermissions
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'error',
+                'data' => [
+                    'error' => $e->getMessage()
+                ]
+            ]);
+        }
     }
 
     /**
@@ -35,51 +44,43 @@ class RolePermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $role = Role::find($request->roleId);
+            $permission = Permission::find($request->permissionId);
+            $role->permissions()->attach($permission);
+            return response()->json([
+                'code' => 200,
+                'message' => 'success'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'error',
+                'data' => [
+                    'error' => $e->getMessage()
+                ]
+            ]);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\RolePermission  $rolePermission
-     * @return \Illuminate\Http\Response
-     */
-    public function show(RolePermission $rolePermission)
+    public function detachPermissionFromRole(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\RolePermission  $rolePermission
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(RolePermission $rolePermission)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\RolePermission  $rolePermission
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, RolePermission $rolePermission)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\RolePermission  $rolePermission
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(RolePermission $rolePermission)
-    {
-        //
+        try {
+            $role = Role::findOrFail($request->roleId);
+            $permission = Permission::findOrFail($request->permissionId);
+            $role->permissions()->detach($permission);
+            return response()->json([
+                'code' => 200,
+                'message' => 'success'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'error',
+                'data' => [
+                    'error' => $e->getMessage()
+                ]
+            ]);
+        }
     }
 }
