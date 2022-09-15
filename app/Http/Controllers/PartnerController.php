@@ -13,7 +13,7 @@ class PartnerController extends BaseController
     const VALIDATION_RULES = [
         'name' => 'required|string|max:255',
         'description' => 'required|string|max:255',
-        'responsibleBy' => 'required|string|max:255',
+        'resposibleBy' => 'required|string|max:255',
         'phone' => 'required|max:50',
         'address' => 'required|string|max:255',
         'assignedBy' => 'required',
@@ -28,10 +28,12 @@ class PartnerController extends BaseController
     public function index()
     {
         try {
+            $this->authorize('viewAny', Partner::class);
+
             $partners = Partner::all();
             return $this->sendResponse($partners, 'Partners retrieved successfully.');
         } catch (\Throwable $th) {
-            return $this->sendError('Error retrieving partners.', $th->getMessage());
+            return $this->sendError($th->getMessage(), []);
         }
     }
 
@@ -44,12 +46,14 @@ class PartnerController extends BaseController
     public function store(Request $request)
     {
         try {
+            $this->authorize('create', Partner::class);
+
             $this->validate($request, self::VALIDATION_RULES);
-            if ($request->hasFile('logo')) {
-                $logo = $request->file('logo');
+            if ($request->hasFile('photo')) {
+                $logo = $request->file('photo');
                 $logoName = $request->name . '-' . time() . '.' . $logo->getClientOriginalExtension();
-                $path = 'partners/' . $request->name . '/' . $logoName;
-                Storage::disk('public')->put('partners/' . $request->name . '/' . $logoName, file_get_contents($logo));
+                $path = 'partners/' . $logoName;
+                Storage::disk('public')->put('partners/' . $logoName, file_get_contents($logo));
             } else {
                 $path = 'default.png';
             }
@@ -57,7 +61,7 @@ class PartnerController extends BaseController
             $partner = Partner::create([
                 'name' => $request->name,
                 'description' => $request->description,
-                'responsibleBy' => $request->responsibleBy,
+                'resposibleBy' => $request->resposibleBy,
                 'phone' => $request->phone,
                 'address' => $request->address,
                 'assignedBy' => $request->assignedBy,
@@ -80,6 +84,8 @@ class PartnerController extends BaseController
     public function show($partnerId)
     {
         try {
+            $this->authorize('view', Partner::class);
+
             $partner = Partner::findOrFail($partnerId);
             return $this->sendResponse($partner, 'Partner retrieved successfully.');
         } catch (\Throwable $th) {
@@ -94,12 +100,33 @@ class PartnerController extends BaseController
      * @param  \App\Models\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Partner $partner)
+    public function update(Request $request, $partnerId)
     {
         try {
+            //gate
+            $this->authorize('update', Partner::class);
+
             $this->validate($request, self::VALIDATION_RULES);
-            $partner->update($request->all());
-            return $this->sendResponse($partner, 'Partner updated successfully.');
+            $Partner = Partner::findOrFail($partnerId);
+            if ($request->hasFile('photo')) {
+                $logo = $request->file('photo');
+                $logoName = $request->name . '-' . time() . '.' . $logo->getClientOriginalExtension();
+                $path = 'partners/' . $logoName;
+                Storage::disk('public')->put('partners/' . $logoName, file_get_contents($logo));
+            } else {
+                $path = $Partner->photo;
+            }
+            $Partner->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'resposibleBy' => $request->resposibleBy,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'assignedBy' => $request->assignedBy,
+                'joinedAt' => $request->joinedAt,
+                'photo' => $path
+            ]);
+            return $this->sendResponse($Partner, 'Partner updated successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error updating partner.', $th->getMessage());
         }
@@ -111,8 +138,17 @@ class PartnerController extends BaseController
      * @param  \App\Models\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Partner $partner)
+    public function destroy($partnerId)
     {
-        //
+        try {
+            $this->authorize('delete', Partner::class);
+
+            $partner = Partner::findOrFail($partnerId);
+            $partner->delete();
+            return $this->sendResponse("success deleted", 'Partner deleted successfully.');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return $this->sendError('Error deleting partner.', $th->getMessage());
+        }
     }
 }
