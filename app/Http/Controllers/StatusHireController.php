@@ -125,15 +125,9 @@ class StatusHireController extends Controller
     public function destroy($id)
     {
         $status = StatusHire::find($id);
-        if ($status->delete()) {
+        $status->delete();
             return response()->json([
                 "message" => "detele success",
             ]);
-        } else {
-            dd("error");
-        }
-        
-        // dd($status);
-        // return redirect()->route('/');
     }
 }

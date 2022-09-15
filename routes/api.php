@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StatusHireController;
 use App\Models\StatusHire;
 use Illuminate\Http\Request;
@@ -47,3 +48,5 @@ Route::get('/status_hire/show/{id}',[StatusHireController::class,'show']);
 Route::get('/status_hire/edit/{id}',[StatusHireController::class,'edit']);
 Route::put('/status_hire/update/{id}',[StatusHireController::class,'update']);
 Route::delete('status_hire/destroy/{id}',[StatusHireController::class,'destroy']);
+
+Route::resource('notification', NotificationController::class);
