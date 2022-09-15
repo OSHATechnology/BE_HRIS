@@ -11,6 +11,8 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\API\AuthenticatedController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\FurloughController;
+use App\Http\Controllers\PartnerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,11 +39,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('roles-permissions/detach', [RolePermissionController::class, 'detachPermissionFromRole']);
     Route::resource('role-permissions', RolePermissionController::class)->only(['index', 'store']);
     Route::resource('permissions', PermissionController::class)->except(['create', 'edit']);
+    Route::apiResource('furlough', FurloughController::class)->except(['create', 'edit']);
+    Route::resource('employee', EmployeeController::class);
+    Route::resource('notification', NotificationController::class);
+    Route::resource('status_hire', StatusHireController::class);
+    Route::resource('attendance_status', AttendanceStatusController::class);
+    Route::resource('attendance', AttendanceController::class);
+    Route::resource('team', TeamController::class);
+    Route::apiResource('partners', PartnerController::class)->except(['create', 'edit']);
 });
-
-Route::resource('employee', EmployeeController::class);
-Route::resource('notification', NotificationController::class);
-Route::resource('status_hire', StatusHireController::class);
-Route::resource('attendance_status', AttendanceStatusController::class);
-Route::resource('attendance', AttendanceController::class);
-Route::resource('team', TeamController::class);

@@ -9,22 +9,38 @@ class Furlough extends Model
 {
     use HasFactory;
 
+    public const TYPESTATUS = [
+        0 => 'Waiting Confirmation',
+        1 => 'Confirmed',
+        2 => 'Not Confirmed',
+    ];
+
     protected $fillable = ['furloughId', 'furTypeId', 'employeeId', 'startAt', 'endAt', 'isConfirmed', 'confirmedBy', 'lastFurloughAt', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'furloughId';
 
     public function employee()
     {
-        return $this->hasMany(Employee::class, 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId');
     }
 
-    public function confirmedBy()
+    public function confirmedByEmp()
     {
-        return $this->hasMany(Employee::class, 'confirmedBy', 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId');
     }
 
     public function furloughType()
     {
         return $this->hasOne(FurloughType::class, 'furTypeId');
+    }
+
+    public static function getLastFurlough($employeeId)
+    {
+        $lastFurlough = Furlough::where('employeeId', $employeeId)->orderBy('startAt', 'desc')->first();
+        if ($lastFurlough) {
+            return $lastFurlough->startAt;
+        } else {
+            return null;
+        }
     }
 }

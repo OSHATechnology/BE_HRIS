@@ -61,4 +61,9 @@ class Employee extends Authenticatable
     {
         return $this->role->permissions->contains('slug', $permission);
     }
+
+    public function furloughs()
+    {
+        return $this->hasMany(Furlough::class, 'employeeId');
+    }
 }

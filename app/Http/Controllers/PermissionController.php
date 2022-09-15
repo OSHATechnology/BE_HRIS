@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 
-class PermissionController extends Controller
+class PermissionController extends BaseController
 {
 
     const VALIDATION_RULES = [
@@ -27,16 +28,9 @@ class PermissionController extends Controller
             $this->authorize('viewAny', Permission::class);
 
             $permissions = Permission::all();
-            return response()->json([
-                'code' => 200,
-                'message' => 'success',
-                'data' => $permissions
-            ]);
+            return $this->sendResponse($permissions, 'Permissions retrieved successfully.');
         } catch (\Throwable $th) {
-            return response()->json([
-                'code' => 500,
-                'message' => 'error'
-            ]);
+            return $this->sendError('Error retrieving permissions', $th->getMessage());
         }
     }
 
@@ -54,20 +48,10 @@ class PermissionController extends Controller
 
             $this->validate($request, self::VALIDATION_RULES);
             $permission = Permission::create($request->all());
-            return response()->json([
-                'code' => 201,
-                'message' => 'success',
-                'data' => $permission
-            ]);
+            return $this->sendResponse($permission, 'Permission created successfully.');
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $th->getMessage()
-                ]
-            ]);
+            return $this->sendError('Error creating permission', $th->getMessage());
         }
     }
 
@@ -84,23 +68,10 @@ class PermissionController extends Controller
             $this->authorize('view', Permission::class);
 
             $Permission = Permission::findOrFail($permissionId);
-            return response()->json([
-                'code' => 200,
-                'message' => 'success',
-                'data' => [
-                    'permission' => $Permission,
-                    'roles' => $Permission->roles
-                ]
-            ]);
+            return $this->sendResponse($Permission, 'Permission retrieved successfully.');
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $th->getMessage()
-                ]
-            ]);
+            return $this->sendError('Error retrieving permission', $th->getMessage());
         }
     }
 
@@ -120,20 +91,10 @@ class PermissionController extends Controller
             $this->validate($request, self::VALIDATION_RULES);
             $permission = Permission::findOrFail($permissionId);
             $permission->update($request->all());
-            return response()->json([
-                'code' => 200,
-                'message' => 'success updated',
-                'data' => $permission
-            ]);
+            return $this->sendResponse($permission, 'Permission updated successfully.');
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $th->getMessage()
-                ]
-            ]);
+            return $this->sendError('Error updating permission', $th->getMessage());
         }
     }
 
@@ -151,19 +112,10 @@ class PermissionController extends Controller
 
             $permission = Permission::findOrFail($permissionId);
             $permission->delete();
-            return response()->json([
-                'code' => 200,
-                'message' => 'success deleted',
-            ]);
+            return $this->sendResponse($permission, 'Permission deleted successfully.');
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $th->getMessage()
-                ]
-            ]);
+            return $this->sendError('Error deleting permission', $th->getMessage());
         }
     }
 }

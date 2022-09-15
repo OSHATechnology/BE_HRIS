@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 class BaseController extends Controller
 {
 
+    const MESSAGE_ERROR = [
+        "This action is unauthorized." => [
+            "code" => 401,
+            "message" => "unauthorized."
+        ],
+    ];
+
     /**
      * success response method.
      *
@@ -41,6 +48,10 @@ class BaseController extends Controller
 
         if (!empty($errorMessages)) {
             $response['data'] = $errorMessages;
+        }
+
+        if (array_key_exists($error, self::MESSAGE_ERROR)) {
+            $code = self::MESSAGE_ERROR[$error]['code'];
         }
 
 
