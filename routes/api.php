@@ -7,6 +7,7 @@ use App\Models\StatusHire;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\API\AuthenticatedController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,12 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::resource('employee', EmployeeController::class);
 Route::resource('notification', NotificationController::class);
 Route::resource('status_hire', StatusHireController::class);
+Route::post('/auth/login', [AuthenticatedController::class, 'store']);
+Route::post('/auth/logout', [AuthenticatedController::class, 'destroy'])->middleware('auth:sanctum');
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::resource('roles', RoleController::class)->except(['create', 'edit']);
+    Route::post('roles-permissions/detach', [RolePermissionController::class, 'detachPermissionFromRole']);
+    Route::resource('role-permissions', RolePermissionController::class)->only(['index', 'store']);
+    Route::resource('permissions', PermissionController::class)->except(['create', 'edit']);
+});
