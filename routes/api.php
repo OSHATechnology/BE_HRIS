@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceStatusController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StatusHireController;
@@ -28,3 +29,4 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::resource('employee', EmployeeController::class);
 Route::resource('notification', NotificationController::class);
 Route::resource('status_hire', StatusHireController::class);
+Route::resource('attendance_status', AttendanceStatusController::class);

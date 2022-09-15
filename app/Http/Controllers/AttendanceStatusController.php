@@ -14,17 +14,12 @@ class AttendanceStatusController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $attendanceStatus = AttendanceStatus::all();
+        return response()->json([
+            'code' => 200,
+            'status'=> 'OK',
+            'data' => $attendanceStatus
+        ]);
     }
 
     /**
@@ -35,7 +30,17 @@ class AttendanceStatusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'status' => 'required|string|max:255',
+        ]);
+        $attendanceStatus = new AttendanceStatus();
+        $attendanceStatus->status = $request->status;
+        $attendanceStatus->save();
+        return response()->json([
+            'code' => 200,
+            'status'=> 'OK',
+            'data' => $attendanceStatus
+        ]);
     }
 
     /**
@@ -44,9 +49,24 @@ class AttendanceStatusController extends Controller
      * @param  \App\Models\AttendanceStatus  $attendanceStatus
      * @return \Illuminate\Http\Response
      */
-    public function show(AttendanceStatus $attendanceStatus)
-    {
-        //
+    public function show($id)
+    {   
+        $attendanceStatus = AttendanceStatus::find($id);
+        // dd($attendanceStatus == false);
+        if ($attendanceStatus) {
+            return response()->json([
+                'code' => 200,
+                'status'=> 'OK',
+                'data' => $attendanceStatus
+            ]);
+        } else {
+            return response()->json([
+                'code' => 404,
+                'status'=> 'Not Found',
+                'message' => 'Data Not Found'
+            ]);
+
+        }
     }
 
     /**
@@ -55,9 +75,14 @@ class AttendanceStatusController extends Controller
      * @param  \App\Models\AttendanceStatus  $attendanceStatus
      * @return \Illuminate\Http\Response
      */
-    public function edit(AttendanceStatus $attendanceStatus)
+    public function edit($id)
     {
-        //
+        $attendanceStatus = AttendanceStatus::find($id);
+        return response()->json([
+            'code' => 200,
+            'status'=> 'OK',
+            'data' => $attendanceStatus
+        ]);
     }
 
     /**
@@ -67,9 +92,20 @@ class AttendanceStatusController extends Controller
      * @param  \App\Models\AttendanceStatus  $attendanceStatus
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AttendanceStatus $attendanceStatus)
+    public function update($id, Request $request)
     {
-        //
+        $request->validate([
+            'status' => 'required|string|max:255',
+        ]);
+        $attendanceStatus = AttendanceStatus::find($id);
+        $attendanceStatus->status = $request->status;
+        $attendanceStatus->save();
+        return response()->json([
+            'code' => 200,
+            'status'=> 'OK',
+            'message' => 'update success',
+            'data' => $attendanceStatus
+        ]);
     }
 
     /**
@@ -78,8 +114,14 @@ class AttendanceStatusController extends Controller
      * @param  \App\Models\AttendanceStatus  $attendanceStatus
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AttendanceStatus $attendanceStatus)
+    public function destroy($id)
     {
-        //
+        $attendanceStatus = AttendanceStatus::find($id);
+        $attendanceStatus->delete();
+        return response()->json([
+            'code' => 200,
+            'status'=> 'OK',
+            'message' => 'delete success'
+        ]);
     }
 }
