@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
-use App\Models\Role;
-use App\Models\StatusHire;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 
 class EmployeeController extends Controller
 {
@@ -18,22 +15,11 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        // return view('employee.index', compact('employees' ));
         return response()->json([
-            $employees
+            "code" => 200,
+            "status" => "OK",
+            "data" => $employees
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $roles = Role::all();
-        $statusHires = StatusHire::all();
-        return view('employee.create', compact('roles','statusHires' ));
     }
 
     /**
@@ -90,9 +76,10 @@ class EmployeeController extends Controller
         $employee->resignedAt = $request->resignedAt;
         $employee->statusHireId = $request->statusHireId;
         $employee->save();
-        // return redirect()->route('/');
         return response()->json([
-            $employee
+            "code" => 200,
+            "status" => "OK",
+            "data" => $employee
         ]);
     }
 
@@ -105,16 +92,11 @@ class EmployeeController extends Controller
     public function show($id)
     {
         $employee = Employee::find($id);
-        // return view('employee.show', compact('employee'));
         return response()->json([
-            $employee
+            "code" => 200,
+            "status" => "OK",
+            "data" => $employee
         ]);
-    }
-    public function showEmployeeById($id)
-    {
-        $employee = Employee::find($id);
-        // return view('employee.show', compact('employee'));
-        return $employee;
     }
 
     /**
@@ -126,9 +108,11 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::find($id);
-        $roles = Role::all();
-        $statusHires = StatusHire::all();
-        return view('employee.edit', compact('employee', 'roles', 'statusHires'));
+        return response()->json([
+            "code" => 200,
+            "status" => "OK",
+            "data" => $employee
+        ]);
     }
 
     /**
@@ -193,9 +177,10 @@ class EmployeeController extends Controller
         $employee->resignedAt = $request->resignedAt;
         $employee->statusHireId = $request->statusHireId;
         $employee->save();
-        // return redirect()->route('employee.index')
         return response()->json([
-            $employee
+            "code" => 200,
+            "status" => "OK",
+            "data" => $employee
         ]);
     }
 
@@ -209,8 +194,9 @@ class EmployeeController extends Controller
     {
         $employee = Employee::find($id);
         $employee->delete();
-        // return redirect()->route('/');
         return response()->json([
+            "code" => 200,
+            "status" => "OK",
             "message" => "detele success",
         ]);
     }
