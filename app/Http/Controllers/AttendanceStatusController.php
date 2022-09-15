@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\AttendanceStatus;
 use Illuminate\Http\Request;
 
-class AttendanceStatusController extends Controller
+class AttendanceStatusController extends BaseController
 {
+    const VALIDATION_RULES = [
+        'status' => 'required|string|max:255',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -14,12 +19,13 @@ class AttendanceStatusController extends Controller
      */
     public function index()
     {
-        $attendanceStatus = AttendanceStatus::all();
-        return response()->json([
-            'code' => 200,
-            'status'=> 'OK',
-            'data' => $attendanceStatus
-        ]);
+        try {
+            $attendanceStatus = AttendanceStatus::all();
+            return $this->sendResponse($attendanceStatus, "attendace status retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error retrieving retrieved",  $th->getMessage());
+            //throw $th;
+        }
     }
 
     /**
@@ -30,17 +36,16 @@ class AttendanceStatusController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'status' => 'required|string|max:255',
-        ]);
-        $attendanceStatus = new AttendanceStatus();
-        $attendanceStatus->status = $request->status;
-        $attendanceStatus->save();
-        return response()->json([
-            'code' => 200,
-            'status'=> 'OK',
-            'data' => $attendanceStatus
-        ]);
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $attendanceStatus = new AttendanceStatus();
+            $attendanceStatus->status = $request->status;
+            $attendanceStatus->save();
+            return $this->sendResponse($attendanceStatus, "attendace status creating successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error creating attendace status", $th->getMessage() );
+        }
+        
     }
 
     /**
@@ -51,22 +56,14 @@ class AttendanceStatusController extends Controller
      */
     public function show($id)
     {   
-        $attendanceStatus = AttendanceStatus::find($id);
-        // dd($attendanceStatus == false);
-        if ($attendanceStatus) {
-            return response()->json([
-                'code' => 200,
-                'status'=> 'OK',
-                'data' => $attendanceStatus
-            ]);
-        } else {
-            return response()->json([
-                'code' => 404,
-                'status'=> 'Not Found',
-                'message' => 'Data Not Found'
-            ]);
-
+        try {
+            $attendanceStatus = AttendanceStatus::findOrFail($id);
+            return $this->sendResponse($attendanceStatus,"attendace status retrieved successfully");
+        } catch (\Throwable $th) {
+            //throw $th;
+            return $this->sendError('Error retrieving attendance status', 'Data Not Found');
         }
+        
     }
 
     /**
@@ -77,12 +74,12 @@ class AttendanceStatusController extends Controller
      */
     public function edit($id)
     {
-        $attendanceStatus = AttendanceStatus::find($id);
-        return response()->json([
-            'code' => 200,
-            'status'=> 'OK',
-            'data' => $attendanceStatus
-        ]);
+        try {
+            $attendanceStatus = AttendanceStatus::findOrFail($id);
+            return $this->sendResponse($attendanceStatus,"attendace status retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError('Error retrieving attendance status', 'Data Not Found');
+        }
     }
 
     /**
@@ -94,18 +91,15 @@ class AttendanceStatusController extends Controller
      */
     public function update($id, Request $request)
     {
-        $request->validate([
-            'status' => 'required|string|max:255',
-        ]);
-        $attendanceStatus = AttendanceStatus::find($id);
-        $attendanceStatus->status = $request->status;
-        $attendanceStatus->save();
-        return response()->json([
-            'code' => 200,
-            'status'=> 'OK',
-            'message' => 'update success',
-            'data' => $attendanceStatus
-        ]);
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $attendanceStatus = AttendanceStatus::findOrFail($id);
+            $attendanceStatus->status = $request->status;
+            $attendanceStatus->save();
+            return $this->sendResponse($attendanceStatus, "attendace status updating successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError('Error updating attendance status', 'Data Not Found');
+        }
     }
 
     /**
@@ -116,12 +110,12 @@ class AttendanceStatusController extends Controller
      */
     public function destroy($id)
     {
-        $attendanceStatus = AttendanceStatus::find($id);
-        $attendanceStatus->delete();
-        return response()->json([
-            'code' => 200,
-            'status'=> 'OK',
-            'message' => 'delete success'
-        ]);
+        try {
+            $attendanceStatus = AttendanceStatus::findOrFail($id);
+            $attendanceStatus->delete();
+            return $this->sendResponse($attendanceStatus, "attendace status deleting successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError('Error deleting attendance status', 'Data Not Found');
+        }
     }
 }

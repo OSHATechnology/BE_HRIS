@@ -2,11 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
-class EmployeeController extends Controller
+class EmployeeController extends BaseController
 {
+    const VALIDATION_RULES = [
+        'firstName' => 'required|string|max:255',
+        'lastName' => 'required|string|max:255',
+        'phone' => 'required|string|max:255',
+        'email' => 'required|string|unique:employees|max:255',
+        'password' => 'required|',
+        'gender' => 'required|string|max:255',
+        'address' => 'required|string|max:255',
+        'city' => 'required|string|max:255',
+        'nation' => 'required|string|max:255',
+        'roleId' => 'required|integer',
+        'isActive' => 'required|boolean',
+        'emailVerifiedAt' => 'date',
+        'joinedAt' => 'date',
+        'resignedAt' => 'date',
+        'statusHireId' => 'required|boolean'
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -14,12 +33,12 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
-        return response()->json([
-            "code" => 200,
-            "status" => "OK",
-            "data" => $employees
-        ]);
+        try {
+            $employees = Employee::all();
+            return $this->sendResponse($employees, "employee retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("employee retrieving successfully", $th->getMessage());
+        }
     }
 
     /**
@@ -30,57 +49,39 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'phoneName' => 'required|string|max:255',
-            'email' => 'required|string|unique|max:255',
-            'password' => 'required|password|max:255',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
-            'gander' => 'required|enum|max:255',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'nation' => 'required|string|max:255',
-            'roleId' => 'required|integer',
-            'isActive' => 'required|boolean',
-            'emailVerifiedAt' => 'date',
-            'joinedAt' => 'date',
-            'resignedAt' => 'date',
-            'statusHireId' => 'required|boolean',
-        ]);
-
-        $employee = new Employee;
-        $employee->firstName = $request->firstName;
-        $employee->lastName = $request->lastName;
-        $employee->phone = $request->phone;
-        $employee->email = $request->email;
-        $employee->password = bcrypt($request->password);
-        if($request->hasFile('photo')){
-            $imageName = time().'.'.$request->photo->extension();
-            $path = $request->file('photo')->storeAs('public/employee_image', $imageName);
-            $employee->photo = 'storage/public/employee_image/' . $imageName;
-        }else{
-            $employee->photo = $request->photo;
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $employee = new Employee;
+            $employee->firstName = $request->firstName;
+            $employee->lastName = $request->lastName;
+            $employee->phone = $request->phone;
+            $employee->email = $request->email;
+            $employee->password = bcrypt($request->password);
+            if($request->hasFile('photo')){
+                $imageName = time().'.'.$request->photo->extension();
+                $path = $request->file('photo')->storeAs('public/employee_image', $imageName);
+                $employee->photo = 'storage/public/employee_image/' . $imageName;
+            }else{
+                $employee->photo = $request->photo;
+            }
+                
+            $employee->gender = $request->gender;
+            $employee->birthDate = $request->birthDate;
+            $employee->address = $request->address;
+            $employee->city = $request->city;
+            $employee->nation = $request->nation;
+            $employee->roleId = $request->roleId;
+            $employee->isActive = $request->isActive;
+            $employee->emailVerifiedAt = $request->emailVerifiedAt;
+            $employee->remember_token = $request->remember_token;
+            $employee->joinedAt = $request->joinedAt;
+            $employee->resignedAt = $request->resignedAt;
+            $employee->statusHireId = $request->statusHireId;
+            $employee->save();
+            return $this->sendResponse($employee, "employee created successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("employee creating successfully", $th->getMessage());
         }
-            
-        $employee->gender = $request->gender;
-        $employee->birthDate = $request->birthDate;
-        $employee->address = $request->address;
-        $employee->city = $request->city;
-        $employee->nation = $request->nation;
-        $employee->roleId = $request->roleId;
-        $employee->isActive = $request->isActive;
-        $employee->emailVerifiedAt = $request->emailVerifiedAt;
-        $employee->remember_token = $request->remember_token;
-        $employee->joinedAt = $request->joinedAt;
-        $employee->resignedAt = $request->resignedAt;
-        $employee->statusHireId = $request->statusHireId;
-        $employee->save();
-        return response()->json([
-            "code" => 200,
-            "status" => "OK",
-            "data" => $employee
-        ]);
     }
 
     /**
@@ -91,14 +92,14 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee = Employee::find($id);
-        return response()->json([
-            "code" => 200,
-            "status" => "OK",
-            "data" => $employee
-        ]);
+        try {
+            $employee = Employee::findOrFail($id);
+            return $this->sendResponse($employee, "employee retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("employee retrieving successfully", "Data Not Found");
+        }
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -107,14 +108,14 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employee = Employee::find($id);
-        return response()->json([
-            "code" => 200,
-            "status" => "OK",
-            "data" => $employee
-        ]);
+        try {
+            $employee = Employee::findOrFail($id);
+            return $this->sendResponse($employee, "employee retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("employee retrieving successfully", "Data Not Found");
+        }
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -124,65 +125,58 @@ class EmployeeController extends Controller
      */
     public function update($id, Request $request)
     {
-        $request->validate([
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'phoneName' => 'required|string|max:255',
-            'email' => 'required|string|unique|max:255',
-            'password' => 'required|password|max:255',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
-            'gander' => 'required|enum|max:255',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'nation' => 'required|string|max:255',
-            'roleId' => 'required|integer',
-            'isActive' => 'required|boolean',
-            'emailVerifiedAt' => 'date',
-            'joinedAt' => 'date',
-            'resignedAt' => 'date',
-            'statusHireId' => 'required|boolean',
-        ]);
-
-        $employee = Employee::find($id);
-        $employee->firstName = $request->firstName;
-        $employee->lastName = $request->lastName;
-        $employee->phone = $request->phone;
-        $employee->email = $request->email;
-        $employee->password = bcrypt($request->password);
-        
-        $employee->firstName = $request->firstName;
-        $employee->lastName = $request->lastName;
-        $employee->phone = $request->phone;
-        $employee->email = $request->email;
-        $employee->password = bcrypt($request->password);
-
-        if($employee->photo == $request->photo) {
-            $employee->photo = $request->photo;
-        } else {
-            $imageName = time().'.'.$request->photo->extension();
-            $path = $request->file('photo')->storeAs('public/employee_image', $imageName);
-            $employee->photo = 'storage/public/employee_image/' . $imageName;
+        try {
+            $request->validate([
+                'firstName' => 'required|string|max:255',
+                'lastName' => 'required|string|max:255',
+                'phone' => 'required|string|max:255',
+                'gender' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'nation' => 'required|string|max:255',
+                'roleId' => 'required|integer',
+                'isActive' => 'required|boolean',
+                'emailVerifiedAt' => 'date',
+                'joinedAt' => 'date',
+                'resignedAt' => 'date',
+                'statusHireId' => 'required|boolean'
+            ]);
+            $employee = Employee::findOrFail($id);
+            $employee->firstName = $request->firstName;
+            $employee->lastName = $request->lastName;
+            $employee->phone = $request->phone;
+            $employee->password = bcrypt($request->password);
+            
+            $employee->firstName = $request->firstName;
+            $employee->lastName = $request->lastName;
+            $employee->phone = $request->phone;
+            $employee->email = $request->email;
+            
+            if($request->hasFile("photo")) {
+                $imageName = time().'.'.$request->photo->extension();
+                $path = $request->file('photo')->storeAs('public/employee_image', $imageName);
+                $employee->photo = 'storage/public/employee_image/' . $imageName;
+            } else {
+                $employee->photo = $employee->photo;
+            }
+    
+            $employee->gender = $request->gender;
+            $employee->birthDate = $request->birthDate;
+            $employee->address = $request->address;
+            $employee->city = $request->city;
+            $employee->nation = $request->nation;
+            $employee->roleId = $request->roleId;
+            $employee->isActive = $request->isActive;
+            $employee->emailVerifiedAt = $request->emailVerifiedAt;
+            $employee->remember_token = $request->remember_token;
+            $employee->joinedAt = $request->joinedAt;
+            $employee->resignedAt = $request->resignedAt;
+            $employee->statusHireId = $request->statusHireId;
+            $employee->save();
+            return $this->sendResponse($employee, "employee updated successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error employee updating", $th->getMessage());
         }
-
-        $employee->gender = $request->gender;
-        $employee->birthDate = $request->birthDate;
-        $employee->address = $request->address;
-        $employee->city = $request->city;
-        $employee->nation = $request->nation;
-        $employee->roleId = $request->roleId;
-        $employee->isActive = $request->isActive;
-        $employee->emailVerifiedAt = $request->emailVerifiedAt;
-        $employee->remember_token = $request->remember_token;
-        $employee->joinedAt = $request->joinedAt;
-        $employee->resignedAt = $request->resignedAt;
-        $employee->statusHireId = $request->statusHireId;
-        $employee->save();
-        return response()->json([
-            "code" => 200,
-            "status" => "OK",
-            "message" => "update success",
-            "data" => $employee
-        ]);
     }
 
     /**
@@ -193,12 +187,12 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        $employee = Employee::find($id);
-        $employee->delete();
-        return response()->json([
-            "code" => 200,
-            "status" => "OK",
-            "message" => "detele success",
-        ]);
+        try {
+            $employee = Employee::findOrFail($id);
+            $employee->delete();
+            return $this->sendResponse($employee, "employee deleted successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("employee deleting successfully", "Data Not Found");
+        }
     }
 }

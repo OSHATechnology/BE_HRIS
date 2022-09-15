@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 
-class NotificationController extends Controller
+class NotificationController extends BaseController
 {
+    const VALIDATION_RULES = [
+        'empId' => 'required|integer',
+        'name' => 'required|string|max:255',
+        'content' => 'required|string|max:255',
+        'type' => 'required|string|max:255',
+        'senderBy' => 'required|integer',
+        'scheduleAt' => 'required|date'
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -14,12 +24,12 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notifications = Notification::all();
-        return response()->json([
-            'code' => '200',
-            'status'=> 'OK',
-            'data' => $notifications
-        ]);
+        try {
+            $notifications = Notification::all();
+            return $this->sendResponse($notifications, "notification retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error notification retrieving", $th->getMessage());
+        }
     }
 
     /**
@@ -30,29 +40,22 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'empId' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'content' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'senderBy' => 'required|integer',
-            'scheduleAt' => 'required|date'
-        ]);
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $notification = new Notification();
+            $notification->empId = $request->empId;
+            $notification->name = $request->name;
+            $notification->content = $request->content;
+            $notification->type = $request->type;
+            $notification->status = $request->status;
+            $notification->senderBy = $request->senderBy;
+            $notification->scheduleAt = $request->scheduleAt;
+            $notification->save();
+            return $this->sendResponse($notification, "notification created successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error creating notification", $th->getMessage());
+        }
 
-        $notification = new Notification();
-        $notification->empId = $request->empId;
-        $notification->name = $request->name;
-        $notification->content = $request->content;
-        $notification->type = $request->type;
-        $notification->status = $request->status;
-        $notification->senderBy = $request->senderBy;
-        $notification->scheduleAt = $request->scheduleAt;
-        $notification->save();
-        return response()->json([
-            'code' => '200',
-            'status'=> 'OK',
-            'data' => $notification
-        ]);
     }
 
     /**
@@ -63,12 +66,12 @@ class NotificationController extends Controller
      */
     public function show($id)
     {
-        $notification = Notification::find($id);
-        return response()->json([
-            'code' => '200',
-            'status'=> 'OK',
-            'data' => $notification
-        ]);
+        try {
+            $notification = Notification::findOrFail($id);
+            return $this->sendResponse($notification, "notification retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError('Error retrieving notification', 'Data Not Found');
+        }
     }
 
     /**
@@ -79,12 +82,12 @@ class NotificationController extends Controller
      */
     public function edit($id)
     {
-        $notification = Notification::find($id);
-        return response()->json([
-            'code' => '200',
-            'status'=> 'OK',
-            'data' => $notification
-        ]);
+        try {
+            $notification = Notification::findOrFail($id);
+            return $this->sendResponse($notification, "notification retrieving successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError('Error retrieving notification', 'Data Not Found');
+        }
     }
 
     /**
@@ -96,30 +99,21 @@ class NotificationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'empId' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'content' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'senderBy' => 'required|integer',
-            'scheduleAt' => 'required|date'
-        ]);
-
-        $notification = Notification::find($id);
-        $notification->empId = $request->empId;
-        $notification->name = $request->name;
-        $notification->content = $request->content;
-        $notification->type = $request->type;
-        $notification->status = $request->status;
-        $notification->senderBy = $request->senderBy;
-        $notification->scheduleAt = $request->scheduleAt;
-        $notification->save();
-        return response()->json([
-            'code' => '200',
-            'status'=> 'OK',
-            'message' => 'update success',
-            'data' => $notification
-        ]);
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $notification = Notification::findOrFail($id);
+            $notification->empId = $request->empId;
+            $notification->name = $request->name;
+            $notification->content = $request->content;
+            $notification->type = $request->type;
+            $notification->status = $request->status;
+            $notification->senderBy = $request->senderBy;
+            $notification->scheduleAt = $request->scheduleAt;
+            $notification->save();
+            return $this->sendResponse($notification, "notification updated successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError('Error updating notification', 'Data Not Found');
+        }
     }
 
     /**
@@ -130,12 +124,12 @@ class NotificationController extends Controller
      */
     public function destroy($id)
     {
-        $status = Notification::find($id);
-        $status->delete();
-            return response()->json([
-                'code' => '200',
-                'status'=> 'OK',
-                "message" => "detele success",
-            ]);
+        try {
+            $notification = Notification::findOrFail($id);
+            $notification->delete();
+            return $this->sendResponse($notification, "notification deleting successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError('Error deleting notification', 'Data Not Found');
+        }
     }
 }

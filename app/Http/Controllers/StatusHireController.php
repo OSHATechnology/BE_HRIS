@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\StatusHire;
 use Illuminate\Http\Request;
 
-class StatusHireController extends Controller
+class StatusHireController extends BaseController
 {
+    const VALIDATION_RULES = [
+        'name' => 'required|string|max:255',
+        'description' => 'required|string|max:255',
+        'resposibleBy' => 'required|string|max:255',
+        'phone' => 'required|max:50',
+        'address' => 'required|string|max:255',
+        'assignedBy' => 'required',
+        'joinedAt' => 'required'
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -14,14 +24,14 @@ class StatusHireController extends Controller
      */
     public function index()
     {
-        $statusHires = StatusHire::all();
-        return response()->json([
-            'code' => 200,
-            'status'=> 'OK',
-            'data' => $statusHires
-        ]);
+        try {
+            $statusHires = StatusHire::all();
+            return $this->sendResponse($statusHires, "status hire retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error status hire retrieving", $th->getMessage());
+        }
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -30,20 +40,17 @@ class StatusHireController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255'
-        ]);
-
-        $status = new StatusHire;
-        $status->name = $request->name;
-        $status->save();
-        return response()->json([
-            'code' => 200,
-            'status'=> 'OK',
-            'data' => $status
-        ]);
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $status = new StatusHire;
+            $status->name = $request->name;
+            $status->save();
+            return $this->sendResponse($status, "status hire created successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error status hire creating", $th->getMessage());
+        }
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -52,12 +59,12 @@ class StatusHireController extends Controller
      */
     public function show($id)
     {
-        $status = StatusHire::find($id);
-        return response()->json([
-            'code' => 200,
-            'status'=> 'OK',
-            'data' => $status
-        ]);
+        try {
+            $status = StatusHire::findOrFail($id);
+            return $this->sendResponse($status, "status hire retrieving successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error status hire retrieving", "Data Not Found");
+        }
     }
 
     /**
@@ -68,12 +75,12 @@ class StatusHireController extends Controller
      */
     public function edit($id)
     {
-        $status = StatusHire::find($id);
-        return response()->json([
-            'code' => 200,
-            'status'=> 'OK',
-            'data' => $status
-        ]);
+        try {
+            $status = StatusHire::findOrFail($id);
+            return $this->sendResponse($status, "status hire retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error status hire retrieving", "Data Not Found");
+        }
     }
 
     /**
@@ -85,21 +92,17 @@ class StatusHireController extends Controller
      */
     public function update($id, Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255'
-        ]);
-
-        $status = StatusHire::find($id);
-        $status->name = $request->name;
-        $status->save();
-        return response()->json([
-            'code' => 200,
-            'status'=> 'OK',
-            'message' => 'update success',
-            'data' => $status
-        ]);
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $status = StatusHire::find($id);
+            $status->name = $request->name;
+            $status->save();
+            return $this->sendResponse($status, "status hire updated successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error status hire updating", "Data Not Found");
+        }
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -108,12 +111,12 @@ class StatusHireController extends Controller
      */
     public function destroy($id)
     {
-        $status = StatusHire::find($id);
-        $status->delete();
-            return response()->json([
-                'code' => 200,
-                'status'=> 'OK',
-                "message" => "detele success",
-            ]);
+        try {
+            $status = StatusHire::find($id);
+            $status->delete();
+            return $this->sendResponse($status, "status hire deleted successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error status hire deleting", "Data Not Found");
+        }
     }
 }
