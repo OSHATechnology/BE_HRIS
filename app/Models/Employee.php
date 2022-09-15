@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Gate;
 
 class Employee extends Authenticatable
 {
@@ -54,5 +55,10 @@ class Employee extends Authenticatable
     public function statusHire()
     {
         return $this->hasOne(StatusHire::class, 'statusHireId', 'statusHireId');
+    }
+
+    public function hasPermissionTo($permission)
+    {
+        return $this->role->permissions->contains('slug', $permission);
     }
 }
