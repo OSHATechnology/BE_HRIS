@@ -10,6 +10,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\API\AuthenticatedController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,3 +44,4 @@ Route::resource('notification', NotificationController::class);
 Route::resource('status_hire', StatusHireController::class);
 Route::resource('attendance_status', AttendanceStatusController::class);
 Route::resource('attendance', AttendanceController::class);
+Route::resource('team', TeamController::class);
