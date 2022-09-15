@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\Employee;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RolePolicy
+class PermissionPolicy
 {
     use HandlesAuthorization;
 
@@ -18,7 +18,7 @@ class RolePolicy
      */
     public function viewAny(Employee $employee)
     {
-        return $employee->hasPermissionTo('can_view_all_roles');
+        return $employee->hasPermissionTo('can_view_all_permissions');
     }
 
     /**
@@ -29,39 +29,39 @@ class RolePolicy
      */
     public function view(Employee $employee)
     {
-        return $employee->hasPermissionTo('can_view_role');
+        return $employee->hasPermissionTo('can_view_permissions');
     }
 
     /**
-     * Determine whether the user can create roles.
+     * Determine whether the user can create permission.
      *
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(Employee $employee)
     {
-        return $employee->hasPermissionTo('can_create_role');
+        return $employee->hasPermissionTo('can_create_permissions');
     }
 
     /**
-     * Determine whether the user can update role.
+     * Determine whether the user can update permission.
      *
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(Employee $employee)
     {
-        return $employee->hasPermissionTo('can_update_role');
+        return $employee->hasPermissionTo('can_update_permissions');
     }
 
     /**
-     * Determine whether the user can delete role.
+     * Determine whether the user can delete permission.
      *
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(Employee $employee)
     {
-        return $employee->hasPermissionTo('can_delete_role');
+        return $employee->hasPermissionTo('can_delete_permissions');
     }
 }
