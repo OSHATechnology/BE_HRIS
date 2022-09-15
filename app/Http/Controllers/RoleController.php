@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class RoleController extends BaseController
 {
 
     /**
@@ -162,19 +163,10 @@ class RoleController extends Controller
             $Role = Role::findOrFail($roleId);
             $Role->delete();
 
-            return response()->json([
-                'code' => 200,
-                'message' => 'success delete role',
-            ]);
+            return $this->sendResponse($Role, 'Role deleted successfully.');
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $th->getMessage()
-                ]
-            ]);
+            return $this->sendError("Failed to delete role", $th->getMessage());
         }
     }
 }
