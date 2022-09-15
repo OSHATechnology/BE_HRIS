@@ -180,6 +180,7 @@ class EmployeeController extends Controller
         return response()->json([
             "code" => 200,
             "status" => "OK",
+            "message" => "update success",
             "data" => $employee
         ]);
     }

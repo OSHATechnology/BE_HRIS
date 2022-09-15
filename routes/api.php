@@ -27,3 +27,4 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::resource('employee', EmployeeController::class);
 Route::resource('notification', NotificationController::class);
+Route::resource('status_hire', StatusHireController::class);

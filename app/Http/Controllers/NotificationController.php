@@ -15,7 +15,6 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = Notification::all();
-        // return view('notification.index', compact('notifications' ));
         return response()->json([
             'code' => '200',
             'status'=> 'OK',
@@ -49,7 +48,6 @@ class NotificationController extends Controller
         $notification->senderBy = $request->senderBy;
         $notification->scheduleAt = $request->scheduleAt;
         $notification->save();
-        // return redirect()->route('/');
         return response()->json([
             'code' => '200',
             'status'=> 'OK',
@@ -66,7 +64,6 @@ class NotificationController extends Controller
     public function show($id)
     {
         $notification = Notification::find($id);
-        // return view('notification.show', compact('notification'));
         return response()->json([
             'code' => '200',
             'status'=> 'OK',
@@ -83,7 +80,6 @@ class NotificationController extends Controller
     public function edit($id)
     {
         $notification = Notification::find($id);
-        // return view('notification.edit', compact('notification'));
         return response()->json([
             'code' => '200',
             'status'=> 'OK',
@@ -118,7 +114,6 @@ class NotificationController extends Controller
         $notification->senderBy = $request->senderBy;
         $notification->scheduleAt = $request->scheduleAt;
         $notification->save();
-        // return redirect()->route('notification.index')
         return response()->json([
             'code' => '200',
             'status'=> 'OK',
@@ -138,6 +133,8 @@ class NotificationController extends Controller
         $status = Notification::find($id);
         $status->delete();
             return response()->json([
+                'code' => '200',
+                'status'=> 'OK',
                 "message" => "detele success",
             ]);
     }

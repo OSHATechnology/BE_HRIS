@@ -15,23 +15,11 @@ class StatusHireController extends Controller
     public function index()
     {
         $statusHires = StatusHire::all();
-        // return view('status.index', compact('status' ));
         return response()->json([
-            'code' => '200',
+            'code' => 200,
             'status'=> 'OK',
             'data' => $statusHires
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        return view('status.create');
     }
 
     /**
@@ -49,9 +37,8 @@ class StatusHireController extends Controller
         $status = new StatusHire;
         $status->name = $request->name;
         $status->save();
-        // return redirect()->route('/');
         return response()->json([
-            'code' => '200',
+            'code' => 200,
             'status'=> 'OK',
             'data' => $status
         ]);
@@ -66,9 +53,8 @@ class StatusHireController extends Controller
     public function show($id)
     {
         $status = StatusHire::find($id);
-        // return view('status.show', compact('status'));
         return response()->json([
-            'code' => '200',
+            'code' => 200,
             'status'=> 'OK',
             'data' => $status
         ]);
@@ -83,9 +69,8 @@ class StatusHireController extends Controller
     public function edit($id)
     {
         $status = StatusHire::find($id);
-        // return view('status.edit', compact('status'));
         return response()->json([
-            'code' => '200',
+            'code' => 200,
             'status'=> 'OK',
             'data' => $status
         ]);
@@ -107,9 +92,8 @@ class StatusHireController extends Controller
         $status = StatusHire::find($id);
         $status->name = $request->name;
         $status->save();
-        // return redirect()->route('status.index')
         return response()->json([
-            'code' => '200',
+            'code' => 200,
             'status'=> 'OK',
             'message' => 'update success',
             'data' => $status
@@ -127,6 +111,8 @@ class StatusHireController extends Controller
         $status = StatusHire::find($id);
         $status->delete();
             return response()->json([
+                'code' => 200,
+                'status'=> 'OK',
                 "message" => "detele success",
             ]);
     }
