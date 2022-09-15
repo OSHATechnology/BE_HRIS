@@ -33,4 +33,15 @@ class AuthenticatedController extends BaseController
 
         return $this->sendResponse($response, 'User login successfully.');
     }
+
+    /**
+     * Handle logout request.
+     */
+    public function destroy()
+    {
+        $user = request()->user();
+        $user->tokens()->delete();
+
+        return $this->sendResponse([], 'User logout successfully.');
+    }
 }

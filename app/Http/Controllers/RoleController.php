@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
 use App\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
@@ -28,8 +25,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        // $this->authorize('viewAny', Role::class);
         try {
+            //gate
+            $this->authorize('viewAny', Role::class);
+
             $roles = Role::all();
             return response()->json([
                 'code' => 200,
@@ -57,7 +56,7 @@ class RoleController extends Controller
 
         try {
             //gate
-            // $this->authorize('create', Role::class);
+            $this->authorize('create', Role::class);
 
             //validation
             $request->validate(self::VALIDATION_RULES);
@@ -91,6 +90,9 @@ class RoleController extends Controller
     public function show($roleId)
     {
         try {
+            //gate
+            $this->authorize('view', Role::class);
+
             $Role = Role::findOrFail($roleId);
             return response()->json([
                 'code' => 200,
@@ -118,9 +120,13 @@ class RoleController extends Controller
     public function update(Request $request, $roleId)
     {
         try {
+            //gate
+            $this->authorize('update', Role::class);
+
+            //validation
             $request->validate(self::VALIDATION_RULES);
 
-            // update role
+            // action
             $Role = Role::findOrFail($roleId);
             $Role->update($request->all());
 
@@ -150,6 +156,9 @@ class RoleController extends Controller
     public function destroy($roleId)
     {
         try {
+            //gate
+            $this->authorize('delete', Role::class);
+
             $Role = Role::findOrFail($roleId);
             $Role->delete();
 
