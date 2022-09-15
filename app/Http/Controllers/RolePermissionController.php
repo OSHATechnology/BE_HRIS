@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\RolePermission;
 use Illuminate\Http\Request;
 
-class RolePermissionController extends Controller
+class RolePermissionController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -18,21 +19,9 @@ class RolePermissionController extends Controller
     {
         try {
             $rolePermissions = RolePermission::all();
-            return response()->json([
-                'code' => 200,
-                'message' => 'success',
-                'data' => [
-                    $rolePermissions
-                ]
-            ]);
+            return $this->sendResponse($rolePermissions, 'RolePermissions retrieved successfully.');
         } catch (\Exception $e) {
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $e->getMessage()
-                ]
-            ]);
+            return $this->sendError($e->getMessage(), []);
         }
     }
 
@@ -48,18 +37,9 @@ class RolePermissionController extends Controller
             $role = Role::find($request->roleId);
             $permission = Permission::find($request->permissionId);
             $role->permissions()->attach($permission);
-            return response()->json([
-                'code' => 200,
-                'message' => 'success'
-            ]);
+            return $this->sendResponse($role, 'RolePermission created successfully.');
         } catch (\Exception $e) {
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $e->getMessage()
-                ]
-            ]);
+            return $this->sendError($e->getMessage(), []);
         }
     }
 
@@ -69,18 +49,9 @@ class RolePermissionController extends Controller
             $role = Role::findOrFail($request->roleId);
             $permission = Permission::findOrFail($request->permissionId);
             $role->permissions()->detach($permission);
-            return response()->json([
-                'code' => 200,
-                'message' => 'success'
-            ]);
+            return $this->sendResponse($role, 'RolePermission detached successfully.');
         } catch (\Exception $e) {
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $e->getMessage()
-                ]
-            ]);
+            return $this->sendError($e->getMessage(), []);
         }
     }
 }
