@@ -31,18 +31,9 @@ class RoleController extends BaseController
             $this->authorize('viewAny', Role::class);
 
             $roles = Role::all();
-            return response()->json([
-                'code' => 200,
-                'message' => 'success',
-                'data' => [
-                    'roles' => $roles
-                ]
-            ]);
+            return $this->sendResponse($roles, 'Roles retrieved successfully.');
         } catch (\Throwable $th) {
-            return response()->json([
-                'code' => 500,
-                'message' => 'error'
-            ]);
+            return $this->sendError('Error retrieving roles', $th->getMessage());
         }
     }
 
@@ -64,21 +55,9 @@ class RoleController extends BaseController
 
             //store role
             $role = Role::create($request->all());
-            return response()->json([
-                'code' => 201,
-                'message' => 'success',
-                'data' => [
-                    'role' => $role
-                ]
-            ]);
+            return $this->sendResponse($role, 'Role created successfully.');
         } catch (\Throwable $th) {
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $th->getMessage()
-                ]
-            ]);
+            return $this->sendError('Error creating role', $th->getMessage());
         }
     }
 
@@ -95,19 +74,9 @@ class RoleController extends BaseController
             $this->authorize('view', Role::class);
 
             $Role = Role::findOrFail($roleId);
-            return response()->json([
-                'code' => 200,
-                'message' => 'success',
-                'data' => $Role
-            ]);
+            return $this->sendResponse($Role, 'Role retrieved successfully.');
         } catch (\Throwable $th) {
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $th->getMessage()
-                ]
-            ]);
+            return $this->sendError('Error retrieving role', $th->getMessage());
         }
     }
 
@@ -131,20 +100,10 @@ class RoleController extends BaseController
             $Role = Role::findOrFail($roleId);
             $Role->update($request->all());
 
-            return response()->json([
-                'code' => 200,
-                'message' => 'success',
-                'data' => $Role
-            ]);
+            return $this->sendResponse($Role, 'Role updated successfully.');
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json([
-                'code' => 500,
-                'message' => 'error',
-                'data' => [
-                    'error' => $th->getMessage()
-                ]
-            ]);
+            return $this->sendError('Error updating role', $th->getMessage());
         }
     }
 
@@ -166,7 +125,7 @@ class RoleController extends BaseController
             return $this->sendResponse($Role, 'Role deleted successfully.');
         } catch (\Throwable $th) {
             //throw $th;
-            return $this->sendError("Failed to delete role", $th->getMessage());
+            return $this->sendError('Error deleting role', $th->getMessage());
         }
     }
 }
