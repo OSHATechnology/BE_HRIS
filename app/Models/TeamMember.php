@@ -14,16 +14,16 @@ class TeamMember extends Model
 
     public function memberDetail()
     {
-        return $this->hasMany(Employee::class, 'empId', 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'empId');
     }
 
-    public function assignedBy()
+    public function assignedByEmp()
     {
-        return $this->hasMany(Employee::class, 'assignedBy', 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'assignedBy');
     }
 
     public function team()
     {
-        return $this->hasMany(Team::class, 'teamId');
+        return $this->hasOne(Team::class, 'teamId', 'teamId');
     }
 }

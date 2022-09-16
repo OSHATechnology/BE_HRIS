@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\TeamMemberResource;
 use App\Models\Team;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class TeamMemberController extends BaseController
     public function index()
     {
         try {
-            $member = TeamMember::all();
+            $member = TeamMemberResource::collection(TeamMember::all());
             return $this->sendResponse($member, 'team member retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team member', $th->getMessage());
@@ -47,7 +48,7 @@ class TeamMemberController extends BaseController
             $member->assignedBy = $request->assignedBy;
             $member->joinedAt = $request->joinedAt;
             $member->save();
-            return $this->sendResponse($member, 'team member created successfully');
+            return $this->sendResponse(new TeamMemberResource($member), 'team member created successfully');
         } catch (\Throwable $th) {
             //throw $th;
             return $this->sendError('Error creating team member', $th->getMessage());
@@ -63,23 +64,7 @@ class TeamMemberController extends BaseController
     public function show($id)
     {
         try {
-            $member = TeamMember::findOrFail($id);
-            return $this->sendResponse($member, 'team member retrieved successfully');
-        } catch (\Throwable $th) {
-            return $this->sendError('Error retrieving team member', 'Data Not Found');
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TeamMember  $teamMember
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        try {
-            $member = TeamMember::findOrFail($id);
+            $member = new TeamMemberResource(TeamMember::findOrFail($id));
             return $this->sendResponse($member, 'team member retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team member', 'Data Not Found');
