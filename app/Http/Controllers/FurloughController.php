@@ -31,7 +31,7 @@ class FurloughController extends BaseController
     {
         try {
             //gate
-            // $this->authorize('viewAny', Furlough::class);
+            $this->authorize('viewAny', Furlough::class);
 
             $furloughs = FurloughResource::collection(Furlough::all());
             return $this->sendResponse($furloughs, 'Furloughs retrieved successfully.');
@@ -50,7 +50,7 @@ class FurloughController extends BaseController
     {
         try {
             //gate
-            // $this->authorize('create', Furlough::class);
+            $this->authorize('create', Furlough::class);
 
             //validation
             $request->validate(self::VALIDATION_RULES);
@@ -80,7 +80,7 @@ class FurloughController extends BaseController
     {
         try {
             //gate
-            // $this->authorize('view', $furlough);
+            $this->authorize('view', Furlough::class);
             $furlough = new FurloughResource(Furlough::findOrFail($furloughId));
 
             return $this->sendResponse($furlough, 'Furlough retrieved successfully.');
@@ -100,7 +100,7 @@ class FurloughController extends BaseController
     {
         try {
             //gate
-            // $this->authorize('update', $furlough);
+            $this->authorize('update', Furlough::class);
 
             //validation
             $request->validate(self::VALIDATION_RULES);
@@ -132,7 +132,7 @@ class FurloughController extends BaseController
 
         try {
             //gate
-            // $this->authorize('delete', $furlough);
+            $this->authorize('delete', Furlough::class);
 
             $furlough = Furlough::findOrFail($furloughId);
             $furlough->delete();
