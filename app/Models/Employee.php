@@ -66,4 +66,9 @@ class Employee extends Authenticatable
     {
         return $this->hasMany(Furlough::class, 'employeeId');
     }
+
+    public function hasRoleName($roleName)
+    {
+        return $this->role->nameRole === $roleName;
+    }
 }

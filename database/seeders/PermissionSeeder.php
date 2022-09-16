@@ -15,28 +15,65 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        $permissions = [
-            [
-                'permissionId' => 1,
-                'namePermission' => 'Can view all attendance data',
-                'description' => 'user can view all attendance data',
-                'tag' => 'Attendence Management',
-                'slug' => 'can_view all_attendance_data',
-                'created_at' => now(),
-                'updated_at' => now()
-                
+        $permisManagement = [
+            // 'Attendence Management' => [
+            //     'attendance' => [
+            //         ['Can view all attendance data', 'can_view_all_attendance_data'],
+            //         ['Can manage status attendance employee', 'can_manage_status_attendance_employee']
+            //     ],
+            // ],
+            'Role Management' => [
+                'role' => [
+                    'view_all',
+                    'view',
+                    'create',
+                    'update',
+                    'delete',
+                ],
             ],
-            [
-                'permissionId' => 2,
-                'namePermission' => 'Can manage status attendance employee',
-                'description' => 'User can manage status attendance employee',
-                'tag' =>'Attendence Management',
-                'slug' => 'can_manage_status_attendance_employee',
-                'created_at' => now(),
-                'updated_at' => now()
-            ]
+            'Permission Management' => [
+                'permission' => [
+                    'view_all',
+                    'view',
+                    'create',
+                    'update',
+                    'delete',
+                ],
+            ],
+            'Furlough Management' => [
+                'furlough' => [
+                    'view_all',
+                    'view',
+                    'create',
+                    'update',
+                    'delete',
+                ],
+            ],
+            'Partner Management' => [
+                'partner' => [
+                    'view_all',
+                    'view',
+                    'create',
+                    'update',
+                    'delete',
+                ],
+            ],
         ];
+        foreach ($permisManagement as $keyP => $item) {
+            foreach ($item as $key => $value) {
+                foreach ($value as $key2 => $value2) {
+                    $data[] = [
+                        'namePermission' => 'Can ' . $value2 . ' ' . $key,
+                        'description' => 'User can ' . $value2 . ' ' . $key,
+                        'tag' => $keyP,
+                        'slug' => ($value2 == 'view_all') ?  'can_' . $value2 . '_' . $key . 's' :  'can_' . $value2 . '_' . $key,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ];
+                }
+            }
+        }
 
-        DB::table('permissions')->insert($permissions);
+        DB::table('permissions')->insert($data);
     }
 }

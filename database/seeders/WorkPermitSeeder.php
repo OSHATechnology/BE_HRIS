@@ -17,15 +17,13 @@ class WorkPermitSeeder extends Seeder
     {
         $workPermit = [
             [
-                'workPermitId' => 1, 
-                'employeeId' => 2, 
-                'startAt' => now(), 
-                'endAt' => now(), 
-                'isConfirmed' => true,
-                'confirmedBy' => 1,
+                'workPermitId' => 1,
+                'employeeId' => 2,
+                'startAt' => now(),
+                'endAt' => now(),
                 'created_at' => now(),
                 'updated_at' => now()
-                
+
             ],
         ];
 

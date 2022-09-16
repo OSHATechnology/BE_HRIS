@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\PartnerResource;
 use App\Models\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,7 @@ class PartnerController extends BaseController
         try {
             $this->authorize('viewAny', Partner::class);
 
-            $partners = Partner::all();
+            $partners = PartnerResource::collection(Partner::all());
             return $this->sendResponse($partners, 'Partners retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError($th->getMessage(), []);
@@ -86,7 +87,7 @@ class PartnerController extends BaseController
         try {
             $this->authorize('view', Partner::class);
 
-            $partner = Partner::findOrFail($partnerId);
+            $partner = new PartnerResource(Partner::findOrFail($partnerId));
             return $this->sendResponse($partner, 'Partner retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving partner.', $th->getMessage());
