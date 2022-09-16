@@ -12,12 +12,12 @@ class Team extends Model
 
     protected $primaryKey = 'teamId';
 
-    public function createdBy()
+    public function createdByEmp()
     {
-        return $this->hasMany(Employee::class, 'createdBy', 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'createdBy');
     }
-    public function leadBy()
+    public function leadByEmp()
     {
-        return $this->hasMany(Employee::class, 'leadBy', 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'leadBy');
     }
 }

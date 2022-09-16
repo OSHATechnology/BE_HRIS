@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,7 @@ class TeamController extends BaseController
     public function index()
     {
         try {
-            $team = Team::all();
+            $team = TeamResource::collection(Team::all());
             return $this->sendResponse($team, 'team retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team ', $th->getMessage());
@@ -44,7 +45,7 @@ class TeamController extends BaseController
             $team->leadBy = $request->leadBy;
             $team->createdBy = $request->createdBy;
             $team->save();
-            return $this->sendResponse($team, 'team created successfully');
+            return $this->sendResponse(new TeamResource($team), 'team created successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error creating team ', $th->getMessage());
         }
@@ -59,23 +60,7 @@ class TeamController extends BaseController
     public function show($id)
     {
         try {
-            $team = Team::findOrFail($id);
-            return $this->sendResponse($team, 'team retrieved successfully');
-        } catch (\Throwable $th) {
-            return $this->sendError('Error retrieving team ', "Data Not Found");
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Team  $team
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        try {
-            $team = Team::findOrFail($id);
+            $team = new TeamResource(Team::findOrFail($id));
             return $this->sendResponse($team, 'team retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team ', "Data Not Found");
