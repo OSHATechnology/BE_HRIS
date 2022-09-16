@@ -33,6 +33,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('role-permissions', RolePermissionController::class)->only(['index', 'store']);
     Route::resource('permissions', PermissionController::class)->except(['create', 'edit']);
     Route::apiResource('furlough', FurloughController::class)->except(['create', 'edit']);
+    Route::apiResource('partners', PartnerController::class)->except(['create', 'edit']);
 });
-
-Route::apiResource('partners', PartnerController::class)->except(['create', 'edit']);
