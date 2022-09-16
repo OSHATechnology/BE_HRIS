@@ -15,20 +15,21 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        $rolePermissions = [
-            [
-                'roleId' => 1,
-                'permissionId' => 1,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'roleId' => 2,
-                'permissionId' => 1,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]
-        ];
+        $getListPermisID = DB::table('permissions')->pluck('permissionId');
+        $getListRoleID = DB::table('roles')->pluck('roleId');
+        $rolePermissions = [];
+        foreach ($getListRoleID as $roleID) {
+            if ($roleID == 1) {
+                foreach ($getListPermisID as $permisID) {
+                    $rolePermissions[] = [
+                        'roleId' => $roleID,
+                        'permissionId' => $permisID,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ];
+                }
+            }
+        }
 
         DB::table('role_permissions')->insert($rolePermissions);
     }

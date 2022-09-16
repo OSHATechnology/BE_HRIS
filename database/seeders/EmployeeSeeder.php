@@ -18,16 +18,16 @@ class EmployeeSeeder extends Seeder
         $permissions = [
             [
                 'employeeId' => 1,
-                'firstName' => 'Tatang',
-                'lastName' => 'suherman',
-                'phone' => '08121212121212',
-                'email' => 'tatangSuherman1@gmail.com',
-                'password' => bcrypt('tatang123'),
-                'photo' => 'tatang.jpg',
+                'firstName' => 'Admin',
+                'lastName' => 'App',
+                'phone' => '-',
+                'email' => 'admin@email.com',
+                'password' => bcrypt('admin123'),
+                'photo' => 'default.jpg',
                 'gender' => 'man',
-                'birthDate' => '2001-01-01',
-                'address' => 'jl tatang suherman',
-                'city' => 'Jakarta',
+                'birthDate' => '1999-01-01',
+                'address' => '-',
+                'city' => '-',
                 'nation' => 'Indonesia',
                 'roleId' => 1,
                 'isActive' => true,
@@ -38,7 +38,6 @@ class EmployeeSeeder extends Seeder
                 'statusHireId' => 1,
                 'created_at' => now(),
                 'updated_at' => now()
-                
             ],
             [
                 'employeeId' => 2,
@@ -62,7 +61,7 @@ class EmployeeSeeder extends Seeder
                 'statusHireId' => 2,
                 'created_at' => now(),
                 'updated_at' => now()
-                
+
             ]
         ];
 

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('startAt');
             $table->timestamp('endAt')->nullable();
             $table->boolean('isConfirmed')->default(0);
-            $table->unsignedBigInteger('confirmedBy');
+            $table->unsignedBigInteger('confirmedBy')->nullable();
             $table->timestamps();
 
             $table->foreign('confirmedBy')->references('employeeId')->on('employees');
