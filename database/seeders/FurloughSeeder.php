@@ -22,7 +22,7 @@ class FurloughSeeder extends Seeder
                 'employeeId' => 2, 
                 'startAt' => now(), 
                 'endAt' => now(), 
-                'isConfirmedBy' => true, 
+                'isConfirmed' => true, 
                 'confirmedBy' => 1, 
                 'lastFurloughAt' => now(), 
                 'created_at' => now(),
