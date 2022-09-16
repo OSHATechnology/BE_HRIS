@@ -13,6 +13,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\FurloughController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\TeamMemberController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,5 +47,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('attendance_status', AttendanceStatusController::class);
     Route::resource('attendance', AttendanceController::class);
     Route::resource('team', TeamController::class);
+    Route::resource('team_member', TeamMemberController::class);
     Route::apiResource('partners', PartnerController::class)->except(['create', 'edit']);
 });
