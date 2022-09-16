@@ -17,17 +17,16 @@ class FurloughSeeder extends Seeder
     {
         $furlough = [
             [
-                'furloughId' => 1, 
-                'furTypeId' => 1, 
-                'employeeId' => 2, 
-                'startAt' => now(), 
-                'endAt' => now(), 
-                'isConfirmedBy' => true, 
-                'confirmedBy' => 1, 
-                'lastFurloughAt' => now(), 
+                'furloughId' => 1,
+                'furTypeId' => 1,
+                'employeeId' => 2,
+                'startAt' => now(),
+                'endAt' => now(),
+                'isConfirmed' => true,
+                'confirmedBy' => 1,
                 'created_at' => now(),
                 'updated_at' => now()
-                
+
             ],
         ];
 
