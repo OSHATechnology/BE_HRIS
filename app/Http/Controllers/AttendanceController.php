@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\AttendanceResource;
+use App\Http\Resources\FurloughResource;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 
@@ -24,7 +26,7 @@ class AttendanceController extends BaseController
     public function index()
     {
         try {
-            $attendance = Attendance::all();
+            $attendance = AttendanceResource::collection(Attendance::all());
             return $this->sendResponse($attendance,  "Attendance retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error retrieving attendance", $th->getMessage());
@@ -50,7 +52,7 @@ class AttendanceController extends BaseController
             $attendance->typeInOut = $request->typeInOut;
             $attendance->timeAttend = $request->timeAttend;
             $attendance->save();
-            return $this->sendResponse($attendance,  "Attendance craeted successfully");
+            return $this->sendResponse(new AttendanceResource($attendance),  "Attendance craeted successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error creating attendance", $th->getMessage());
         }
@@ -64,27 +66,11 @@ class AttendanceController extends BaseController
      */
     public function show($id)
     {
-        try {
-            $attendance = Attendance::FindOrFail($id);
+        try {   
+            $attendance = new AttendanceResource(Attendance::findOrFail($id));
             return $this->sendResponse($attendance,  "Attendance retrivied successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("Error retrieving attendance", "Data Not Found");
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        try {
-            $attendance = Attendance::FindOrFail($id);
-            return $this->sendResponse($attendance,  "Attendance retrivied successfully");
-        } catch (\Throwable $th) {
-            return $this->sendError("Error attendance retrieving", "Data Not Found");
+            return $this->sendError("Error retrieving attendance", $th->getMessage());
         }
     }
     

@@ -45,7 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('notification', NotificationController::class);
     Route::resource('status_hire', StatusHireController::class);
     Route::resource('attendance_status', AttendanceStatusController::class);
-    Route::resource('attendance', AttendanceController::class);
+    Route::apiResource('attendance', AttendanceController::class);
     Route::resource('team', TeamController::class);
     Route::resource('team_member', TeamMemberController::class);
     Route::apiResource('partners', PartnerController::class)->except(['create', 'edit']);
