@@ -15,10 +15,10 @@ class Notification extends Model
 
     public function employee()
     {
-        return $this->hasMany(Employee::class, 'empId', 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'empId');
     }
-    public function senderBy()
+    public function senderByEmp()
     {
-        return $this->hasMany(Employee::class, 'senderBy', 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'senderBy');
     }
 }

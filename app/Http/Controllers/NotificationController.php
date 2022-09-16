@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class NotificationController extends BaseController
     public function index()
     {
         try {
-            $notifications = Notification::all();
+            $notifications = NotificationResource::collection(Notification::all());
             return $this->sendResponse($notifications, "notification retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error notification retrieving", $th->getMessage());
@@ -51,7 +52,7 @@ class NotificationController extends BaseController
             $notification->senderBy = $request->senderBy;
             $notification->scheduleAt = $request->scheduleAt;
             $notification->save();
-            return $this->sendResponse($notification, "notification created successfully");
+            return $this->sendResponse(new NotificationResource($notification), "notification created successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error creating notification", $th->getMessage());
         }
@@ -67,24 +68,8 @@ class NotificationController extends BaseController
     public function show($id)
     {
         try {
-            $notification = Notification::findOrFail($id);
+            $notification = new NotificationResource(Notification::findOrFail($id));
             return $this->sendResponse($notification, "notification retrieved successfully");
-        } catch (\Throwable $th) {
-            return $this->sendError('Error retrieving notification', 'Data Not Found');
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Notification  $notification
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        try {
-            $notification = Notification::findOrFail($id);
-            return $this->sendResponse($notification, "notification retrieving successfully");
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving notification', 'Data Not Found');
         }
