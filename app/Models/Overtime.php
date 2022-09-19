@@ -15,10 +15,10 @@ class Overtime extends Model
 
     public function employee()
     {
-        return $this->hasMany(Employee::class, 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'employeeId');
     }
-    public function assignedBy()
+    public function assignedByEmp()
     {
-        return $this->hasMany(Employee::class, 'employeeId','assignedBy');
+        return $this->hasOne(Employee::class, 'employeeId','assignedBy');
     }
 }

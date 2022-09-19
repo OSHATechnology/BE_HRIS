@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\OvertimeResource;
 use App\Models\Overtime;
 use Illuminate\Http\Request;
 
-class OvertimeController extends Controller
+class OvertimeController extends BaseController
 {
+    const VALIDATION_RULES = [
+        'employeeId' => 'required|integer', 
+        'startAt' => 'required|date', 
+        'endAt' => 'date', 
+        'assignedBy' => 'required|integer'
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +23,12 @@ class OvertimeController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        try {
+            $overtime = OvertimeResource::collection(Overtime::all());
+            return $this->sendResponse($overtime, 'Overtime retrieved successfully');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error retrieving overtime', $th->getMessage());
+        }
     }
 
     /**
@@ -35,7 +39,17 @@ class OvertimeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $overtime = new Overtime;
+            $overtime->employeeId = $request->employeeId;
+            $overtime->startAt = $request->startAt;
+            $overtime->endAt = $request->endAt;
+            $overtime->assignedBy = $request->assignedBy;
+            $overtime->save();
+            return $this->sendResponse(new OvertimeResource($overtime), 'Overtime created successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error creating overtime', $th->getMessage());
+        }
     }
 
     /**
@@ -44,20 +58,14 @@ class OvertimeController extends Controller
      * @param  \App\Models\Overtime  $overtime
      * @return \Illuminate\Http\Response
      */
-    public function show(Overtime $overtime)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Overtime  $overtime
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Overtime $overtime)
-    {
-        //
+        try {
+            $overtime = Overtime::findOrFail($id);
+            return $this->sendResponse(new OvertimeResource($overtime), 'Overtime retrieved successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error retrieving overtime', 'Data Not Found');
+        }
     }
 
     /**
@@ -67,9 +75,19 @@ class OvertimeController extends Controller
      * @param  \App\Models\Overtime  $overtime
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Overtime $overtime)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $overtime = Overtime::findOrFail($id);
+            $overtime->employeeId = $request->employeeId;
+            $overtime->startAt = $request->startAt;
+            $overtime->endAt = $request->endAt;
+            $overtime->assignedBy = $request->assignedBy;
+            $overtime->save();
+            return $this->sendResponse($overtime, 'Overtime updated successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error updating overtime', 'Data Not Found');
+        }
     }
 
     /**
@@ -78,8 +96,14 @@ class OvertimeController extends Controller
      * @param  \App\Models\Overtime  $overtime
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Overtime $overtime)
+    public function destroy($id)
     {
-        //
+        try {
+            $overtime = Overtime::findOrFail($id);
+            $overtime->delete();
+            return $this->sendResponse($overtime, 'Overtime deleted successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error deleting overtime', 'Data Not Found');
+        }
     }
 }
