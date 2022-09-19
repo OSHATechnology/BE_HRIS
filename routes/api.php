@@ -45,7 +45,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('role-permissions', RolePermissionController::class)->only(['index', 'store']);
     Route::apiResource('permissions', PermissionController::class);
     Route::apiResource('furlough', FurloughController::class);
-    Route::get('employee/search', [EmployeeController::class, 'search']);
     Route::post('employee/import', [EmployeeController::class, 'import']);
     Route::apiResource('employee', EmployeeController::class);
     Route::apiResource('notification', NotificationController::class);

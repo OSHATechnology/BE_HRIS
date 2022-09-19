@@ -39,6 +39,9 @@ class EmployeeController extends BaseController
     public function index()
     {
         try {
+            if(request()->has('search')){
+                return $this->search(request());
+            }
             $employees = EmployeeResource::collection(Employee::paginate(self::numPaginate));
             return $this->sendResponse($employees, "employee retrieved successfully");
         } catch (\Throwable $th) {
