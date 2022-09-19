@@ -29,6 +29,8 @@ class EmployeeController extends BaseController
         'statusHireId' => 'required|boolean'
     ];
 
+    const numPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +39,7 @@ class EmployeeController extends BaseController
     public function index()
     {
         try {
-            $employees = EmployeeResource::collection(Employee::all());
+            $employees = EmployeeResource::collection(Employee::paginate(self::numPaginate));
             return $this->sendResponse($employees, "employee retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee retrieving successfully", $th->getMessage());

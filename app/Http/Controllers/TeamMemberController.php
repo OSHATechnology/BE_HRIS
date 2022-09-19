@@ -17,6 +17,8 @@ class TeamMemberController extends BaseController
         'joinedAt' => 'date'
     ];
 
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +27,7 @@ class TeamMemberController extends BaseController
     public function index()
     {
         try {
-            $member = TeamMemberResource::collection(TeamMember::all());
+            $member = TeamMemberResource::collection(TeamMember::paginate(self::NumPaginate));
             return $this->sendResponse($member, 'team member retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team member', $th->getMessage());

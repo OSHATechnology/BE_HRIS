@@ -17,6 +17,9 @@ class StatusHireController extends BaseController
         'assignedBy' => 'required',
         'joinedAt' => 'required'
     ];
+
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +28,7 @@ class StatusHireController extends BaseController
     public function index()
     {
         try {
-            $statusHires = StatusHire::all();
+            $statusHires = StatusHire::paginate(self::NumPaginate);
             return $this->sendResponse($statusHires, "status hire retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error status hire retrieving", $th->getMessage());

@@ -21,6 +21,8 @@ class PartnerController extends BaseController
         'joinedAt' => 'required'
     ];
 
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +33,7 @@ class PartnerController extends BaseController
         try {
             $this->authorize('viewAny', Partner::class);
 
-            $partners = PartnerResource::collection(Partner::all());
+            $partners = PartnerResource::collection(Partner::paginate(self::NumPaginate));
             return $this->sendResponse($partners, 'Partners retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError($th->getMessage(), []);

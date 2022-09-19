@@ -12,6 +12,8 @@ class AttendanceStatusController extends BaseController
         'status' => 'required|string|max:255',
     ];
 
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +22,7 @@ class AttendanceStatusController extends BaseController
     public function index()
     {
         try {
-            $attendanceStatus = AttendanceStatus::all();
+            $attendanceStatus = AttendanceStatus::paginate(self::NumPaginate);
             return $this->sendResponse($attendanceStatus, "attendace status retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error retrieving retrieved",  $th->getMessage());

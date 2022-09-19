@@ -15,6 +15,8 @@ class TeamController extends BaseController
         'createdBy' => 'required|integer',
     ];
 
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +25,7 @@ class TeamController extends BaseController
     public function index()
     {
         try {
-            $team = TeamResource::collection(Team::all());
+            $team = TeamResource::collection(Team::paginate(self::NumPaginate));
             return $this->sendResponse($team, 'team retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team ', $th->getMessage());

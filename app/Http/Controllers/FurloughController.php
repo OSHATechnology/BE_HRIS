@@ -22,6 +22,8 @@ class FurloughController extends BaseController
         'startAt' => 'required',
     ];
 
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -33,7 +35,7 @@ class FurloughController extends BaseController
             //gate
             $this->authorize('viewAny', Furlough::class);
 
-            $furloughs = FurloughResource::collection(Furlough::all());
+            $furloughs = FurloughResource::collection(Furlough::paginate(self::NumPaginate));
             return $this->sendResponse($furloughs, 'Furloughs retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving furloughs', $th->getMessage());

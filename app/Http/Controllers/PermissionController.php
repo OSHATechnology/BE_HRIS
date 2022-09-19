@@ -16,6 +16,8 @@ class PermissionController extends BaseController
         'slug' => 'required|string|max:255',
     ];
 
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +29,7 @@ class PermissionController extends BaseController
             //gate
             $this->authorize('viewAny', Permission::class);
 
-            $permissions = Permission::all();
+            $permissions = Permission::paginate(self::NumPaginate);
             return $this->sendResponse($permissions, 'Permissions retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving permissions', $th->getMessage());

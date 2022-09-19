@@ -15,10 +15,13 @@ class RolePermissionController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
+
+    const NumPaginate = 5;
+
     public function index()
     {
         try {
-            $rolePermissions = RolePermission::all();
+            $rolePermissions = RolePermission::paginate(self::NumPaginate);
             return $this->sendResponse($rolePermissions, 'RolePermissions retrieved successfully.');
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), []);

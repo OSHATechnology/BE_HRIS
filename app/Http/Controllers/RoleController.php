@@ -19,6 +19,8 @@ class RoleController extends BaseController
         'description' => 'required|string|max:255',
     ];
 
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +32,7 @@ class RoleController extends BaseController
             //gate
             $this->authorize('viewAny', Role::class);
 
-            $roles = Role::all();
+            $roles = Role::paginate(self::NumPaginate);
             return $this->sendResponse($roles, 'Roles retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving roles', $th->getMessage());

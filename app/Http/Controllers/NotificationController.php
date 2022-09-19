@@ -18,6 +18,8 @@ class NotificationController extends BaseController
         'scheduleAt' => 'required|date'
     ];
 
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +28,7 @@ class NotificationController extends BaseController
     public function index()
     {
         try {
-            $notifications = NotificationResource::collection(Notification::all());
+            $notifications = NotificationResource::collection(Notification::paginate(self::NumPaginate));
             return $this->sendResponse($notifications, "notification retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error notification retrieving", $th->getMessage());

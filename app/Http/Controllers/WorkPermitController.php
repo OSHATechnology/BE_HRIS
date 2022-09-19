@@ -17,6 +17,8 @@ class WorkPermitController extends BaseController
         'confirmedBy' => 'required|integer'
     ];
 
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +27,7 @@ class WorkPermitController extends BaseController
     public function index()
     {
         try {
-            $workPermit = WorkPermitResource::collection(WorkPermit::all());
+            $workPermit = WorkPermitResource::collection(WorkPermit::paginate(self::NumPaginate));
             return $this->sendResponse($workPermit, 'Work Permit retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving work permit', $th->getMessage());

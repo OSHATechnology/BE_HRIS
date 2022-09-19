@@ -18,6 +18,9 @@ class AttendanceController extends BaseController
         'typeInOut' => 'required|string|max:255', 
         'timeAttend' => 'date'
     ];
+
+    const NumPaginate = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +29,7 @@ class AttendanceController extends BaseController
     public function index()
     {
         try {
-            $attendance = AttendanceResource::collection(Attendance::all());
+            $attendance = AttendanceResource::collection(Attendance::paginate(self::NumPaginate));
             return $this->sendResponse($attendance,  "Attendance retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error retrieving attendance", $th->getMessage());
