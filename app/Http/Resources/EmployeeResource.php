@@ -16,15 +16,27 @@ class EmployeeResource extends JsonResource
     {
         return [
             'employeeId' => $this->employeeId,
-            'firstName' => $this->firstName,
-            'lastName' => $this->lastName,
-            'email' => $this->email,
+            'name' => $this->firstName . " " . $this->lastName,
             'phone' => $this->phone,
+            'email' => $this->email,
+            'photo' => $this->photo,
+            'gender' => $this->gender,
+            'birthDate' => $this->birthDate,
             'address' => $this->address,
             'city' => $this->city,
-            'state' => $this->state,
-            'zip' => $this->zip,
-            'country' => $this->country,
+            'nation' => $this->nation,
+            'role' => ($this->role) ? [
+                'id' => $this->role->roleId,
+                'role' => $this->role->nameRole,
+            ] : '',
+            'isActive' => ($this->isActive == 1) ? "true" : "false",
+            'emailVerifiedAt' => $this->emailVerifiedAt,
+            'joinedAt' => $this->joinedAt,
+            'resignedAt' => $this->resignedAt,
+            'statusHire' => ($this->statusHire) ? [
+                'id' => $this->statusHire->StatusHireId,
+                'status' => $this->statusHire->name,
+            ] : '',
         ];
     }
 }

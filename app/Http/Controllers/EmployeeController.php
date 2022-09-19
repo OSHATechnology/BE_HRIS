@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,7 @@ class EmployeeController extends BaseController
     public function index()
     {
         try {
-            $employees = Employee::all();
+            $employees = EmployeeResource::collection(Employee::all());
             return $this->sendResponse($employees, "employee retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee retrieving successfully", $th->getMessage());
@@ -78,7 +79,7 @@ class EmployeeController extends BaseController
             $employee->resignedAt = $request->resignedAt;
             $employee->statusHireId = $request->statusHireId;
             $employee->save();
-            return $this->sendResponse($employee, "employee created successfully");
+            return $this->sendResponse(new EmployeeResource($employee), "employee created successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee creating successfully", $th->getMessage());
         }
@@ -93,23 +94,7 @@ class EmployeeController extends BaseController
     public function show($id)
     {
         try {
-            $employee = Employee::findOrFail($id);
-            return $this->sendResponse($employee, "employee retrieved successfully");
-        } catch (\Throwable $th) {
-            return $this->sendError("employee retrieving successfully", "Data Not Found");
-        }
-    }
-    
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        try {
-            $employee = Employee::findOrFail($id);
+            $employee = new EmployeeResource(Employee::findOrFail($id));
             return $this->sendResponse($employee, "employee retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee retrieving successfully", "Data Not Found");
