@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\WorkPermitResource;
 use App\Models\WorkPermit;
 use Illuminate\Http\Request;
 
-class WorkPermitController extends Controller
+class WorkPermitController extends BaseController
 {
+    const VALIDATION_RULES = [
+        'employeeId' => 'required|integer', 
+        'startAt' => 'required|date', 
+        'endAt' => 'required|date', 
+        'isConfirmed' => 'required|integer',
+        'confirmedBy' => 'required|integer'
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +24,12 @@ class WorkPermitController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        try {
+            $workPermit = WorkPermitResource::collection(WorkPermit::all());
+            return $this->sendResponse($workPermit, 'Work Permit retrieved successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error retrieving work permit', $th->getMessage());
+        }
     }
 
     /**
@@ -35,7 +40,20 @@ class WorkPermitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $request->validate(self::VALIDATION_RULES);
+    
+            $workPermit = new WorkPermit;
+            $workPermit->employeeId = $request->employeeId;
+            $workPermit->startAt = $request->startAt;
+            $workPermit->endAt = $request->endAt;
+            $workPermit->isConfirmed = $request->isConfirmed;
+            $workPermit->confirmedBy = $request->confirmedBy;
+            $workPermit->save();
+            return $this->sendResponse(new WorkPermitResource($workPermit), 'Work Permit created successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error creating work permit.', $th->getMessage());
+        }
     }
 
     /**
@@ -44,20 +62,14 @@ class WorkPermitController extends Controller
      * @param  \App\Models\WorkPermit  $workPermit
      * @return \Illuminate\Http\Response
      */
-    public function show(WorkPermit $workPermit)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\WorkPermit  $workPermit
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(WorkPermit $workPermit)
-    {
-        //
+        try {
+            $workPermit = new WorkPermitResource(WorkPermit::findOrFail($id));
+            return $this->sendResponse($workPermit, 'Work permit retrivied successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error retriving Work permit.', 'Data Not Found');
+        }
     }
 
     /**
@@ -67,19 +79,38 @@ class WorkPermitController extends Controller
      * @param  \App\Models\WorkPermit  $workPermit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, WorkPermit $workPermit)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $request->validate(self::VALIDATION_RULES);
+    
+            $workPermit = WorkPermit::findOrFail($id);
+            $workPermit->employeeId = $request->employeeId;
+            $workPermit->startAt = $request->startAt;
+            $workPermit->endAt = $request->endAt;
+            $workPermit->isConfirmed = $request->isConfirmed;
+            $workPermit->confirmedBy = $request->confirmedBy;
+            $workPermit->save();
+            return $this->sendResponse($workPermit, 'Work Permit updated successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error updating work permit.', 'Data Not Found');
+        }
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\WorkPermit  $workPermit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WorkPermit $workPermit)
+    public function destroy($id)
     {
-        //
+        try {
+            $workPermit = WorkPermit::findOrFail($id);
+            $workPermit->delete();
+            return $this->sendResponse($workPermit, 'Work Permit deleted successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error deleting work permit.', 'Data Not Found');
+        }
     }
 }

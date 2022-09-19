@@ -40,6 +40,8 @@ class OvertimeController extends BaseController
     public function store(Request $request)
     {
         try {
+            $request->validate(self::VALIDATION_RULES);
+            
             $overtime = new Overtime;
             $overtime->employeeId = $request->employeeId;
             $overtime->startAt = $request->startAt;
@@ -78,6 +80,8 @@ class OvertimeController extends BaseController
     public function update(Request $request, $id)
     {
         try {
+            $request->validate(self::VALIDATION_RULES);
+            
             $overtime = Overtime::findOrFail($id);
             $overtime->employeeId = $request->employeeId;
             $overtime->startAt = $request->startAt;

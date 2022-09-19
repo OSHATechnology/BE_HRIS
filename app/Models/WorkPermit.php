@@ -15,10 +15,10 @@ class WorkPermit extends Model
 
     public function employee()
     {
-        return $this->hasMany(Employee::class, 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'employeeId');
     }
-    public function confirmedBy()
+    public function confirmedByEmp()
     {
-        return $this->hasMany(Employee::class, 'confirmedBy', 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'confirmedBy');
     }
 }

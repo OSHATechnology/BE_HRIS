@@ -15,6 +15,8 @@ use App\Http\Controllers\FurloughController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\TeamMemberController;
+use App\Http\Controllers\WorkPermitController;
+use App\Models\WorkPermit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,7 +50,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('attendance_status', AttendanceStatusController::class);
     Route::apiResource('attendance', AttendanceController::class);
     Route::apiResource('overtime', OvertimeController::class);
-    Route::resource('team', TeamController::class);
-    Route::resource('team_member', TeamMemberController::class);
+    Route::apiResource('work_permit', WorkPermitController::class);
+    Route::apiResource('team', TeamController::class);
+    Route::apiResource('team_member', TeamMemberController::class);
     Route::apiResource('partners', PartnerController::class)->except(['create', 'edit']);
 });
