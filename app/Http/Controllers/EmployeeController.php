@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\EmployeeResource;
+use App\Imports\EmployeesImport;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends BaseController
 {
@@ -58,14 +60,14 @@ class EmployeeController extends BaseController
             $employee->phone = $request->phone;
             $employee->email = $request->email;
             $employee->password = bcrypt($request->password);
-            if($request->hasFile('photo')){
-                $imageName = time().'.'.$request->photo->extension();
+            if ($request->hasFile('photo')) {
+                $imageName = time() . '.' . $request->photo->extension();
                 $path = $request->file('photo')->storeAs('public/employee_image', $imageName);
                 $employee->photo = 'storage/public/employee_image/' . $imageName;
-            }else{
+            } else {
                 $employee->photo = $request->photo;
             }
-                
+
             $employee->gender = $request->gender;
             $employee->birthDate = $request->birthDate;
             $employee->address = $request->address;
@@ -94,13 +96,13 @@ class EmployeeController extends BaseController
     public function show($id)
     {
         try {
-            $employee = new EmployeeResource(Employee::findOrFail($id));
+            $employee = Employee::findOrFail($id);
             return $this->sendResponse($employee, "employee retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee retrieving successfully", "Data Not Found");
         }
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -131,20 +133,20 @@ class EmployeeController extends BaseController
             $employee->lastName = $request->lastName;
             $employee->phone = $request->phone;
             $employee->password = bcrypt($request->password);
-            
+
             $employee->firstName = $request->firstName;
             $employee->lastName = $request->lastName;
             $employee->phone = $request->phone;
             $employee->email = $request->email;
-            
-            if($request->hasFile("photo")) {
-                $imageName = time().'.'.$request->photo->extension();
+
+            if ($request->hasFile("photo")) {
+                $imageName = time() . '.' . $request->photo->extension();
                 $path = $request->file('photo')->storeAs('public/employee_image', $imageName);
                 $employee->photo = 'storage/public/employee_image/' . $imageName;
             } else {
                 $employee->photo = $employee->photo;
             }
-    
+
             $employee->gender = $request->gender;
             $employee->birthDate = $request->birthDate;
             $employee->address = $request->address;
@@ -178,6 +180,28 @@ class EmployeeController extends BaseController
             return $this->sendResponse($employee, "employee deleted successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee deleting successfully", "Data Not Found");
+        }
+    }
+
+    /*
+    *   Import data from excel
+    */
+    public function import(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|mimes:xls,xlsx'
+            ]);
+            $file = $request->file('file');
+            $importFile = new EmployeesImport();
+            $importFile->import($file);
+            if (!$importFile) {
+                return $this->sendError("Error employee importing", "Data Not Found");
+            }
+
+            return $this->sendResponse($file, "employee imported successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("importing employee failed", $th->getMessage());
         }
     }
 }
