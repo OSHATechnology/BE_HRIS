@@ -17,4 +17,13 @@ class StatusHire extends Model
     ];
 
     protected $primaryKey = 'StatusHireId';
+
+    public static function getIdsByName($name)
+    {
+        $statusHire = self::where('name', $name)->first();
+        if ($statusHire) {
+            return $statusHire->StatusHireId;
+        }
+        return 1;
+    }
 }

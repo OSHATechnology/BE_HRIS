@@ -39,11 +39,12 @@ Route::post('/auth/login', [AuthenticatedController::class, 'store']);
 Route::post('/auth/logout', [AuthenticatedController::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::resource('roles', RoleController::class)->except(['create', 'edit']);
+    Route::apiResource('roles', RoleController::class);
     Route::post('roles-permissions/detach', [RolePermissionController::class, 'detachPermissionFromRole']);
-    Route::resource('role-permissions', RolePermissionController::class)->only(['index', 'store']);
-    Route::resource('permissions', PermissionController::class)->except(['create', 'edit']);
-    Route::apiResource('furlough', FurloughController::class)->except(['create', 'edit']);
+    Route::apiResource('role-permissions', RolePermissionController::class)->only(['index', 'store']);
+    Route::apiResource('permissions', PermissionController::class);
+    Route::apiResource('furlough', FurloughController::class);
+    Route::post('employee/import', [EmployeeController::class, 'import']);
     Route::apiResource('employee', EmployeeController::class);
     Route::apiResource('notification', NotificationController::class);
     Route::apiResource('status_hire', StatusHireController::class);
