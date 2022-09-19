@@ -41,7 +41,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('role-permissions', RolePermissionController::class)->only(['index', 'store']);
     Route::resource('permissions', PermissionController::class)->except(['create', 'edit']);
     Route::apiResource('furlough', FurloughController::class)->except(['create', 'edit']);
-    Route::resource('employee', EmployeeController::class);
+    Route::post('employee/import', [EmployeeController::class, 'import']);
+    Route::apiResource('employee', EmployeeController::class);
     Route::resource('notification', NotificationController::class);
     Route::resource('status_hire', StatusHireController::class);
     Route::resource('attendance_status', AttendanceStatusController::class);
