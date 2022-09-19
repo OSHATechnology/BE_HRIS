@@ -203,7 +203,22 @@ class EmployeeController extends BaseController
 
             return $this->sendResponse($file, "employee imported successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("importing employee failed", $th->getMessage());
+            return $this->sendError("Error importing employee failed", $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if($request->filled('search')){
+                $users = EmployeeResource::collection(Employee::search($request->search)->paginate(self::numPaginate));
+            }else{
+                $users = EmployeeResource::collection(Employee::paginate(self::numPaginate));
+            }
+            // dd($users);
+            return $this->sendResponse($users, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
         }
     }
 }

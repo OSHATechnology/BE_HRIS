@@ -16,6 +16,7 @@ use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\WorkPermitController;
+use App\Models\Employee;
 use App\Models\WorkPermit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('role-permissions', RolePermissionController::class)->only(['index', 'store']);
     Route::apiResource('permissions', PermissionController::class);
     Route::apiResource('furlough', FurloughController::class);
+    Route::get('employee/search', [EmployeeController::class, 'search']);
     Route::post('employee/import', [EmployeeController::class, 'import']);
     Route::apiResource('employee', EmployeeController::class);
     Route::apiResource('notification', NotificationController::class);

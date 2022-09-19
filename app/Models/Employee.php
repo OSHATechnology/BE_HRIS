@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Scout\Searchable;
 
-class Employee extends Authenticatable
+class Employee extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Searchable;
 
     protected $fillable = [
         'employeeId',
@@ -70,5 +72,14 @@ class Employee extends Authenticatable
     public function hasRoleName($roleName)
     {
         return $this->role->nameRole === $roleName;
+    }
+
+    public function toSearchableArray()
+    {
+        // dump('toSearchable');
+        return [
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName
+        ];
     }
 }
