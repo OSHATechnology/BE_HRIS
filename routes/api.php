@@ -15,6 +15,7 @@ use App\Http\Controllers\FurloughController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\TeamMemberController;
+use App\Http\Controllers\TodayAttendanceController;
 use App\Http\Controllers\WorkPermitController;
 use App\Models\Employee;
 use App\Models\WorkPermit;
@@ -50,6 +51,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('notification', NotificationController::class);
     Route::apiResource('status_hire', StatusHireController::class);
     Route::apiResource('attendance_status', AttendanceStatusController::class);
+    Route::get('attendance/today', [AttendanceController::class, 'today']);
     Route::apiResource('attendance', AttendanceController::class);
     Route::apiResource('overtime', OvertimeController::class);
     Route::apiResource('work_permit', WorkPermitController::class);

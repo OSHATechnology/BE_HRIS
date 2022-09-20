@@ -132,6 +132,17 @@ class AttendanceController extends BaseController
         }
     }
 
+    public function today()
+    {
+        try {
+            $now = date('Y-m-d');
+            $attendance = (new Collection(AttendanceResource::collection(Attendance::where('submitedAt', 'like', '%'. $now.'%')->get())))->paginate(self::NumPaginate);
+            return $this->sendResponse($attendance,  "Attendance retrievied successfully");
+        } catch (\Throwable $th) {
+            return $this->senderror("Error retrieving attendance", "Data Not Found");
+        }
+    }
+
     public function search(Request $request)
     {
         try {
