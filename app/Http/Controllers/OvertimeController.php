@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\OvertimeResource;
 use App\Models\Overtime;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class OvertimeController extends BaseController
@@ -16,7 +17,7 @@ class OvertimeController extends BaseController
         'assignedBy' => 'required|integer'
     ];
 
-    const NumPaginate = 5;
+    const NumPaginate = 1;
 
     /**
      * Display a listing of the resource.
@@ -26,7 +27,7 @@ class OvertimeController extends BaseController
     public function index()
     {
         try {
-            $overtime = OvertimeResource::collection(Overtime::paginate(self::NumPaginate));
+            $overtime = (new Collection(OvertimeResource::collection(Overtime::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($overtime, 'Overtime retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving overtime', $th->getMessage());

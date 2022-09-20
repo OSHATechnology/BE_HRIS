@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Models\Permission;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class PermissionController extends BaseController
@@ -29,7 +30,7 @@ class PermissionController extends BaseController
             //gate
             $this->authorize('viewAny', Permission::class);
 
-            $permissions = Permission::paginate(self::NumPaginate);
+            $permissions = (new Collection(Permission::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($permissions, 'Permissions retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving permissions', $th->getMessage());

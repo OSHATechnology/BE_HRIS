@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Models\StatusHire;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class StatusHireController extends BaseController
@@ -28,7 +29,7 @@ class StatusHireController extends BaseController
     public function index()
     {
         try {
-            $statusHires = StatusHire::paginate(self::NumPaginate);
+            $statusHires = (new Collection(StatusHire::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($statusHires, "status hire retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error status hire retrieving", $th->getMessage());

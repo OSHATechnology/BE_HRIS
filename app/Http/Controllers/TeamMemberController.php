@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\TeamMemberResource;
 use App\Models\Team;
 use App\Models\TeamMember;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class TeamMemberController extends BaseController
@@ -27,7 +28,7 @@ class TeamMemberController extends BaseController
     public function index()
     {
         try {
-            $member = TeamMemberResource::collection(TeamMember::paginate(self::NumPaginate));
+            $member = (new Collection(TeamMemberResource::collection(TeamMember::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($member, 'team member retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team member', $th->getMessage());

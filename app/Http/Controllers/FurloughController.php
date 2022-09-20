@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\FurloughResource;
 use App\Models\Furlough;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class FurloughController extends BaseController
@@ -22,7 +23,7 @@ class FurloughController extends BaseController
         'startAt' => 'required',
     ];
 
-    const NumPaginate = 5;
+    const NumPaginate = 1;
 
     /**
      * Display a listing of the resource.
@@ -35,7 +36,7 @@ class FurloughController extends BaseController
             //gate
             $this->authorize('viewAny', Furlough::class);
 
-            $furloughs = FurloughResource::collection(Furlough::paginate(self::NumPaginate));
+            $furloughs = (new Collection(FurloughResource::collection(Furlough::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($furloughs, 'Furloughs retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving furloughs', $th->getMessage());

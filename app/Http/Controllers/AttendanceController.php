@@ -128,7 +128,6 @@ class AttendanceController extends BaseController
             $attendance->delete();
             return $this->sendResponse($attendance,  "Attendance deleted successfully");
         } catch (\Throwable $th) {
-            //throw $th;
             return $this->senderror("Error deleting attendance", "Data Not Found");
         }
     }
@@ -182,7 +181,6 @@ class AttendanceController extends BaseController
         try {
             $from = $request->from_m_y . '-01 00:00:01';
             $to = $request->to_m_y . '-31 23:59:59';
-            // $query = ;
             $attendance = (new Collection(AttendanceResource::collection(Attendance::whereBetween('submitedAt', [$from, $to])->orderBy('submitedAt')->get())))->paginate(self::NumPaginate);
             return $this->sendResponse($attendance,  "Attendance filtered successfully");
         } catch (\Throwable $th) {

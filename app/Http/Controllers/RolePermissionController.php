@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\RolePermission;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class RolePermissionController extends BaseController
@@ -21,7 +22,7 @@ class RolePermissionController extends BaseController
     public function index()
     {
         try {
-            $rolePermissions = RolePermission::paginate(self::NumPaginate);
+            $rolePermissions = (new Collection(RolePermission::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($rolePermissions, 'RolePermissions retrieved successfully.');
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), []);

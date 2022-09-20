@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\WorkPermitResource;
 use App\Models\WorkPermit;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class WorkPermitController extends BaseController
@@ -27,7 +28,7 @@ class WorkPermitController extends BaseController
     public function index()
     {
         try {
-            $workPermit = WorkPermitResource::collection(WorkPermit::paginate(self::NumPaginate));
+            $workPermit = (new Collection(WorkPermitResource::collection(WorkPermit::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($workPermit, 'Work Permit retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving work permit', $th->getMessage());

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Models\Role;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class RoleController extends BaseController
@@ -32,7 +33,7 @@ class RoleController extends BaseController
             //gate
             $this->authorize('viewAny', Role::class);
 
-            $roles = Role::paginate(self::NumPaginate);
+            $roles = (new Collection(Role::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($roles, 'Roles retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving roles', $th->getMessage());

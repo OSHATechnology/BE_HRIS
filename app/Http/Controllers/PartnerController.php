@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\PartnerResource;
 use App\Models\Partner;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,7 +34,7 @@ class PartnerController extends BaseController
         try {
             $this->authorize('viewAny', Partner::class);
 
-            $partners = PartnerResource::collection(Partner::paginate(self::NumPaginate));
+            $partners = (new Collection(PartnerResource::collection(Partner::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($partners, 'Partners retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError($th->getMessage(), []);
