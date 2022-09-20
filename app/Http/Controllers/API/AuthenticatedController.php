@@ -20,18 +20,22 @@ class AuthenticatedController extends BaseController
      */
     public function store(Request $request)
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        try {
+            if (!Auth::attempt($request->only('email', 'password'), $request->remember_me)) {
+                return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            }
+
+            $user = Employee::where('email', $request->email)->firstOrFail();
+            $token = $user->createToken('token')->plainTextToken;
+
+            $response = [
+                'token' => $token
+            ];
+
+            return $this->sendResponse($response, 'User login successfully.');
+        } catch (\Throwable $th) {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
-
-        $user = Employee::where('email', $request->email)->firstOrFail();
-        $token = $user->createToken('token')->plainTextToken;
-
-        $response = [
-            'token' => $token
-        ];
-
-        return $this->sendResponse($response, 'User login successfully.');
     }
 
     /**
