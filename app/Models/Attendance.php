@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Attendance extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = ['attendId', 'employeeId', 'attendanceStatusId', 'submitedAt', 'submitedById', 'typeInOut', 'timeAttend', 'created_at', 'updated_at'];
 
@@ -24,5 +25,12 @@ class Attendance extends Model
     public function attendanceStatus()
     {
         return $this->hasOne(AttendanceStatus::class, 'attendanceStatusId','attendanceStatusId');
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'firstName' => $this->employee->firstname,
+        ];
     }
 }

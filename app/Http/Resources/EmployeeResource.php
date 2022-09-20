@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class EmployeeResource extends JsonResource

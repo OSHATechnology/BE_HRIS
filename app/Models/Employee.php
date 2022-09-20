@@ -76,7 +76,6 @@ class Employee extends Model
 
     public function toSearchableArray()
     {
-        // dump('toSearchable');
         return [
             'firstName' => $this->firstName,
             'lastName' => $this->lastName

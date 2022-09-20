@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\EmployeeResource;
 use App\Imports\EmployeesImport;
 use App\Models\Employee;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -29,7 +30,7 @@ class EmployeeController extends BaseController
         'statusHireId' => 'required|boolean'
     ];
 
-    const numPaginate = 5;
+    const numPaginate = 1;
 
     /**
      * Display a listing of the resource.
@@ -42,7 +43,8 @@ class EmployeeController extends BaseController
             if(request()->has('search')){
                 return $this->search(request());
             }
-            $employees = EmployeeResource::collection(Employee::paginate(self::numPaginate));
+            $employees = (new Collection(EmployeeResource::collection(Employee::all())))->paginate(self::numPaginate);
+            // $employees = Employee::paginate(1);
             return $this->sendResponse($employees, "employee retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee retrieving successfully", $th->getMessage());
@@ -212,11 +214,12 @@ class EmployeeController extends BaseController
 
     public function search(Request $request)
     {
+        // dd($request->search);
         try {
             if($request->filled('search')){
-                $users = EmployeeResource::collection(Employee::search($request->search)->paginate(self::numPaginate));
+                $users =   (new Collection(EmployeeResource::collection(Employee::search($request->search)->get())))->paginate(self::numPaginate);
             }else{
-                $users = EmployeeResource::collection(Employee::paginate(self::numPaginate));
+                $users = (new Collection(EmployeeResource::collection(Employee::all())))->paginate(self::numPaginate);
             }
             // dd($users);
             return $this->sendResponse($users, "employee search successfully");
