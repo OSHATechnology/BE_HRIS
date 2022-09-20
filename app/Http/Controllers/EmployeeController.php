@@ -103,7 +103,7 @@ class EmployeeController extends BaseController
     public function show($id)
     {
         try {
-            $employee = Employee::findOrFail($id);
+            $employee = new EmployeeResource(Employee::findOrFail($id));
             return $this->sendResponse($employee, "employee retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee retrieving successfully", "Data Not Found");
