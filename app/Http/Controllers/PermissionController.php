@@ -30,6 +30,10 @@ class PermissionController extends BaseController
             //gate
             $this->authorize('viewAny', Permission::class);
 
+            if(request()->has('search')){
+                return $this->search(request());
+            }
+
             $permissions = (new Collection(Permission::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($permissions, 'Permissions retrieved successfully.');
         } catch (\Throwable $th) {
@@ -119,6 +123,20 @@ class PermissionController extends BaseController
         } catch (\Throwable $th) {
             //throw $th;
             return $this->sendError('Error deleting permission', $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if($request->filled('search')){
+                $partner =   (new Collection(Permission::search($request->search)->get()))->paginate(self::NumPaginate);
+            }else{
+                $partner = (new Collection(Permission::all()))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($partner, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
         }
     }
 }

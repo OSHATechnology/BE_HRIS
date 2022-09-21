@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Permission extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = ['permissionId', 'namePermission', 'description', 'tag', 'slug', 'created_at', 'updated_at'];
 
@@ -16,5 +17,12 @@ class Permission extends Model
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_permissions', 'permissionId', 'roleId');
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'namePermission' => $this->namePermission,
+        ];
     }
 }
