@@ -33,6 +33,11 @@ class RoleController extends BaseController
             //gate
             $this->authorize('viewAny', Role::class);
 
+            //search
+            if(request()->has('search')){
+                return $this->search(request());
+            }
+
             $roles = (new Collection(Role::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($roles, 'Roles retrieved successfully.');
         } catch (\Throwable $th) {
@@ -129,6 +134,20 @@ class RoleController extends BaseController
         } catch (\Throwable $th) {
             //throw $th;
             return $this->sendError('Error deleting role', $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if($request->filled('search')){
+                $partner =   (new Collection(Role::search($request->search)->get()))->paginate(self::NumPaginate);
+            }else{
+                $partner = (new Collection(Role::all()))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($partner, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
         }
     }
 }
