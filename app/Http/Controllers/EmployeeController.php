@@ -214,14 +214,12 @@ class EmployeeController extends BaseController
 
     public function search(Request $request)
     {
-        // dd($request->search);
         try {
             if($request->filled('search')){
                 $users =   (new Collection(EmployeeResource::collection(Employee::search($request->search)->get())))->paginate(self::numPaginate);
             }else{
                 $users = (new Collection(EmployeeResource::collection(Employee::all())))->paginate(self::numPaginate);
             }
-            // dd($users);
             return $this->sendResponse($users, "employee search successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error search employee failed", $th->getMessage());

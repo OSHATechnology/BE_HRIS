@@ -36,6 +36,10 @@ class FurloughController extends BaseController
             //gate
             $this->authorize('viewAny', Furlough::class);
 
+            if(request()->has('search')){
+                return $this->search(request());
+            }
+
             $furloughs = (new Collection(FurloughResource::collection(Furlough::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($furloughs, 'Furloughs retrieved successfully.');
         } catch (\Throwable $th) {
@@ -143,6 +147,24 @@ class FurloughController extends BaseController
         } catch (\Throwable $th) {
             //throw $th;
             return $this->sendError('Error deleting furlough', $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if($request->filled('search')){
+                $query = Furlough::join('employees', 'furloughs.employeeId', '=', 'employees.employeeId')
+                                    ->where('employees.firstName', 'like', '%'.$request->search.'%')
+                                    ->get();
+                $users =   (new Collection(FurloughResource::collection($query)))->paginate(self::NumPaginate);
+                
+            }else{
+                $users = (new Collection(FurloughResource::collection(Furlough::all())))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($users, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
         }
     }
 }
