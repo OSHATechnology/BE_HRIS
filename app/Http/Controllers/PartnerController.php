@@ -34,6 +34,10 @@ class PartnerController extends BaseController
         try {
             $this->authorize('viewAny', Partner::class);
 
+            if(request()->has('search')){
+                return $this->search(request());
+            }
+
             $partners = (new Collection(PartnerResource::collection(Partner::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($partners, 'Partners retrieved successfully.');
         } catch (\Throwable $th) {
@@ -153,6 +157,20 @@ class PartnerController extends BaseController
         } catch (\Throwable $th) {
             //throw $th;
             return $this->sendError('Error deleting partner.', $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if($request->filled('search')){
+                $partner =   (new Collection(PartnerResource::collection(Partner::search($request->search)->get())))->paginate(self::NumPaginate);
+            }else{
+                $partner = (new Collection(PartnerResource::collection(Partner::all())))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($partner, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
         }
     }
 }
