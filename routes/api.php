@@ -51,6 +51,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('furlough', FurloughController::class);
     Route::apiResource('furlough_type', FurloughTypeController::class);
     Route::post('employee/import', [EmployeeController::class, 'import']);
+    Route::post('employee/update_password/{id}', [EmployeeController::class, 'update_password']);
     Route::apiResource('employee', EmployeeController::class);
     Route::apiResource('notification', NotificationController::class);
     Route::apiResource('status_hire', StatusHireController::class);

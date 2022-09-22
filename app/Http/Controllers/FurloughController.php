@@ -192,9 +192,9 @@ class FurloughController extends BaseController
             $attendance->typeInOut = "-";
             $attendance->timeAttend = $type->created_at->format('Y-m-d h:i:s');
             
-            $employee = Employee::findOrFail($id);
+            $employee = Employee::findOrFail($type->employeeId);
             $notif = new Notification;
-            $notif->empId = $id;
+            $notif->empId = $type->employeeId;
             $notif->name = $employee->firstName . " " . $employee->lastName;
             $start = date('d-m-Y', strtotime($type->startAt));
             $end = date('d-m-Y', strtotime($type->endAt));
@@ -221,7 +221,7 @@ class FurloughController extends BaseController
             $type->confirmedBy = Auth::id();
             $type->message = $request->message;
             
-            $employee = Employee::findOrFail($id);
+            $employee = Employee::findOrFail($type->employeeId);
             $notif = new Notification;
             $notif->empId = $id;
             $notif->name = $employee->firstName . " " . $employee->lastName;

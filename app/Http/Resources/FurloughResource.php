@@ -20,6 +20,7 @@ class FurloughResource extends JsonResource
             'furType' => ($this->furloughType) ? $this->furloughType->name : $this->furTypeId,
             'employee' => ($this->employee) ? [
                 'empId' => $this->employee->employeeId,
+                // dd($employee->employeeId);
                 'name' => $this->employee->firstName . ' ' . $this->employee->lastName,
             ] : '',
             'startAt' => $this->startAt,
