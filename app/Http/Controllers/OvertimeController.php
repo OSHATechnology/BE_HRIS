@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\OvertimeResource;
 use App\Models\Overtime;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class OvertimeController extends BaseController
@@ -16,7 +17,7 @@ class OvertimeController extends BaseController
         'assignedBy' => 'required|integer'
     ];
 
-    const NumPaginate = 5;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.
@@ -26,7 +27,19 @@ class OvertimeController extends BaseController
     public function index()
     {
         try {
-            $overtime = OvertimeResource::collection(Overtime::paginate(self::NumPaginate));
+            if(request()->has('search')){
+                return $this->search(request());
+            }
+            if(request()->has('filter')){
+                return $this->filter(request());
+            }
+            if(request()->has('from_y') && request()->has('to_y')){
+                return $this->filterCustomYear(request());
+            }
+            if(request()->has('from_m_y') && request()->has('to_m_y')){
+                return $this->filterCustomMonthYear(request());
+            }
+            $overtime = (new Collection(OvertimeResource::collection(Overtime::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($overtime, 'Overtime retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving overtime', $th->getMessage());
@@ -110,6 +123,62 @@ class OvertimeController extends BaseController
             return $this->sendResponse($overtime, 'Overtime deleted successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error deleting overtime', 'Data Not Found');
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if($request->filled('search')){
+                $query = Overtime::join('employees', 'overtimes.employeeId', '=', 'employees.employeeId')
+                                    ->where('employees.firstName', 'like', '%'.$request->search.'%')
+                                    ->get();
+                $users =   (new Collection(OvertimeResource::collection($query)))->paginate(self::NumPaginate);
+                
+            }else{
+                $users = (new Collection(OvertimeResource::collection(Overtime::all())))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($users, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
+        }
+    }
+
+    public function filter(Request $request)
+    {
+        try {
+            if($request->filled('filter')){
+                $attendance = (new Collection(OvertimeResource::collection(Overtime::where('startAt', 'like', '%'. $request->filter . '%')->get())))->paginate(self::NumPaginate);
+            } else {
+                $attendance = (new Collection(OvertimeResource::collection(Overtime::all())))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($attendance,  "Overtime filtered successfully");
+        } catch (\Throwable $th) {
+            return $this->senderror("Error filtering attendance", 'Data Not Found'());
+        }
+    }
+
+    public function filterCustomYear(Request $request)
+    {
+        try {
+            $from = $request->from_y . '-01-01 00:00:01';
+            $to = $request->to_y . '-12-31 23:59:59';
+            $attendance = (new Collection(OvertimeResource::collection(Overtime::whereBetween('startAt', [$from, $to])->orderBy('startAt')->get())))->paginate(self::NumPaginate);
+            return $this->sendResponse($attendance,  "Overtime filtered successfully");
+        } catch (\Throwable $th) {
+            return $this->senderror("Error filtering attendance", $th->getMessage());
+        }
+    }
+
+    public function filterCustomMonthYear(Request $request)
+    {
+        try {
+            $from = $request->from_m_y . '-01 00:00:01';
+            $to = $request->to_m_y . '-31 23:59:59';
+            $attendance = (new Collection(OvertimeResource::collection(Overtime::whereBetween('startAt', [$from, $to])->orderBy('startAt')->get())))->paginate(self::NumPaginate);
+            return $this->sendResponse($attendance,  "Overtime filtered successfully");
+        } catch (\Throwable $th) {
+            return $this->senderror("Error filtering attendance", $th->getMessage());
         }
     }
 }

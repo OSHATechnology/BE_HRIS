@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\PartnerResource;
 use App\Models\Partner;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,7 +22,7 @@ class PartnerController extends BaseController
         'joinedAt' => 'required'
     ];
 
-    const NumPaginate = 5;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.
@@ -33,7 +34,11 @@ class PartnerController extends BaseController
         try {
             $this->authorize('viewAny', Partner::class);
 
-            $partners = PartnerResource::collection(Partner::paginate(self::NumPaginate));
+            if(request()->has('search')){
+                return $this->search(request());
+            }
+
+            $partners = (new Collection(PartnerResource::collection(Partner::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($partners, 'Partners retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError($th->getMessage(), []);
@@ -152,6 +157,20 @@ class PartnerController extends BaseController
         } catch (\Throwable $th) {
             //throw $th;
             return $this->sendError('Error deleting partner.', $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if($request->filled('search')){
+                $partner =   (new Collection(PartnerResource::collection(Partner::search($request->search)->get())))->paginate(self::NumPaginate);
+            }else{
+                $partner = (new Collection(PartnerResource::collection(Partner::all())))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($partner, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
         }
     }
 }

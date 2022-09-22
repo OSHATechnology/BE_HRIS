@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Models\Role;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class RoleController extends BaseController
@@ -19,7 +20,7 @@ class RoleController extends BaseController
         'description' => 'required|string|max:255',
     ];
 
-    const NumPaginate = 5;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.
@@ -32,7 +33,12 @@ class RoleController extends BaseController
             //gate
             $this->authorize('viewAny', Role::class);
 
-            $roles = Role::paginate(self::NumPaginate);
+            //search
+            if(request()->has('search')){
+                return $this->search(request());
+            }
+
+            $roles = (new Collection(Role::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($roles, 'Roles retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving roles', $th->getMessage());
@@ -128,6 +134,20 @@ class RoleController extends BaseController
         } catch (\Throwable $th) {
             //throw $th;
             return $this->sendError('Error deleting role', $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if($request->filled('search')){
+                $partner =   (new Collection(Role::search($request->search)->get()))->paginate(self::NumPaginate);
+            }else{
+                $partner = (new Collection(Role::all()))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($partner, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
         }
     }
 }

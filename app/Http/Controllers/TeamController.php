@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class TeamController extends BaseController
@@ -15,7 +16,7 @@ class TeamController extends BaseController
         'createdBy' => 'required|integer',
     ];
 
-    const NumPaginate = 5;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.
@@ -25,7 +26,7 @@ class TeamController extends BaseController
     public function index()
     {
         try {
-            $team = TeamResource::collection(Team::paginate(self::NumPaginate));
+            $team = (new Collection(TeamResource::collection(Team::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($team, 'team retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team ', $th->getMessage());

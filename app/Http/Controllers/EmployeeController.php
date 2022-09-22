@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\EmployeeResource;
 use App\Imports\EmployeesImport;
 use App\Models\Employee;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
@@ -30,7 +31,7 @@ class EmployeeController extends BaseController
         'statusHireId' => 'required|boolean'
     ];
 
-    const numPaginate = 5;
+    const numPaginate = 10;
 
     /**
      * Display a listing of the resource.
@@ -40,7 +41,11 @@ class EmployeeController extends BaseController
     public function index()
     {
         try {
-            $employees = EmployeeResource::collection(Employee::paginate(self::numPaginate));
+            if(request()->has('search')){
+                return $this->search(request());
+            }
+            $employees = (new Collection(EmployeeResource::collection(Employee::all())))->paginate(self::numPaginate);
+            // $employees = Employee::paginate(1);
             return $this->sendResponse($employees, "employee retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee retrieving successfully", $th->getMessage());
@@ -99,7 +104,7 @@ class EmployeeController extends BaseController
     public function show($id)
     {
         try {
-            $employee = Employee::findOrFail($id);
+            $employee = new EmployeeResource(Employee::findOrFail($id));
             return $this->sendResponse($employee, "employee retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee retrieving successfully", "Data Not Found");
@@ -244,11 +249,10 @@ class EmployeeController extends BaseController
     {
         try {
             if($request->filled('search')){
-                $users = EmployeeResource::collection(Employee::search($request->search)->paginate(self::numPaginate));
+                $users =   (new Collection(EmployeeResource::collection(Employee::search($request->search)->get())))->paginate(self::numPaginate);
             }else{
-                $users = EmployeeResource::collection(Employee::paginate(self::numPaginate));
+                $users = (new Collection(EmployeeResource::collection(Employee::all())))->paginate(self::numPaginate);
             }
-            // dd($users);
             return $this->sendResponse($users, "employee search successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error search employee failed", $th->getMessage());

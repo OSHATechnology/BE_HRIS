@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Role extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = ['roleId', 'nameRole', 'description', 'created_at', 'updated_at'];
 
@@ -25,5 +26,12 @@ class Role extends Model
             return $role->roleId;
         }
         return 2;
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'nameRole' => $this->nameRole,
+        ];
     }
 }

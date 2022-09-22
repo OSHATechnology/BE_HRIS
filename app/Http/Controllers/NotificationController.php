@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class NotificationController extends BaseController
@@ -18,7 +19,7 @@ class NotificationController extends BaseController
         'scheduleAt' => 'required|date'
     ];
 
-    const NumPaginate = 5;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.
@@ -28,7 +29,7 @@ class NotificationController extends BaseController
     public function index()
     {
         try {
-            $notifications = NotificationResource::collection(Notification::paginate(self::NumPaginate));
+            $notifications = (new Collection(NotificationResource::collection(Notification::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($notifications, "notification retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error notification retrieving", $th->getMessage());

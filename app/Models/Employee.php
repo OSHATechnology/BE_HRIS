@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Scout\Searchable;
 
-class Employee extends Model
+class Employee extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Searchable;
 
@@ -76,7 +76,6 @@ class Employee extends Model
 
     public function toSearchableArray()
     {
-        // dump('toSearchable');
         return [
             'firstName' => $this->firstName,
             'lastName' => $this->lastName

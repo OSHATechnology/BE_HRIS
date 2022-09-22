@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Models\AttendanceStatus;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class AttendanceStatusController extends BaseController
@@ -12,7 +13,7 @@ class AttendanceStatusController extends BaseController
         'status' => 'required|string|max:255',
     ];
 
-    const NumPaginate = 5;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.
@@ -22,7 +23,7 @@ class AttendanceStatusController extends BaseController
     public function index()
     {
         try {
-            $attendanceStatus = AttendanceStatus::paginate(self::NumPaginate);
+            $attendanceStatus = (new Collection(AttendanceStatus::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($attendanceStatus, "attendace status retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error retrieving retrieved",  $th->getMessage());
