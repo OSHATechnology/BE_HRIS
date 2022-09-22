@@ -21,12 +21,12 @@ class Furlough extends Model
 
     public function employee()
     {
-        return $this->hasOne(Employee::class, 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'employeeId');
     }
 
     public function confirmedByEmp()
     {
-        return $this->hasOne(Employee::class, 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'confirmedBy');
     }
 
     public function furloughType()

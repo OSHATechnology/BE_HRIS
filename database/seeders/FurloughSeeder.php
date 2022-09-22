@@ -24,7 +24,6 @@ class FurloughSeeder extends Seeder
                 'endAt' => now(),
                 'isConfirmed' => true,
                 'confirmedBy' => 1,
-                'lastFurloughAt' => now(),
                 'created_at' => now(),
                 'updated_at' => now()
 
