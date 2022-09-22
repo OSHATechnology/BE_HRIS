@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\FurloughResource;
+use App\Models\Attendance;
+use App\Models\AttendanceStatus;
+use App\Models\Employee;
 use App\Models\Furlough;
+use App\Models\Notification;
 use App\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
+use function PHPSTORM_META\type;
 
 class FurloughController extends BaseController
 {
@@ -165,6 +174,71 @@ class FurloughController extends BaseController
             return $this->sendResponse($users, "employee search successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error search employee failed", $th->getMessage());
+        }
+    }
+
+    public function attendance_accepted(Request $request, $id)
+    {
+        try {
+            $type = Furlough::findOrFail($id);
+            $type->isConfirmed = 1;
+            $type->confirmedBy = Auth::id();
+            $type->message = $request->message;
+
+            $attendance = new Attendance;
+            $attendance->employeeId = $type->employeeId;
+            $attendance->attendanceStatusId = 2;
+            $attendance->submitedAt = now();
+            $attendance->submitedById = Auth::id();
+            $attendance->typeInOut = "-";
+            $attendance->timeAttend = $type->created_at->format('Y-m-d h:i:s');
+            
+            $employee = Employee::findOrFail($id);
+            $notif = new Notification;
+            $notif->empId = $id;
+            $notif->name = $employee->firstName . " " . $employee->lastName;
+            $start = date('d-m-Y', strtotime($type->startAt));
+            $end = date('d-m-Y', strtotime($type->endAt));
+            $notif->content = "Accepted furlough for " . $start . " until " . $end;
+            $notif->type = "furlough";
+            $notif->senderBy = Auth::id();
+            $notif->scheduleAt = now();
+            $notif->status = "Accepted";
+    
+            $type->save();
+            $attendance->save();
+            $notif->save();
+            return $this->sendResponse($type, "furlough update successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error update furlough failed", $th->getMessage());
+        }
+    }
+
+    public function attendance_declined(Request $id)
+    {
+        try {
+            $type = Furlough::findOrFail($id);
+            $type->isConfirmed = 2;
+            $type->confirmedBy = Auth::id();
+            $type->message = $request->message;
+            
+            $employee = Employee::findOrFail($id);
+            $notif = new Notification;
+            $notif->empId = $id;
+            $notif->name = $employee->firstName . " " . $employee->lastName;
+            $start = date('d-m-Y', strtotime($type->startAt));
+            $end = date('d-m-Y', strtotime($type->endAt));
+            $notif->content = "Declined furlough for " . $start . " until " . $end;
+            $notif->type = "furlough";
+            $notif->senderBy = Auth::id();
+            $notif->scheduleAt = now();
+            $notif->status = "Declined";
+    
+            $type->save();
+            $notif->save();
+            return $this->sendResponse($type, "employee update successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error update employee failed", $th->getMessage());
         }
     }
 }

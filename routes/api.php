@@ -46,6 +46,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('roles-permissions/detach', [RolePermissionController::class, 'detachPermissionFromRole']);
     Route::apiResource('role-permissions', RolePermissionController::class)->only(['index', 'store']);
     Route::apiResource('permissions', PermissionController::class);
+    Route::put('furlough/attendance_accepted/{id}', [FurloughController::class, 'attendance_accepted']);
+    Route::put('furlough/attendance_declined/{id}', [FurloughController::class, 'attendance_declined']);
     Route::apiResource('furlough', FurloughController::class);
     Route::apiResource('furlough_type', FurloughTypeController::class);
     Route::post('employee/import', [EmployeeController::class, 'import']);
