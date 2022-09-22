@@ -45,7 +45,7 @@ class FurloughController extends BaseController
             //gate
             $this->authorize('viewAny', Furlough::class);
 
-            if(request()->has('search')){
+            if (request()->has('search')) {
                 return $this->search(request());
             }
 
@@ -162,13 +162,12 @@ class FurloughController extends BaseController
     public function search(Request $request)
     {
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $query = Furlough::join('employees', 'furloughs.employeeId', '=', 'employees.employeeId')
-                                    ->where('employees.firstName', 'like', '%'.$request->search.'%')
-                                    ->get();
+                    ->where('employees.firstName', 'like', '%' . $request->search . '%')
+                    ->get();
                 $users =   (new Collection(FurloughResource::collection($query)))->paginate(self::NumPaginate);
-                
-            }else{
+            } else {
                 $users = (new Collection(FurloughResource::collection(Furlough::all())))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($users, "employee search successfully");
