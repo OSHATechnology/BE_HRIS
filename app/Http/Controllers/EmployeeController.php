@@ -30,7 +30,7 @@ class EmployeeController extends BaseController
         'statusHireId' => 'required|boolean'
     ];
 
-    const numPaginate = 1;
+    const numPaginate = 10;
 
     /**
      * Display a listing of the resource.

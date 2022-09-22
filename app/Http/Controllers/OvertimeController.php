@@ -17,7 +17,7 @@ class OvertimeController extends BaseController
         'assignedBy' => 'required|integer'
     ];
 
-    const NumPaginate = 1;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.

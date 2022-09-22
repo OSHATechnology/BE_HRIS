@@ -17,7 +17,7 @@ class RolePermissionController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    const NumPaginate = 5;
+    const NumPaginate = 10;
 
     public function index()
     {

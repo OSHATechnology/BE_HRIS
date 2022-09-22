@@ -20,7 +20,7 @@ class RoleController extends BaseController
         'description' => 'required|string|max:255',
     ];
 
-    const NumPaginate = 5;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.

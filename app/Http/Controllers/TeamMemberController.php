@@ -18,7 +18,7 @@ class TeamMemberController extends BaseController
         'joinedAt' => 'date'
     ];
 
-    const NumPaginate = 5;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.
