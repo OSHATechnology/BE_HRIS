@@ -19,7 +19,7 @@ class NotificationController extends BaseController
         'scheduleAt' => 'required|date'
     ];
 
-    const NumPaginate = 1;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.

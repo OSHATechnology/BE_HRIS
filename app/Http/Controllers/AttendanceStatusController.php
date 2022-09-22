@@ -13,7 +13,7 @@ class AttendanceStatusController extends BaseController
         'status' => 'required|string|max:255',
     ];
 
-    const NumPaginate = 2;
+    const NumPaginate = 10;
 
     /**
      * Display a listing of the resource.
