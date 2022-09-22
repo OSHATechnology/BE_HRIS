@@ -7,6 +7,7 @@ use App\Http\Resources\EmployeeResource;
 use App\Imports\EmployeesImport;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends BaseController
@@ -165,6 +166,38 @@ class EmployeeController extends BaseController
             return $this->sendResponse($employee, "employee updated successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error employee updating", $th->getMessage());
+        }
+    }
+
+    /**
+     * Update password the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Employee  $employee
+     * @return \Illuminate\Http\Response
+     */
+    public function update_password($id, Request $request)
+    {
+        try {
+            $request->validate([
+                'oldPassword' => 'required|string|max:255',
+                'newPassword' => 'required|string|max:255',
+                'confirmPassword' => 'required|string|max:255',
+            ]);
+            $employee = Employee::findOrFail($id);
+            if(Hash::check($request->oldPassword ,$employee->password)) {
+                if ($request->newPassword === $request->confirmPassword) {
+                    $employee->password = bcrypt($request->newPassword);
+                    $employee->save();
+                    return $this->sendResponse($employee, 'Employee password updated successfully');
+                } else {
+                    throw now('Confirm password is not the same as the new password.');
+                }
+            } else {
+                throw now('the password that is entered is wrong');
+            }
+        } catch (\Throwable $th) {
+            return $this->sendError('Error updating password', $th->getMessage());
         }
     }
 
