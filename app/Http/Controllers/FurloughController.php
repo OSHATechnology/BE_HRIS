@@ -214,7 +214,7 @@ class FurloughController extends BaseController
         }
     }
 
-    public function attendance_declined(Request $id)
+    public function attendance_declined(Request $request, $id)
     {
         try {
             $type = Furlough::findOrFail($id);
