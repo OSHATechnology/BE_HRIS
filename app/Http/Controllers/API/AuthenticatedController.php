@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedController extends BaseController
 {
+
+    public function username()
+    {
+        return 'email';
+    }
 
     /**
      * Handle an incoming authentication request.
@@ -21,20 +24,30 @@ class AuthenticatedController extends BaseController
     public function store(Request $request)
     {
         try {
+            $user = Employee::where('email', $this->username())->first();
+            if (!$user) {
+                return $this->sendError('username', $this->username() . ' not found', 401);
+            }
             if (!Auth::attempt($request->only('email', 'password'), $request->remember_me)) {
-                return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+                return $this->sendError('password', 'Wrong Password', 401);
             }
 
-            $user = Employee::where('email', $request->email)->firstOrFail();
             $token = $user->createToken('token')->plainTextToken;
+            $dataUser = [
+                'id' => $user->employeeId,
+                'name' => $user->firstName . " " . $user->lastName,
+                'email' => $user->email,
+                'role' => $user->role->name,
+                'token' => $token
+            ];
 
             $response = [
-                'token' => $token
+                'user' => $dataUser
             ];
 
             return $this->sendResponse($response, 'User login successfully.');
         } catch (\Throwable $th) {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            return $this->sendError('Unautorized.', ['error' => 'Unautorized'], 401);
         }
     }
 
