@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 class TeamMemberController extends BaseController
 {
     const VALIDATION_RULES = [
-        'teamId' => 'required|integer', 
-        'empId' => 'required|integer', 
-        'assignedBy' => 'required|integer', 
+        'teamId' => 'required|integer',
+        'empId' => 'required|integer',
+        'assignedBy' => 'required|integer',
         'joinedAt' => 'date'
     ];
 
@@ -28,13 +28,18 @@ class TeamMemberController extends BaseController
     public function index()
     {
         try {
+            if (request()->has('teamid')) {
+                $teamId = request()->teamid;
+                $teamMembers = (new Collection(TeamMemberResource::collection(TeamMember::where('teamId', $teamId)->get())))->paginate(self::NumPaginate);
+                return $this->sendResponse($teamMembers, 'Team members retrieved successfully.');
+            }
             $member = (new Collection(TeamMemberResource::collection(TeamMember::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($member, 'team member retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team member', $th->getMessage());
         }
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -57,7 +62,7 @@ class TeamMemberController extends BaseController
             return $this->sendError('Error creating team member', $th->getMessage());
         }
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -96,7 +101,7 @@ class TeamMemberController extends BaseController
             return $this->sendError('Error updating team member', 'Data Not Found');
         }
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
