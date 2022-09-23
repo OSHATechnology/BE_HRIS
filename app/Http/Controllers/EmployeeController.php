@@ -223,6 +223,28 @@ class EmployeeController extends BaseController
         }
     }
 
+    public function trash()
+    {
+        try {
+            $employees = (new Collection(EmployeeResource::collection(Employee::onlyTrashed()->get())))->paginate(self::numPaginate);
+            // $employees = Employee::onlyTrashed()->get();
+            return $this->sendResponse($employees, "employee retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("Error retrieved employee", $th->getMessage());
+        }
+    }
+    
+    public function restore($id)
+    {
+        try {
+            $employee = new EmployeeResource(Employee::onlyTrashed()->findOrFail($id));
+            $employee->restore();
+            return $this->sendResponse($employee, "employee retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("Error retrieved employee", $th->getMessage());
+        }
+    }
+
     /*
     *   Import data from excel
     */
