@@ -34,6 +34,7 @@ return new class extends Migration
             $table->timestamp('resignedAt')->nullable();
             $table->unsignedBigInteger('statusHireId');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('roleId')->references('roleId')->on('roles');
             $table->foreign('statusHireId')->references('statusHireId')->on('status_hires');

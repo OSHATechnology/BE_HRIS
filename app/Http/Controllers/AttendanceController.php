@@ -111,7 +111,7 @@ class AttendanceController extends BaseController
             $attendance->save();
             return $this->sendResponse($attendance,  "Attendance updated successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("Error attendance updating", "Data Not Found");
+            return $this->sendError("Error attendance updating", $th->getMessage());
         }
     }
     
@@ -128,7 +128,7 @@ class AttendanceController extends BaseController
             $attendance->delete();
             return $this->sendResponse($attendance,  "Attendance deleted successfully");
         } catch (\Throwable $th) {
-            return $this->senderror("Error deleting attendance", "Data Not Found");
+            return $this->senderror("Error deleting attendance", $th->getMessage());
         }
     }
 
@@ -139,7 +139,7 @@ class AttendanceController extends BaseController
             $attendance = (new Collection(AttendanceResource::collection(Attendance::where('submitedAt', 'like', '%'. $now.'%')->get())))->paginate(self::NumPaginate);
             return $this->sendResponse($attendance,  "Attendance retrievied successfully");
         } catch (\Throwable $th) {
-            return $this->senderror("Error retrieving attendance", "Data Not Found");
+            return $this->senderror("Error retrieving attendance", $th->getMessage());
         }
     }
 
@@ -171,7 +171,7 @@ class AttendanceController extends BaseController
             }
             return $this->sendResponse($attendance,  "Attendance filtered successfully");
         } catch (\Throwable $th) {
-            return $this->senderror("Error filtering attendance", 'Data Not Found'());
+            return $this->senderror("Error filtering attendance", $th->getMessage());
         }
     }
 

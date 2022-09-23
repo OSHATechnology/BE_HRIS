@@ -69,7 +69,7 @@ class FurloughTypeController extends BaseController
             $type = FurloughType::findOrFail($id);
             return $this->sendResponse($type, 'Furlough type retrieved successfully');
         } catch (\Throwable $th) {
-            return $this->sendError('Error retrieving furlough type', 'Data Not Found');
+            return $this->sendError('Error retrieving furlough type', $th->getMessage());
         }
     }
 
@@ -91,7 +91,7 @@ class FurloughTypeController extends BaseController
             $type->save();
             return $this->sendResponse($type, 'Furlough type updated successfully');
         } catch (\Throwable $th) {
-            return $this->sendError('Error updating furlough type', 'Data Not Found');
+            return $this->sendError('Error updating furlough type', $th->getMessage());
         }
     }
 
@@ -108,7 +108,7 @@ class FurloughTypeController extends BaseController
             $type->delete();
             return $this->sendResponse($type, 'Furlough type deleted successfully');
         } catch (\Throwable $th) {
-            return $this->sendError('Error deleting furlough type', 'Data Not Found');
+            return $this->sendError('Error deleting furlough type', $th->getMessage());
         }
     }
 

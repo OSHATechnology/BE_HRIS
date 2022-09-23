@@ -67,7 +67,7 @@ class StatusHireController extends BaseController
             $status = StatusHire::findOrFail($id);
             return $this->sendResponse($status, "status hire retrieving successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("Error status hire retrieving", "Data Not Found");
+            return $this->sendError("Error status hire retrieving", $th->getMessage());
         }
     }
 
@@ -83,7 +83,7 @@ class StatusHireController extends BaseController
             $status = StatusHire::findOrFail($id);
             return $this->sendResponse($status, "status hire retrieved successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("Error status hire retrieving", "Data Not Found");
+            return $this->sendError("Error status hire retrieving", $th->getMessage());
         }
     }
 
@@ -103,7 +103,7 @@ class StatusHireController extends BaseController
             $status->save();
             return $this->sendResponse($status, "status hire updated successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("Error status hire updating", "Data Not Found");
+            return $this->sendError("Error status hire updating", $th->getMessage());
         }
     }
     
@@ -120,7 +120,7 @@ class StatusHireController extends BaseController
             $status->delete();
             return $this->sendResponse($status, "status hire deleted successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("Error status hire deleting", "Data Not Found");
+            return $this->sendError("Error status hire deleting", $th->getMessage());
         }
     }
 }

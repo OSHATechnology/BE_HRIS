@@ -219,7 +219,29 @@ class EmployeeController extends BaseController
             $employee->delete();
             return $this->sendResponse($employee, "employee deleted successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("Error deleting employee", "Data Not Found");
+            return $this->sendError("Error deleting employee", $th->getMessage());
+        }
+    }
+
+    public function trash()
+    {
+        try {
+            $employees = (new Collection(EmployeeResource::collection(Employee::onlyTrashed()->get())))->paginate(self::numPaginate);
+            // $employees = Employee::onlyTrashed()->get();
+            return $this->sendResponse($employees, "employee retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("Error retrieved employee", $th->getMessage());
+        }
+    }
+
+    public function restore($id)
+    {
+        try {
+            $employee = new EmployeeResource(Employee::onlyTrashed()->findOrFail($id));
+            $employee->restore();
+            return $this->sendResponse($employee, "employee retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("Error retrieved employee", $th->getMessage());
         }
     }
 

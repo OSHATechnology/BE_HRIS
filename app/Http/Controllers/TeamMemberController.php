@@ -75,7 +75,7 @@ class TeamMemberController extends BaseController
             $member = new TeamMemberResource(TeamMember::findOrFail($id));
             return $this->sendResponse($member, 'team member retrieved successfully');
         } catch (\Throwable $th) {
-            return $this->sendError('Error retrieving team member', 'Data Not Found');
+            return $this->sendError('Error retrieving team member', $th->getMessage());
         }
     }
 
@@ -98,7 +98,7 @@ class TeamMemberController extends BaseController
             $member->save();
             return $this->sendResponse($member, 'team member updated successfully');
         } catch (\Throwable $th) {
-            return $this->sendError('Error updating team member', 'Data Not Found');
+            return $this->sendError('Error updating team member', $th->getMessage());
         }
     }
 
@@ -115,7 +115,7 @@ class TeamMemberController extends BaseController
             $member->delete();
             return $this->sendResponse($member, 'team member deleted successfully');
         } catch (\Throwable $th) {
-            return $this->sendError('Error deleting team member', 'Data Not Found');
+            return $this->sendError('Error deleting team member', $th->getMessage());
         }
     }
 }
