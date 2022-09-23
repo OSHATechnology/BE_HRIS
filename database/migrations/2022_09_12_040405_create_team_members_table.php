@@ -17,13 +17,13 @@ return new class extends Migration
             $table->id('memberId');
             $table->unsignedBigInteger('teamId');
             $table->unsignedBigInteger('empId');
-            $table->unsignedBigInteger('assignedBy');
+            $table->unsignedBigInteger('assignedBy')->nullable();
             $table->timestamp('joinedAt')->nullable();
             $table->timestamps();
 
-            $table->foreign('teamId')->references('teamId')->on('teams');
-            $table->foreign('empId')->references('employeeId')->on('employees');
-            $table->foreign('assignedBy')->references('employeeId')->on('employees');
+            $table->foreign('teamId')->references('teamId')->on('teams')->cascadeOnDelete();
+            $table->foreign('empId')->references('employeeId')->on('employees')->cascadeOnDelete();
+            $table->foreign('assignedBy')->references('employeeId')->on('employees')->onDelete('set null');
         });
     }
 

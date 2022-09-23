@@ -37,7 +37,7 @@ class AuthenticatedController extends BaseController
                 'id' => $user->employeeId,
                 'name' => $user->firstName . " " . $user->lastName,
                 'email' => $user->email,
-                'role' => $user->role->name,
+                'role' => $user->role->nameRole,
                 'token' => $token
             ];
 
