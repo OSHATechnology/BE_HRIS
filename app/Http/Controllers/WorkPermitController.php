@@ -71,7 +71,7 @@ class WorkPermitController extends BaseController
             $workPermit = new WorkPermitResource(WorkPermit::findOrFail($id));
             return $this->sendResponse($workPermit, 'Work permit retrivied successfully.');
         } catch (\Throwable $th) {
-            return $this->sendError('Error retriving Work permit.', 'Data Not Found');
+            return $this->sendError('Error retriving Work permit.', $th->getMessage());
         }
     }
 
@@ -96,7 +96,7 @@ class WorkPermitController extends BaseController
             $workPermit->save();
             return $this->sendResponse($workPermit, 'Work Permit updated successfully.');
         } catch (\Throwable $th) {
-            return $this->sendError('Error updating work permit.', 'Data Not Found');
+            return $this->sendError('Error updating work permit.', $th->getMessage());
         }
     }
     
@@ -113,7 +113,7 @@ class WorkPermitController extends BaseController
             $workPermit->delete();
             return $this->sendResponse($workPermit, 'Work Permit deleted successfully.');
         } catch (\Throwable $th) {
-            return $this->sendError('Error deleting work permit.', 'Data Not Found');
+            return $this->sendError('Error deleting work permit.', $th->getMessage());
         }
     }
 }

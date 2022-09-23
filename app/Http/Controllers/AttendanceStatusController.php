@@ -64,7 +64,7 @@ class AttendanceStatusController extends BaseController
             return $this->sendResponse($attendanceStatus,"attendace status retrieved successfully");
         } catch (\Throwable $th) {
             //throw $th;
-            return $this->sendError('Error retrieving attendance status', 'Data Not Found');
+            return $this->sendError('Error retrieving attendance status', $th->getMessage());
         }
         
     }
@@ -81,7 +81,7 @@ class AttendanceStatusController extends BaseController
             $attendanceStatus = AttendanceStatus::findOrFail($id);
             return $this->sendResponse($attendanceStatus,"attendace status retrieved successfully");
         } catch (\Throwable $th) {
-            return $this->sendError('Error retrieving attendance status', 'Data Not Found');
+            return $this->sendError('Error retrieving attendance status', $th->getMessage());
         }
     }
 
@@ -101,7 +101,7 @@ class AttendanceStatusController extends BaseController
             $attendanceStatus->save();
             return $this->sendResponse($attendanceStatus, "attendace status updating successfully");
         } catch (\Throwable $th) {
-            return $this->sendError('Error updating attendance status', 'Data Not Found');
+            return $this->sendError('Error updating attendance status', $th->getMessage());
         }
     }
 
@@ -118,7 +118,7 @@ class AttendanceStatusController extends BaseController
             $attendanceStatus->delete();
             return $this->sendResponse($attendanceStatus, "attendace status deleting successfully");
         } catch (\Throwable $th) {
-            return $this->sendError('Error deleting attendance status', 'Data Not Found');
+            return $this->sendError('Error deleting attendance status', $th->getMessage());
         }
     }
 }

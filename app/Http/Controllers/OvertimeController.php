@@ -81,7 +81,7 @@ class OvertimeController extends BaseController
             $overtime = Overtime::findOrFail($id);
             return $this->sendResponse(new OvertimeResource($overtime), 'Overtime retrieved successfully.');
         } catch (\Throwable $th) {
-            return $this->sendError('Error retrieving overtime', 'Data Not Found');
+            return $this->sendError('Error retrieving overtime', $th->getMessage());
         }
     }
 
@@ -105,7 +105,7 @@ class OvertimeController extends BaseController
             $overtime->save();
             return $this->sendResponse($overtime, 'Overtime updated successfully.');
         } catch (\Throwable $th) {
-            return $this->sendError('Error updating overtime', 'Data Not Found');
+            return $this->sendError('Error updating overtime', $th->getMessage());
         }
     }
 
@@ -122,7 +122,7 @@ class OvertimeController extends BaseController
             $overtime->delete();
             return $this->sendResponse($overtime, 'Overtime deleted successfully.');
         } catch (\Throwable $th) {
-            return $this->sendError('Error deleting overtime', 'Data Not Found');
+            return $this->sendError('Error deleting overtime', $th->getMessage());
         }
     }
 
@@ -154,7 +154,7 @@ class OvertimeController extends BaseController
             }
             return $this->sendResponse($attendance,  "Overtime filtered successfully");
         } catch (\Throwable $th) {
-            return $this->senderror("Error filtering attendance", 'Data Not Found'());
+            return $this->senderror("Error filtering attendance", $th->getMessage());
         }
     }
 

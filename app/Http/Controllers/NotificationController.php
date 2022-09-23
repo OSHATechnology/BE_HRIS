@@ -74,7 +74,7 @@ class NotificationController extends BaseController
             $notification = new NotificationResource(Notification::findOrFail($id));
             return $this->sendResponse($notification, "notification retrieved successfully");
         } catch (\Throwable $th) {
-            return $this->sendError('Error retrieving notification', 'Data Not Found');
+            return $this->sendError('Error retrieving notification', $th->getMessage());
         }
     }
 
@@ -100,7 +100,7 @@ class NotificationController extends BaseController
             $notification->save();
             return $this->sendResponse($notification, "notification updated successfully");
         } catch (\Throwable $th) {
-            return $this->sendError('Error updating notification', 'Data Not Found');
+            return $this->sendError('Error updating notification', $th->getMessage());
         }
     }
 
@@ -117,7 +117,7 @@ class NotificationController extends BaseController
             $notification->delete();
             return $this->sendResponse($notification, "notification deleting successfully");
         } catch (\Throwable $th) {
-            return $this->sendError('Error deleting notification', 'Data Not Found');
+            return $this->sendError('Error deleting notification', $th->getMessage());
         }
     }
 }

@@ -107,7 +107,7 @@ class EmployeeController extends BaseController
             $employee = new EmployeeResource(Employee::findOrFail($id));
             return $this->sendResponse($employee, "employee retrieved successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("employee retrieving successfully", "Data Not Found");
+            return $this->sendError("employee retrieving successfully", $th->getMessage());
         }
     }
 
@@ -219,7 +219,7 @@ class EmployeeController extends BaseController
             $employee->delete();
             return $this->sendResponse($employee, "employee deleted successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("employee deleting successfully", "Data Not Found");
+            return $this->sendError("employee deleting successfully", $th->getMessage());
         }
     }
 
