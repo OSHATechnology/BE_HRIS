@@ -41,7 +41,7 @@ class EmployeeController extends BaseController
     public function index()
     {
         try {
-            if(request()->has('search')){
+            if (request()->has('search')) {
                 return $this->search(request());
             }
             $employees = (new Collection(EmployeeResource::collection(Employee::all())))->paginate(self::numPaginate);
@@ -107,7 +107,7 @@ class EmployeeController extends BaseController
             $employee = new EmployeeResource(Employee::findOrFail($id));
             return $this->sendResponse($employee, "employee retrieved successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("employee retrieving successfully", "Data Not Found");
+            return $this->sendError("Error creating employee", $th->getMessage());
         }
     }
 
@@ -190,7 +190,7 @@ class EmployeeController extends BaseController
                 'confirmPassword' => 'required|string|max:255',
             ]);
             $employee = Employee::findOrFail($id);
-            if(Hash::check($request->oldPassword ,$employee->password)) {
+            if (Hash::check($request->oldPassword, $employee->password)) {
                 if ($request->newPassword === $request->confirmPassword) {
                     $employee->password = bcrypt($request->newPassword);
                     $employee->save();
@@ -219,7 +219,7 @@ class EmployeeController extends BaseController
             $employee->delete();
             return $this->sendResponse($employee, "employee deleted successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("employee deleting successfully", "Data Not Found");
+            return $this->sendError("Error deleting employee", "Data Not Found");
         }
     }
 
@@ -248,9 +248,9 @@ class EmployeeController extends BaseController
     public function search(Request $request)
     {
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $users =   (new Collection(EmployeeResource::collection(Employee::search($request->search)->get())))->paginate(self::numPaginate);
-            }else{
+            } else {
                 $users = (new Collection(EmployeeResource::collection(Employee::all())))->paginate(self::numPaginate);
             }
             return $this->sendResponse($users, "employee search successfully");
