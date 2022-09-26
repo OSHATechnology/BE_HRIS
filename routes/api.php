@@ -10,6 +10,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\API\AuthenticatedController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\BasicSalaryByRoleController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\FurloughController;
 use App\Http\Controllers\FurloughTypeController;
@@ -65,4 +66,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('team', TeamController::class);
     Route::apiResource('team_member', TeamMemberController::class);
     Route::apiResource('partners', PartnerController::class)->except(['create', 'edit']);
+    Route::apiResource('basic_salary_by_role', BasicSalaryByRoleController::class);
 });

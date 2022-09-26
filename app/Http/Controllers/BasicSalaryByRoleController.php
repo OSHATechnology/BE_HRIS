@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\BasicSalaryByRoleResource;
 use App\Models\BasicSalaryByRole;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
-class BasicSalaryByRoleController extends Controller
+class BasicSalaryByRoleController extends BaseController
 {
+    const VALIDATE_RULES = [
+        'roleId' => 'required|integer',
+        'fee' => 'required|integer',
+    ];
+
+    const NumPaginate = 10;
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +23,15 @@ class BasicSalaryByRoleController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        try {
+            if(request()->has('search')){
+                return $this->search(request());
+            }
+            $salaryRole = (New Collection(BasicSalaryByRoleResource::collection(BasicSalaryByRole::get())))->paginate(self::NumPaginate);
+            return $this->sendResponse($salaryRole, "Basic salary by role retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error retrieving basic salary by role", $th->getMessage());
+        }
     }
 
     /**
@@ -35,7 +42,16 @@ class BasicSalaryByRoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $this->validate($request, self::VALIDATE_RULES);
+            $salaryRole = new BasicSalaryByRole;
+            $salaryRole->roleId = $request->roleId;
+            $salaryRole->fee = $request->fee;
+            $salaryRole->save();
+            return $this->sendResponse(new BasicSalaryByRoleResource($salaryRole), "Basic salary by role created successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error creating basic salary by role", $th->getMessage());
+        }
     }
 
     /**
@@ -44,20 +60,14 @@ class BasicSalaryByRoleController extends Controller
      * @param  \App\Models\BasicSalaryByRole  $basicSalaryByRole
      * @return \Illuminate\Http\Response
      */
-    public function show(BasicSalaryByRole $basicSalaryByRole)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\BasicSalaryByRole  $basicSalaryByRole
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(BasicSalaryByRole $basicSalaryByRole)
-    {
-        //
+        try {
+            $salaryRole = new BasicSalaryByRoleResource(BasicSalaryByRole::findOrFail($id));
+            return $this->sendResponse($salaryRole, "Basic salary by role retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("Error retrieving salary by role", $th->getMessage());
+        }
     }
 
     /**
@@ -67,9 +77,18 @@ class BasicSalaryByRoleController extends Controller
      * @param  \App\Models\BasicSalaryByRole  $basicSalaryByRole
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BasicSalaryByRole $basicSalaryByRole)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $this->validate($request, self::VALIDATE_RULES);
+            $salaryRole = BasicSalaryByRole::findOrFail($id);
+            $salaryRole->roleId = $request->roleId;
+            $salaryRole->fee = $request->fee;
+            $salaryRole->save();
+            return $this->sendResponse($salaryRole, "Basic salary by role updated successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error updating basic salary by role", $th->getMessage());
+        }
     }
 
     /**
@@ -78,8 +97,32 @@ class BasicSalaryByRoleController extends Controller
      * @param  \App\Models\BasicSalaryByRole  $basicSalaryByRole
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BasicSalaryByRole $basicSalaryByRole)
+    public function destroy($id)
     {
-        //
+        try {
+            $salaryRole = BasicSalaryByRole::findOrFail($id);
+            $salaryRole->delete();
+            return $this->sendResponse($salaryRole, "Basic salary by role deleted successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error deleting basic salary by role", $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if($request->filled('search')){
+                $query = BasicSalaryByRole::join('roles', 'basic_salary_by_roles.roleId', '=', 'roles.roleId')
+                                    ->where('roles.nameRole', 'like', '%'.$request->search.'%')
+                                    ->get();
+                $users =   (new Collection(BasicSalaryByRoleResource::collection($query)))->paginate(self::NumPaginate);
+                
+            }else{
+                $users = (new Collection(BasicSalaryByRoleResource::collection(BasicSalaryByRole::all())))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($users, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
+        }
     }
 }
