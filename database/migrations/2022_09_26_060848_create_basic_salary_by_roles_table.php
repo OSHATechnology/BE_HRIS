@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('basic_salary_by_roles', function (Blueprint $table) {
             $table->id('basicSalaryByRoleId');
             $table->unsignedBigInteger('roleId');
+            $table->integer('fee');
             $table->timestamps();
 
             $table->foreign('roleId')->references('roleId')->on('roles');

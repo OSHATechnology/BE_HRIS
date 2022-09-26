@@ -11,6 +11,7 @@ class BasicSalaryByRole extends Model
     protected $fillable = [
         'basicSalaryByRoleId',
         'roleId',
+        'fee',
         'created_at',
         'updated_at',
     ];
