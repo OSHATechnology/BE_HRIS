@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class BasicSalaryByRole extends Model
 {
     use HasFactory;
+    public $table = "basic_salary_by_roles";
     protected $fillable = [
         'basicSalaryByRoleId',
         'roleId',
