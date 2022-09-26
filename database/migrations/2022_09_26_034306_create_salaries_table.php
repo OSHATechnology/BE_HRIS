@@ -1,0 +1,43 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('salaries', function (Blueprint $table) {
+            $table->id('salaryId');
+            $table->unsignedBigInteger('empId');
+            $table->integer('basic')->default('0');
+            $table->integer('totalOvertime')->default('0');
+            $table->integer('overtimeFee')->default('0');
+            $table->integer('allowance')->default('0');
+            $table->integer('bonus')->default('0');
+            $table->unsignedBigInteger('cutDetailsId')->nullable();
+            $table->integer('gross')->default('0');
+            $table->integer('net')->default('0');
+            $table->timestamps();
+
+            $table->foreign('empId')->references('employeeId')->on('employees');
+            $table->foreign('cutDetailsId')->references('salaryCutDetailsId')->on('salary_cut_details');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('salaries');
+    }
+};
