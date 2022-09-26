@@ -56,6 +56,7 @@ class AuthenticatedController extends BaseController
      */
     public function destroy()
     {
+        Auth::guard('web')->logout();
         $user = request()->user();
         $user->tokens()->delete();
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\API\AuthenticatedController;
+use App\Http\Controllers\API\PasswordResetLinkController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\FurloughController;
@@ -40,7 +41,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::post('/auth/login', [AuthenticatedController::class, 'store']);
 Route::post('/auth/logout', [AuthenticatedController::class, 'destroy'])->middleware('auth:sanctum');
-
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->middleware('guest');
+Route::post('/logout', [AuthenticatedController::class, 'destroy'])->middleware('auth:sanctum');
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('roles', RoleController::class);
     Route::post('roles-permissions/detach', [RolePermissionController::class, 'detachPermissionFromRole']);
