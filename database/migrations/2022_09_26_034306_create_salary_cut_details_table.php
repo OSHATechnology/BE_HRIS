@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('salary_cut_details', function (Blueprint $table) {
             $table->id('salaryCutDetailsId');
+            $table->unsignedBigInteger('salaryId');
             $table->integer('totalAttendance')->default('0');
             $table->integer('attdFeeReduction')->default('0');
             $table->integer('bpjs')->default('0');
@@ -22,6 +23,8 @@ return new class extends Migration
             $table->integer('etc')->default('0');
             $table->integer('total')->default('0');
             $table->timestamps();
+
+            $table->foreign('salaryId')->references('salaryId')->on('salaries');
         });
     }
 

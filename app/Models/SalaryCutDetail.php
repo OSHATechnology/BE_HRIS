@@ -10,6 +10,7 @@ class SalaryCutDetail extends Model
     use HasFactory;
     protected $fillable = [
         'salaryCutDetailsId',
+        'salaryId',
         'totalAttendance',
         'attdFeeReduction',
         'bpjs',
@@ -21,4 +22,9 @@ class SalaryCutDetail extends Model
     ];
 
     protected $primaryKey = 'salaryCutDetailsId';
+
+    public function salary()
+    {
+        return $this->hasOne(Salary::class, 'salaryId', 'salaryId');
+    }
 }
