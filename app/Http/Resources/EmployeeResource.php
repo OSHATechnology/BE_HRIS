@@ -22,7 +22,7 @@ class EmployeeResource extends JsonResource
             'name' => $this->firstName . " " . $this->lastName,
             'phone' => $this->phone,
             'email' => $this->email,
-            'photo' => $this->photo,
+            'photo' => env('APP_URL') . '/' . $this->photo,
             'gender' => $this->gender,
             'birthDate' => $this->birthDate,
             'address' => $this->address,
