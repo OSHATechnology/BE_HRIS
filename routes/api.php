@@ -18,6 +18,7 @@ use App\Http\Controllers\FurloughController;
 use App\Http\Controllers\FurloughTypeController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TodayAttendanceController;
 use App\Http\Controllers\WorkPermitController;
@@ -73,4 +74,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('partners', PartnerController::class)->except(['create', 'edit']);
     Route::apiResource('basic_salary_by_role', BasicSalaryByRoleController::class);
     Route::apiResource('basic_salary_by_employee', BasicSalaryByEmployeeController::class);
+    Route::get('salary/auto/{id}', [SalaryController::class, 'automatic_data']);
+    Route::apiResource('salary', SalaryController::class);
 });
