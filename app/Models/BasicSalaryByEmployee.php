@@ -17,13 +17,15 @@ class BasicSalaryByEmployee extends Model
         'updated_at',
     ];
 
+    protected $primaryKey = 'basicSalaryByEmployeeId';
+
     public function employee()
     {
         return $this->hasOne(Employee::class, 'employeeId', 'empId');
     }
 
-    public function salaryByRoleId()
+    public function salaryByRole()
     {
-        return $this->hasOne(BasicSalaryByEmployee::class, 'basicSalaryByRoleId', 'basicSalaryByRoleId');
+        return $this->hasOne(BasicSalaryByRole::class, 'basicSalaryByRoleId', 'basicSalaryByRoleId');
     }
 }
