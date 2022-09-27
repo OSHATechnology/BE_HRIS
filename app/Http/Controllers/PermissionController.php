@@ -28,9 +28,10 @@ class PermissionController extends BaseController
     {
         try {
             //gate
+            return $this->filterByGroup();
             $this->authorize('viewAny', Permission::class);
 
-            if(request()->has('search')){
+            if (request()->has('search')) {
                 return $this->search(request());
             }
 
@@ -129,14 +130,25 @@ class PermissionController extends BaseController
     public function search(Request $request)
     {
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $partner =   (new Collection(Permission::search($request->search)->get()))->paginate(self::NumPaginate);
-            }else{
+            } else {
                 $partner = (new Collection(Permission::all()))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($partner, "employee search successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error search employee failed", $th->getMessage());
+        }
+    }
+
+    public function filterByGroup($column = 'tag')
+    {
+        try {
+            $permissions = Permission::all();
+            $permissions = $permissions->groupBy($column);
+            return $this->sendResponse($permissions, 'Permissions retrieved successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error retrieving permissions', $th->getMessage());
         }
     }
 }
