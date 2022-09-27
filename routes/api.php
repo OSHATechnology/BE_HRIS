@@ -43,6 +43,7 @@ Route::post('/auth/login', [AuthenticatedController::class, 'store']);
 Route::post('/auth/logout', [AuthenticatedController::class, 'destroy'])->middleware('auth:sanctum');
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->middleware('guest');
 Route::post('/logout', [AuthenticatedController::class, 'destroy'])->middleware('auth:sanctum');
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('roles', RoleController::class);
     Route::post('roles-permissions/detach', [RolePermissionController::class, 'detachPermissionFromRole']);
