@@ -19,6 +19,7 @@ use App\Http\Controllers\FurloughTypeController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SalaryController;
+use App\Http\Controllers\SalaryCutDetailController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TodayAttendanceController;
 use App\Http\Controllers\WorkPermitController;
@@ -76,4 +77,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('basic_salary_by_employee', BasicSalaryByEmployeeController::class);
     Route::get('salary/auto/{id}', [SalaryController::class, 'automatic_data']);
     Route::apiResource('salary', SalaryController::class);
+    Route::get('salary_cut/att_cut/{id}', [SalaryCutDetailController::class, 'attendanceCutFee']);
+    Route::apiResource('salary_cut', SalaryCutDetailController::class);
 });
