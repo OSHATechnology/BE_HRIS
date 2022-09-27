@@ -17,10 +17,12 @@ class EmployeeResource extends JsonResource
     {
         return [
             'employeeId' => $this->employeeId,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
             'name' => $this->firstName . " " . $this->lastName,
             'phone' => $this->phone,
             'email' => $this->email,
-            'photo' => $this->photo,
+            'photo' => env('APP_URL') . '/' . $this->photo,
             'gender' => $this->gender,
             'birthDate' => $this->birthDate,
             'address' => $this->address,

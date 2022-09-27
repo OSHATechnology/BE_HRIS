@@ -71,7 +71,7 @@ class EmployeeController extends BaseController
             if ($request->hasFile('photo')) {
                 $imageName = time() . '.' . $request->photo->extension();
                 $path = $request->file('photo')->storeAs('public/employee_image', $imageName);
-                $employee->photo = 'storage/public/employee_image/' . $imageName;
+                $employee->photo = 'storage/employee_image/' . $imageName;
             } else {
                 $employee->photo = $request->photo;
             }
@@ -150,7 +150,7 @@ class EmployeeController extends BaseController
             if ($request->hasFile("photo")) {
                 $imageName = time() . '.' . $request->photo->extension();
                 $path = $request->file('photo')->storeAs('public/employee_image', $imageName);
-                $employee->photo = 'storage/public/employee_image/' . $imageName;
+                $employee->photo = 'storage/employee_image/' . $imageName;
             } else {
                 $employee->photo = $employee->photo;
             }
