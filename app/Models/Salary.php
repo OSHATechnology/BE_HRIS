@@ -25,9 +25,9 @@ class Salary extends Model
 
     protected $primaryKey = 'salaryId';
 
-    public function emplId()
+    public function emp()
     {
-        return $this->hasOne(Employee::class, 'employeeId', 'empIs');
+        return $this->hasOne(Employee::class, 'employeeId', 'empId');
     }    
             
 }
