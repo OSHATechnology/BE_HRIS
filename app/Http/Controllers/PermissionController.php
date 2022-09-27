@@ -28,8 +28,11 @@ class PermissionController extends BaseController
     {
         try {
             //gate
-            return $this->filterByGroup();
             $this->authorize('viewAny', Permission::class);
+
+            if (request()->has('filter')) {
+                return $this->filterByGroup();
+            }
 
             if (request()->has('search')) {
                 return $this->search(request());
