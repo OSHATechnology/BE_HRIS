@@ -21,13 +21,11 @@ return new class extends Migration
             $table->integer('overtimeFee')->default('0');
             $table->integer('allowance')->default('0');
             $table->integer('bonus')->default('0');
-            $table->unsignedBigInteger('cutDetailsId')->nullable();
             $table->integer('gross')->default('0');
             $table->integer('net')->default('0');
             $table->timestamps();
 
             $table->foreign('empId')->references('employeeId')->on('employees');
-            $table->foreign('cutDetailsId')->references('salaryCutDetailsId')->on('salary_cut_details');
         });
     }
 

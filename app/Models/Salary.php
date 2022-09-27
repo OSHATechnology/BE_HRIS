@@ -28,13 +28,6 @@ class Salary extends Model
     public function emplId()
     {
         return $this->hasOne(Employee::class, 'employeeId', 'empIs');
-    }
-
-    public function CutId()
-    {
-        return $this->hasOne(SalaryCutDetail::class, 'salaryCutDetailsId', 'cutDetailsId');
-    }
-
-    
+    }    
             
 }
