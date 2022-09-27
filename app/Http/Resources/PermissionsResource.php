@@ -15,17 +15,29 @@ class PermissionsResource extends JsonResource
     public function toArray($request)
     {
         $Permissions = [];
+        $i = 0;
         foreach ($this->resource as $key => $permission) {
-            foreach ($permission as $item) {
-                $Permissions[$key][] = [
-                    'id' => $item->permissionId,
-                    'name' => $item->namePermission,
-                    'description' => $item->description,
-                    'tag' => $item->tag,
-                    'slug' => $item->slug,
-                ];
-            }
+            $data = [
+                'id' => ++$i,
+                "group" => $key,
+                "data" => $this->toChildArray($permission),
+            ];
+            $Permissions[] = $data;
         }
         return $Permissions;
+    }
+
+    public function toChildArray($data)
+    {
+        foreach ($data as $key => $value) {
+            $data[$key] = [
+                'id' => $value->permissionId,
+                'namePermission' => $value->namePermission,
+                'description' => $value->description,
+                'tag' => $value->tag,
+                'slug' => $value->slug,
+            ];
+        }
+        return $data;
     }
 }

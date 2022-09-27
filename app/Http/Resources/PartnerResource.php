@@ -21,7 +21,7 @@ class PartnerResource extends JsonResource
             'resposibleBy' => $this->resposibleBy,
             'phone' => $this->phone,
             'address' => $this->address,
-            'photo' => $this->photo,
+            'photo' => env('APP_URL') . '/' . $this->photo,
             'assignedBy' => ($this->employee) ? [
                 'empId' => $this->employee->employeeId,
                 'name' => $this->employee->firstName . ' ' . $this->employee->lastName,

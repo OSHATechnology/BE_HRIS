@@ -91,7 +91,7 @@ class EmployeeController extends BaseController
             $employee->save();
             return $this->sendResponse(new EmployeeResource($employee), "employee created successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("employee creating successfully", $th->getMessage());
+            return $this->sendError("failed creating employee", $th->getMessage());
         }
     }
 

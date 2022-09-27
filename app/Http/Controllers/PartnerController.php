@@ -34,7 +34,7 @@ class PartnerController extends BaseController
         try {
             $this->authorize('viewAny', Partner::class);
 
-            if(request()->has('search')){
+            if (request()->has('search')) {
                 return $this->search(request());
             }
 
@@ -60,7 +60,7 @@ class PartnerController extends BaseController
             if ($request->hasFile('photo')) {
                 $logo = $request->file('photo');
                 $logoName = $request->name . '-' . time() . '.' . $logo->getClientOriginalExtension();
-                $path = 'partners/' . $logoName;
+                $path = 'storage/partners/' . $logoName;
                 Storage::disk('public')->put('partners/' . $logoName, file_get_contents($logo));
             } else {
                 $path = 'default.png';
@@ -119,7 +119,7 @@ class PartnerController extends BaseController
             if ($request->hasFile('photo')) {
                 $logo = $request->file('photo');
                 $logoName = $request->name . '-' . time() . '.' . $logo->getClientOriginalExtension();
-                $path = 'partners/' . $logoName;
+                $path = 'storage/partners/' . $logoName;
                 Storage::disk('public')->put('partners/' . $logoName, file_get_contents($logo));
             } else {
                 $path = $Partner->photo;
@@ -163,9 +163,9 @@ class PartnerController extends BaseController
     public function search(Request $request)
     {
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $partner =   (new Collection(PartnerResource::collection(Partner::search($request->search)->get())))->paginate(self::NumPaginate);
-            }else{
+            } else {
                 $partner = (new Collection(PartnerResource::collection(Partner::all())))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($partner, "employee search successfully");
