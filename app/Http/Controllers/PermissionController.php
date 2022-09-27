@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\PermissionsResource;
 use App\Models\Permission;
 use App\Support\Collection;
 use Illuminate\Http\Request;
@@ -149,7 +150,7 @@ class PermissionController extends BaseController
         try {
             $permissions = Permission::all();
             $permissions = $permissions->groupBy($column);
-            return $this->sendResponse($permissions, 'Permissions retrieved successfully.');
+            return $this->sendResponse(new PermissionsResource($permissions), 'Permissions retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving permissions', $th->getMessage());
         }
