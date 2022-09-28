@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\InsuranceResource;
 use App\Models\Insurance;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
-class InsuranceController extends Controller
+class InsuranceController extends BaseController
 {
+    const VALIDATION_RULES = [
+        'name' => 'required|string|max:255',
+        'companyName' => 'string|max:255',
+        'address' => 'string|max:255',
+    ];
+
+    const NumPaginate = 10;
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +24,15 @@ class InsuranceController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        try {
+            if (request()->has('search')) {
+                return $this->search(request());
+            }
+            $insurance = (new Collection(InsuranceResource::collection(Insurance::all())))->paginate(self::NumPaginate);
+            return $this->sendResponse($insurance, "Insurance retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error retrieving Insurance", $th->getMessage());
+        }
     }
 
     /**
@@ -35,7 +43,17 @@ class InsuranceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $insurance = new Insurance;
+            $insurance->name = $request->name;
+            $insurance->companyName = $request->companyName;
+            $insurance->address = $request->address;
+            $insurance->save();
+            return $this->sendResponse(new InsuranceResource($insurance), 'Insurance created successfully');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error creating insurance');
+        }
     }
 
     /**
@@ -44,20 +62,14 @@ class InsuranceController extends Controller
      * @param  \App\Models\Insurance  $insurance
      * @return \Illuminate\Http\Response
      */
-    public function show(Insurance $insurance)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Insurance  $insurance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Insurance $insurance)
-    {
-        //
+        try {
+            $insurance = new InsuranceResource(Insurance::findOrFail($id));
+            return $this->sendResponse($insurance, 'Insurance retrieved successfully');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error retrieving insurance', $th->getMessage());
+        }
     }
 
     /**
@@ -67,9 +79,19 @@ class InsuranceController extends Controller
      * @param  \App\Models\Insurance  $insurance
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Insurance $insurance)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $insurance = Insurance::findOrFail($id);
+            $insurance->name = $request->name;
+            $insurance->companyName = $request->companyName;
+            $insurance->address = $request->address;
+            $insurance->save();
+            return $this->sendResponse($insurance, 'Insurance updated successfully');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error updating insurance', $th->getMessage());
+        }
     }
 
     /**
@@ -78,8 +100,28 @@ class InsuranceController extends Controller
      * @param  \App\Models\Insurance  $insurance
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Insurance $insurance)
+    public function destroy($id)
     {
-        //
+        try {
+            $insurance = Insurance::findOrFail($id);
+            $insurance->delete();
+            return $this->sendResponse($insurance, 'Insurance deleted successfully');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error deleting insurance', $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if ($request->filled('search')) {
+                $insurance =   (new Collection(InsuranceResource::collection(Insurance::search($request->search)->get())))->paginate(self::NumPaginate);
+            } else {
+                $insurance = (new Collection(InsuranceResource::collection(Insurance::all())))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($insurance, "insurance search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search insurance failed", $th->getMessage());
+        }
     }
 }
