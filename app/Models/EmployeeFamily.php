@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class EmployeeFamily extends Model
 {
     use HasFactory;
+
+    public const TYPESTATUS = [
+        0 => 'Die',
+        1 => 'Alive',
+    ];
+
     protected $fillable = [
         'idEmpFam',
         'empId',
@@ -23,11 +29,11 @@ class EmployeeFamily extends Model
 
     public function employee()
     {
-        return $this->hasOne(Employee::class, 'employeeId', 'employeeId');
+        return $this->hasOne(Employee::class, 'employeeId', 'empId');
     }
 
     public function status()
     {
-        return $this->hasOne(Employee::class, 'empFamStatId', 'statusId');
+        return $this->hasOne(EmployeeFamilyStatus::class, 'empFamStatId', 'statusId');
     }
 }

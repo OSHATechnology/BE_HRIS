@@ -13,6 +13,7 @@ use App\Http\Controllers\API\PasswordResetLinkController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BasicSalaryByEmployeeController;
 use App\Http\Controllers\BasicSalaryByRoleController;
+use App\Http\Controllers\EmployeeFamilyController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\FurloughController;
 use App\Http\Controllers\FurloughTypeController;
@@ -79,4 +80,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('salary', SalaryController::class);
     Route::get('salary_cut/att_cut/{id}', [SalaryCutDetailController::class, 'attendanceCutFee']);
     Route::apiResource('salary_cut', SalaryCutDetailController::class);
+    Route::apiResource('employee_family', EmployeeFamilyController::class);
 });
