@@ -24,7 +24,7 @@ class Attendance extends Model
     }
     public function attendanceStatus()
     {
-        return $this->hasOne(AttendanceStatus::class, 'attendanceStatusId','attendanceStatusId');
+        return $this->hasOne(AttendanceStatus::class, 'attendanceStatusId', 'attendanceStatusId');
     }
 
     public function toSearchableArray()
@@ -32,5 +32,21 @@ class Attendance extends Model
         return [
             'firstName' => $this->employee->firstname,
         ];
+    }
+
+    public static function insertAttend($employeeId, $attendanceStatusId, $submitedById, $typeInOut, $timeAttend = null)
+    {
+        $data = new self();
+        $data->employeeId = $employeeId;
+        $data->attendanceStatusId = $attendanceStatusId;
+        $data->submitedById = $submitedById;
+        if ($timeAttend == null || $timeAttend == "") {
+            $data->timeAttend = date('Y-m-d H:i:s');
+        } else {
+            $data->timeAttend = $timeAttend;
+        }
+
+        $data->typeInOut = $typeInOut;
+        return $data->save();
     }
 }
