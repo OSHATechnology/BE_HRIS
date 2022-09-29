@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class InsuranceItem extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'insItemId',
@@ -24,5 +25,12 @@ class InsuranceItem extends Model
     public function insurance()
     {
         return $this->hasOne(Insurance::class, 'insuranceId', 'insuranceId');
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'name' => $this->name
+        ];
     }
 }

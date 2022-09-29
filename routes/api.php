@@ -18,6 +18,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\FurloughController;
 use App\Http\Controllers\FurloughTypeController;
 use App\Http\Controllers\InsuranceController;
+use App\Http\Controllers\InsuranceItemController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SalaryController;
@@ -83,4 +84,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('salary_cut', SalaryCutDetailController::class);
     Route::apiResource('employee_family', EmployeeFamilyController::class);
     Route::apiResource('insurance', InsuranceController::class);
+    Route::apiResource('insurance_item', InsuranceItemController::class);
 });
