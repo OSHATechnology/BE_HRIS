@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
+use App\Models\Salary;
 use App\Models\SalaryCutDetail;
 use Illuminate\Http\Request;
 
@@ -15,6 +17,24 @@ class SalaryCutDetailController extends Controller
     public function index()
     {
         //
+    }
+
+    public function attendanceCutFee($id)
+    {
+        $date = request('date');
+        $str = explode("-", $date);
+        $month = $str[0];
+        $year = $str[1];
+        $totalDay = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $totalAttendance = Attendance::where('employeeId', $id)
+                                        ->where('attendanceStatusId', 1)
+                                        ->get();
+        $percentAttendance = round((count($totalAttendance) / $totalDay) * 100);
+        $basicEmp = Salary::where('empId', $id)->first();
+        $gross = $basicEmp->gross;
+        $attendance_fee = ($gross * $percentAttendance) / 100;
+        dd($attendance_fee);
+        return $attendance_fee;
     }
 
     /**
