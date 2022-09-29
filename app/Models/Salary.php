@@ -28,5 +28,10 @@ class Salary extends Model
     {
         return $this->hasOne(Employee::class, 'employeeId', 'empId');
     }    
+
+    public function insuranceItem()
+    {
+        return $this->belongsToMany(InsuranceItem::class, 'salary_insurance_details', 'salaryId', 'insItemId');
+    }
             
 }

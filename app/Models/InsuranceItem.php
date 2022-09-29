@@ -27,6 +27,11 @@ class InsuranceItem extends Model
         return $this->hasOne(Insurance::class, 'insuranceId', 'insuranceId');
     }
 
+    public function salary()
+    {
+        return $this->belongsToMany(Salary::class, 'salary_insurance_details', 'insItemId', 'salaryId');
+    }
+
     public function toSearchableArray()
     {
         return [
