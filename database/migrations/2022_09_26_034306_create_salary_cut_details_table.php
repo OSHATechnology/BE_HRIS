@@ -18,10 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('salaryId');
             $table->integer('totalAttendance')->default('0');
             $table->integer('attdFeeReduction')->default('0');
-            $table->integer('bpjs')->default('0');
-            $table->integer('loan')->default('0');
+            $table->unsignedBigInteger('loanId');
             $table->integer('etc')->default('0');
             $table->integer('total')->default('0');
+            $table->integer('net')->default('0');
             $table->timestamps();
 
             $table->foreign('salaryId')->references('salaryId')->on('salaries');

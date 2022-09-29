@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('basic')->default('0');
             $table->integer('totalOvertime')->default('0');
             $table->integer('overtimeFee')->default('0');
-            $table->integer('allowance')->default('0');
             $table->integer('bonus')->default('0');
             $table->integer('gross')->default('0');
             $table->integer('net')->default('0');

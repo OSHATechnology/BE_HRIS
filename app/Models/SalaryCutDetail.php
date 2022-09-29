@@ -13,10 +13,10 @@ class SalaryCutDetail extends Model
         'salaryId',
         'totalAttendance',
         'attdFeeReduction',
-        'bpjs',
         'loan',
         'etc',
         'total',
+        'net',
         'created_at', 
         'updated_at',
     ];

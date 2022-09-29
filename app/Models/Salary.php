@@ -14,7 +14,6 @@ class Salary extends Model
         'basic',
         'totalOvertime',
         'overtimeFee',
-        'allowance',
         'bonus',
         'cutDetailsId',
         'gross',
