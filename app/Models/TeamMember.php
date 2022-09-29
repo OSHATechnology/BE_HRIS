@@ -36,8 +36,7 @@ class TeamMember extends Model
     {
         return $query->whereHas('memberDetail', function ($q) use ($search) {
             $q->select('memberId')->where('firstName', 'like', "%$search%")
-                ->orWhere('lastName', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%");
+                ->orWhere('lastName', 'like', "%$search%");
         });
     }
 }
