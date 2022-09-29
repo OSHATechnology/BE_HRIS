@@ -19,6 +19,33 @@ class Overtime extends Model
     }
     public function assignedByEmp()
     {
-        return $this->hasOne(Employee::class, 'employeeId','assignedBy');
+        return $this->hasOne(Employee::class, 'employeeId', 'assignedBy');
+    }
+
+    public static function changeStatus($id, $status)
+    {
+        $data = self::findOrFail($id);
+        $data->isConfirmed = $status;
+        $data->confirmedBy = auth()->user()->employeeId;
+        return $data->save();
+    }
+
+    public static function confirmOT($overtimeId, $assignedById, $message = null)
+    {
+        try {
+            $dataOT = self::findOrFail($overtimeId);
+            $dataOT->isConfirmed = 1;
+            $dataOT->confirmedBy = $assignedById;
+            if (!$dataOT->save()) {
+                return false;
+            }
+            // send notification
+            $message = $message == null ? "Overtime request has been confirmed" : $message;
+            Notification::sendNotification($dataOT->employeeId, $assignedById, $message, "overtime", $overtimeId);
+
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 }
