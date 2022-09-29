@@ -21,4 +21,19 @@ class Notification extends Model
     {
         return $this->hasOne(Employee::class, 'employeeId', 'senderBy');
     }
+
+    public static function sendNotification($empId, $senderBy, $content, $type, $scheduleAt = null)
+    {
+        $data = new self();
+        $data->empId = $empId;
+        $data->senderBy = $senderBy;
+        $data->content = $content;
+        $data->type = $type;
+        if ($scheduleAt == null || $scheduleAt == "") {
+            $data->scheduleAt = date('Y-m-d H:i:s');
+        } else {
+            $data->scheduleAt = $scheduleAt;
+        }
+        return $data->save();
+    }
 }

@@ -71,6 +71,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('attendance_status', AttendanceStatusController::class);
     Route::get('attendance/today', [AttendanceController::class, 'today']);
     Route::apiResource('attendance', AttendanceController::class);
+    Route::post('overtime/confirm', [OvertimeController::class, 'confirm']);
     Route::apiResource('overtime', OvertimeController::class);
     Route::apiResource('work_permit', WorkPermitController::class);
     Route::apiResource('team', TeamController::class);

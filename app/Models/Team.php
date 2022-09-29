@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     use HasFactory;
-    protected $fillable = ['teamId','name', 'leadBy', 'createdBy', 'created_at', 'updated_at'];
+    protected $fillable = ['teamId', 'name', 'leadBy', 'createdBy', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'teamId';
 
@@ -19,5 +19,14 @@ class Team extends Model
     public function leadByEmp()
     {
         return $this->hasOne(Employee::class, 'employeeId', 'leadBy');
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', "%$search%")
+            ->orWhereHas('leadByEmp', function ($q) use ($search) {
+                $q->select('employeeId')->where('firstName', 'like', "%$search%")
+                    ->orWhere('lastName', 'like', "%$search%");
+            });
     }
 }

@@ -11,8 +11,8 @@ use Illuminate\Http\Request;
 class TeamController extends BaseController
 {
     const VALIDATION_RULES = [
-        'name' => 'required|string|max:255', 
-        'leadBy' => 'required|integer', 
+        'name' => 'required|string|max:255',
+        'leadBy' => 'required|integer',
         'createdBy' => 'required|integer',
     ];
 
@@ -26,13 +26,19 @@ class TeamController extends BaseController
     public function index()
     {
         try {
-            $team = (new Collection(TeamResource::collection(Team::all())))->paginate(self::NumPaginate);
-            return $this->sendResponse($team, 'team retrieved successfully');
+            $Team = new Team;
+            if (request()->has('search')) {
+                $Team = $Team->search(request()->search);
+            }
+            $Team = (new Collection(TeamResource::collection($Team->get())))->paginate(self::NumPaginate);
+            return $this->sendResponse($Team, 'Team retrieved successfully.');
+            // $team = (new Collection(TeamResource::collection(Team::all())))->paginate(self::NumPaginate);
+            // return $this->sendResponse($team, 'team retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team ', $th->getMessage());
         }
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *

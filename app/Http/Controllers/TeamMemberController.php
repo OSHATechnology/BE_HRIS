@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\TeamMemberResource;
-use App\Models\Team;
 use App\Models\TeamMember;
 use App\Support\Collection;
 use Illuminate\Http\Request;
@@ -28,13 +27,16 @@ class TeamMemberController extends BaseController
     public function index()
     {
         try {
+            $TeamMembers = new TeamMember;
             if (request()->has('teamid')) {
-                $teamId = request()->teamid;
-                $teamMembers = (new Collection(TeamMemberResource::collection(TeamMember::where('teamId', $teamId)->get())))->paginate(self::NumPaginate);
-                return $this->sendResponse($teamMembers, 'Team members retrieved successfully.');
+                $TeamMembers = $TeamMembers->byTeam(request()->teamid);
             }
-            $member = (new Collection(TeamMemberResource::collection(TeamMember::all())))->paginate(self::NumPaginate);
-            return $this->sendResponse($member, 'team member retrieved successfully');
+
+            if (request()->has('search')) {
+                $TeamMembers = $TeamMembers->search(request()->search);
+            }
+            $TeamMembers = (new Collection(TeamMemberResource::collection($TeamMembers->get())))->paginate(self::NumPaginate);
+            return $this->sendResponse($TeamMembers, 'Team members retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving team member', $th->getMessage());
         }
@@ -116,6 +118,26 @@ class TeamMemberController extends BaseController
             return $this->sendResponse($member, 'team member deleted successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error deleting team member', $th->getMessage());
+        }
+    }
+
+    /**
+     * Search the specified resource from model.
+     *
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function search($search)
+    {
+        try {
+            $members = TeamMember::whereHas('memberDetail', function ($query) use ($search) {
+                $query->select('memberId')->where('firstName', 'like', "%$search%")
+                    ->orWhere('lastName', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%");
+            });
+            return $members;
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 }
