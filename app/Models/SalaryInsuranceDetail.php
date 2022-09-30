@@ -21,11 +21,11 @@ class SalaryInsuranceDetail extends Model
 
     public function insuranceItem()
     {
-        return $this->belongsTo(InsuranceItem::class);
+        return $this->belongsTo(InsuranceItem::class, 'insItemId', 'insItemId');
     }
 
     public function salary()
     {
-        return $this->belongsTo(Salary::class);
+        return $this->belongsTo(Salary::class, 'salaryId', 'salaryId');
     }
 }
