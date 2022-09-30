@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\LoanResource;
 use App\Models\Loan;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
-class LoanController extends Controller
+class LoanController extends BaseController
 {
+    const VALIDATION_RULES = [
+        'empId' => 'required|integer',
+        'name' => 'required|string|max:255',
+        'nominal' => 'required|integer',
+        'loanDate' => 'required|date',
+        'status' => 'required|boolean',
+    ];
+
+    const NumPaginate = 10;
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +26,15 @@ class LoanController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        try {
+            if(request()->has('search')){
+                return $this->search(request());
+            }
+            $loan = (new Collection(LoanResource::collection(Loan::all())))->paginate(self::NumPaginate);
+            return $this->sendResponse($loan, "loan retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving loan");
+        }
     }
 
     /**
@@ -35,7 +45,20 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $loan = new Loan;
+            $loan->empId = $request->empId;
+            $loan->name = $request->name;
+            $loan->nominal = $request->nominal;
+            $loan->loanDate = $request->loanDate;
+            $loan->paymentDate = $request->paymentDate;
+            $loan->status = $request->status;
+            $loan->save();
+            return $this->sendResponse(new LoanResource($loan), "loan created successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error creating loan", $th->getMessage());
+        }
     }
 
     /**
@@ -44,20 +67,14 @@ class LoanController extends Controller
      * @param  \App\Models\Loan  $loan
      * @return \Illuminate\Http\Response
      */
-    public function show(Loan $loan)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Loan  $loan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Loan $loan)
-    {
-        //
+        try {
+            $loan = Loan::findOrFail($id);
+            return $this->sendResponse(new LoanResource($loan), "loan retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving loan", $th->getMessage());
+        }
     }
 
     /**
@@ -67,9 +84,22 @@ class LoanController extends Controller
      * @param  \App\Models\Loan  $loan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Loan $loan)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $loan = Loan::findOrFail($id);
+            $loan->empId = $request->empId;
+            $loan->name = $request->name;
+            $loan->nominal = $request->nominal;
+            $loan->loanDate = $request->loanDate;
+            $loan->paymentDate = $request->paymentDate;
+            $loan->status = $request->status;
+            $loan->save();
+            return $this->sendResponse($loan, "loan updated successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error updating loan", $th->getMessage());
+        }
     }
 
     /**
@@ -78,8 +108,32 @@ class LoanController extends Controller
      * @param  \App\Models\Loan  $loan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Loan $loan)
+    public function destroy($id)
     {
-        //
+        try {
+            $loan = Loan::findOrFail($id);
+            $loan->delete();
+            return $this->sendResponse($loan, "loan deleted successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error deleting loan", $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if($request->filled('search')){
+                $query = Loan::join('employees', 'loans.empId', '=', 'employees.employeeId')
+                                    ->where('employees.firstName', 'like', '%'.$request->search.'%')
+                                    ->get();
+                $users =   (new Collection(LoanResource::collection($query)))->paginate(self::NumPaginate);
+                
+            }else{
+                $users = (new Collection(LoanResource::collection(Loan::all())))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($users, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
+        }
     }
 }

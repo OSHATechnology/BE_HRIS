@@ -19,6 +19,7 @@ use App\Http\Controllers\FurloughController;
 use App\Http\Controllers\FurloughTypeController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\InsuranceItemController;
+use App\Http\Controllers\LoanController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SalaryController;
@@ -88,4 +89,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('insurance', InsuranceController::class);
     Route::apiResource('insurance_item', InsuranceItemController::class);
     Route::apiResource('salary_insurance_detail', SalaryInsuranceDetailController::class);
+    Route::apiResource('loan', LoanController::class);
 });
