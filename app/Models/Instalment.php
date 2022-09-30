@@ -25,4 +25,14 @@ class Instalment extends Model
     {
         return $this->hasOne(Loan::class, 'loanId', 'loanId');
     }
+
+    public static function getLastRemainder($loanId)
+    {
+        $lastRemainder = Instalment::where('loanId', $loanId)->orderBy('date', 'desc')->first();
+        if ($lastRemainder) {
+            return $lastRemainder->remainder;
+        } else {
+            return null;
+        }
+    }
 }
