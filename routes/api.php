@@ -93,4 +93,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('loan', LoanController::class);
     Route::get('instalment_by_loan/{id}', [InstalmentController::class, 'showByLoan']);
     Route::apiResource('instalment', InstalmentController::class);
+
+    Route::get('/auto_salary/{id}', [SalaryController::class, 'autoSalary']);
 });
