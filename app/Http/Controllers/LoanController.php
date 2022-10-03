@@ -47,6 +47,12 @@ class LoanController extends BaseController
     {
         try {
             $this->validate($request, self::VALIDATION_RULES);
+            
+            $statusLastLoan = Loan::getLastLoan($request->empId);
+            if ($statusLastLoan == 0) {
+                return $this->sendResponse([], "you can't make a loan because the previous loan has not been paid off", 400);
+            }
+            
             $loan = new Loan;
             $loan->empId = $request->empId;
             $loan->name = $request->name;

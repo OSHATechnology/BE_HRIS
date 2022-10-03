@@ -27,4 +27,14 @@ class Loan extends Model
     {
         return $this->hasOne(Employee::class, 'employeeId', 'empId');
     }
+
+    public static function getLastLoan($id)
+    {
+        $lastLoan = Loan::where("empId", $id)->orderBy('created_at', 'desc')->first();
+        if ($lastLoan) {
+            return $lastLoan->status;
+        } else {
+            return null;
+        }
+    }
 }
