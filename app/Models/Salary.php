@@ -15,9 +15,7 @@ class Salary extends Model
         'totalOvertime',
         'overtimeFee',
         'bonus',
-        'cutDetailsId',
         'gross',
-        'net', 
         'created_at', 
         'updated_at'
     ];
