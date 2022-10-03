@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\SalaryInsuranceDetailResource;
+use App\Models\EmployeeFamily;
 use App\Models\InsuranceItem;
 use App\Models\Salary;
 use App\Models\SalaryInsuranceDetail;
@@ -46,7 +47,12 @@ class SalaryInsuranceDetailController extends BaseController
             $this->validate($request, self::VALIDATION_RULES);
             $salary = Salary::findOrFail($request->salaryId);
             $insurance = InsuranceItem::findOrFail($request->insItemId);
-            $nominal = ($salary->basic * $insurance->percent) / 100;
+            $totalEmployee = EmployeeFamily::where("empId", $salary->empId)->get();
+            $plusPercent = 0;
+            if (count($totalEmployee) > 5 && $insurance->type == "deduction" && strtolower($insurance->name) == "bpjs kesehatan") {
+                $plusPercent = count($totalEmployee) - 5;
+            }
+            $nominal = ($salary->basic * ($insurance->percent + $plusPercent)) / 100;
             $salaryIns = new SalaryInsuranceDetail;
             $salaryIns->salaryId = $request->salaryId;
             $salaryIns->insItemId = $request->insItemId;
