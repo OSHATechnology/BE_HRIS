@@ -49,19 +49,19 @@ class LoanController extends BaseController
             $this->validate($request, self::VALIDATION_RULES);
             
             $statusLastLoan = Loan::getLastLoan($request->empId);
-            if ($statusLastLoan == 0) {
+            if ($statusLastLoan == null) {
+                $loan = new Loan;
+                $loan->empId = $request->empId;
+                $loan->name = $request->name;
+                $loan->nominal = $request->nominal;
+                $loan->loanDate = $request->loanDate;
+                $loan->paymentDate = $request->paymentDate;
+                $loan->status = $request->status;
+                $loan->save();
+                return $this->sendResponse(new LoanResource($loan), "loan created successfully");
+            } else if ($statusLastLoan == 0) {
                 return $this->sendResponse([], "you can't make a loan because the previous loan has not been paid off", 400);
             }
-            
-            $loan = new Loan;
-            $loan->empId = $request->empId;
-            $loan->name = $request->name;
-            $loan->nominal = $request->nominal;
-            $loan->loanDate = $request->loanDate;
-            $loan->paymentDate = $request->paymentDate;
-            $loan->status = $request->status;
-            $loan->save();
-            return $this->sendResponse(new LoanResource($loan), "loan created successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error creating loan", $th->getMessage());
         }
