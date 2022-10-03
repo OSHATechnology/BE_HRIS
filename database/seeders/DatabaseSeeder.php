@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\AttendanceStatus;
 use App\Models\FurloughType;
+use App\Models\Notification;
 use App\Models\StatusHire;
 use App\Models\Team;
 use App\Models\WorkPermit;
@@ -34,6 +35,10 @@ class DatabaseSeeder extends Seeder
             FurloughSeeder::class,
             TeamSeeder::class,
             TeamMemberSeeder::class,
+            OvertimeSeeder::class,
+            NotificationSeeder::class,
+            BasicSalaryByRoleSeeder::class,
+            EmployeeFamilyStatusSeeder::class,
         ]);
     }
 }

@@ -14,11 +14,8 @@ class Salary extends Model
         'basic',
         'totalOvertime',
         'overtimeFee',
-        'allowance',
         'bonus',
-        'cutDetailsId',
         'gross',
-        'net', 
         'created_at', 
         'updated_at'
     ];
@@ -29,5 +26,10 @@ class Salary extends Model
     {
         return $this->hasOne(Employee::class, 'employeeId', 'empId');
     }    
+
+    public function insuranceItem()
+    {
+        return $this->belongsToMany(InsuranceItem::class, 'salary_insurance_details', 'salaryId', 'insItemId');
+    }
             
 }

@@ -13,18 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('salary_cut_details', function (Blueprint $table) {
-            $table->id('salaryCutDetailsId');
+        Schema::create('salary_insurance_details', function (Blueprint $table) {
+            $table->id('salaryInsId');
             $table->unsignedBigInteger('salaryId');
-            $table->integer('totalAttendance')->default('0');
-            $table->integer('attdFeeReduction')->default('0');
-            $table->unsignedBigInteger('loanId');
-            $table->integer('etc')->default('0');
-            $table->integer('total')->default('0');
-            $table->integer('net')->default('0');
+            $table->unsignedBigInteger('insItemId');
+            $table->integer('nominal')->default(0);
+            $table->timestamp('date')->nullable();
             $table->timestamps();
 
             $table->foreign('salaryId')->references('salaryId')->on('salaries');
+            $table->foreign('insItemId')->references('insItemId')->on('insurance_items');
         });
     }
 
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('salary_cut_details');
+        Schema::dropIfExists('salary_insurance_details');
     }
 };

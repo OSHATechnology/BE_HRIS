@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('salaries', function (Blueprint $table) {
-            $table->id('salaryId');
+        Schema::create('loans', function (Blueprint $table) {
+            $table->id('loanId');
             $table->unsignedBigInteger('empId');
-            $table->integer('basic')->default('0');
-            $table->integer('totalOvertime')->default('0');
-            $table->integer('overtimeFee')->default('0');
-            $table->integer('bonus')->default('0');
-            $table->integer('gross')->default('0');
+            $table->string('name');
+            $table->integer('nominal')->default(0);
+            $table->timestamp('loanDate')->nullable();
+            $table->timestamp('paymentDate')->nullable();
+            $table->boolean('status')->default(0);
             $table->timestamps();
 
             $table->foreign('empId')->references('employeeId')->on('employees');
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('salaries');
+        Schema::dropIfExists('loans');
     }
 };
