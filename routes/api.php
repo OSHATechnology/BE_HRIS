@@ -64,6 +64,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('employee/update_password/{id}', [EmployeeController::class, 'update_password']);
     Route::get('employee/trash', [EmployeeController::class, 'trash']);
     Route::get('employee/restore/{id}', [EmployeeController::class, 'restore']);
+    Route::post('employee/{id}', [EmployeeController::class, 'update']);
     Route::apiResource('employee', EmployeeController::class);
     Route::apiResource('notification', NotificationController::class);
     Route::apiResource('status_hire', StatusHireController::class);
@@ -75,6 +76,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('work_permit', WorkPermitController::class);
     Route::apiResource('team', TeamController::class);
     Route::apiResource('team_member', TeamMemberController::class);
+    Route::post('partners/{id}', [PartnerController::class, 'update']);
     Route::apiResource('partners', PartnerController::class)->except(['create', 'edit']);
     Route::apiResource('basic_salary_by_role', BasicSalaryByRoleController::class);
     Route::apiResource('basic_salary_by_employee', BasicSalaryByEmployeeController::class);
