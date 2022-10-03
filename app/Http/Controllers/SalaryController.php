@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\SalaryResource;
+use App\Models\Attendance;
 use App\Models\BasicSalaryByEmployee;
 use App\Models\BasicSalaryByRole;
 use App\Models\Employee;
+use App\Models\EmployeeFamily;
+use App\Models\Insurance;
+use App\Models\InsuranceItem;
 use App\Models\Overtime;
 use App\Models\Salary;
+use App\Models\SalaryInsuranceDetail;
 use App\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,16 +22,11 @@ class SalaryController extends BaseController
 {
     const VALIDATION_RULES = [
         'empId' =>  "required|integer",
-        'basic' => "required|integer",
-        'totalOvertime' => "required|integer",
-        'overtimeFee' => "required|integer",
-        'allowance' => "required|integer",
         'bonus' => "required|integer",
-        'gross' => "required|integer",
-        'net' => "required|integer",
     ];
 
     const NumPaginate = 10;
+    const feeOneHour = 100000;
 
     /**
      * Display a listing of the resource.
@@ -36,9 +36,10 @@ class SalaryController extends BaseController
     public function index()
     {
         try {
-            // $salary = ((new Collection(new SalaryResource::collection(Salary::all())))->paginate(self::NumPaginate);
+            $salary = (new Collection(SalaryResource::collection(Salary::all())))->paginate(self::NumPaginate);
+            return $this->sendResponse($salary, "salary retrieved successfully");
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->sendError("error retrieving salary", $th->getMessage());
         }
     }
 
@@ -88,7 +89,34 @@ class SalaryController extends BaseController
      */
     public function store(Request $request)
     {
-        // 
+        // dd("hallo");
+        $emp = Employee::findOrFail($request->empId);
+            $overtime = Overtime::where('employeeId', $request->empId)->first();
+            $start = date('H', strtotime($overtime->startAt)); 
+            $end = date('H', strtotime($overtime->endAt)); 
+            $hour = $end - $start;
+            $basicEmp = BasicSalaryByEmployee::where('empId', $request->empId)->first();
+            if ($basicEmp !== null) {
+                $basicByRole = BasicSalaryByRole::find($basicEmp->basicSalaryByRoleId);
+                $basicSalary = $basicByRole->fee + $basicEmp->fee;
+            } else {
+                $basicByRole = BasicSalaryByRole::where('roleId', $emp->roleId)->first();
+                $basicSalary = $basicByRole->fee;
+            }
+
+        $salary = new Salary;
+        $salary->empId = $request->empId;
+        $salary->basic = $basicSalary;
+        $salary->totalOvertime = $hour;
+
+        $overtimeFee = $hour * self::feeOneHour;
+        $salary->overtimeFee = $overtimeFee;
+
+        $bonus = $request->bonus;
+        $salary->bonus = $request->bonus;
+
+        $salary->gross = $basicSalary + $overtimeFee + $bonus;
+        $salary->save();
     }
 
     /**
@@ -97,20 +125,14 @@ class SalaryController extends BaseController
      * @param  \App\Models\Salary  $salary
      * @return \Illuminate\Http\Response
      */
-    public function show(Salary $salary)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Salary  $salary
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Salary $salary)
-    {
-        //
+        try {
+            $salary = Salary::findOrFail($id);
+            return $this->sendResponse(new SalaryResource($salary), "salary retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("error retrieving salary", $th->getMessage());
+        }
     }
 
     /**
@@ -120,9 +142,40 @@ class SalaryController extends BaseController
      * @param  \App\Models\Salary  $salary
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Salary $salary)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $emp = Employee::findOrFail($request->empId);
+            $overtime = Overtime::where('employeeId', $request->empId)->first();
+            $start = date('H', strtotime($overtime->startAt)); 
+            $end = date('H', strtotime($overtime->endAt)); 
+            $hour = $end - $start;
+            $basicEmp = BasicSalaryByEmployee::where('empId', $request->empId)->first();
+            if ($basicEmp !== null) {
+                $basicByRole = BasicSalaryByRole::find($basicEmp->basicSalaryByRoleId);
+                $basicSalary = $basicByRole->fee + $basicEmp->fee;
+            } else {
+                $basicByRole = BasicSalaryByRole::where('roleId', $emp->roleId)->first();
+                $basicSalary = $basicByRole->fee;
+            }
+
+            $salary = Salary::findOrFail($id);
+            $salary->empId = $request->empId;
+            $salary->basic = $basicSalary;
+            $salary->totalOvertime = $hour;
+
+            $overtimeFee = $hour * self::feeOneHour;
+            $salary->overtimeFee = $overtimeFee;
+
+            $bonus = $request->bonus;
+            $salary->bonus = $request->bonus;
+
+            $salary->gross = $basicSalary + $overtimeFee + $bonus;
+            $salary->save();
+            return $this->sendResponse($salary, "salary updated succesfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error updating salary");
+        }
     }
 
     /**
@@ -131,8 +184,14 @@ class SalaryController extends BaseController
      * @param  \App\Models\Salary  $salary
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Salary $salary)
+    public function destroy($id)
     {
-        //
+        try {
+            $salary = Salary::findOrFail($id);
+            $salary->delete();
+            return $this->sendResponse($salary, "salary deleted successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("error deleting salary", $th->getMessage());
+        }
     }
 }

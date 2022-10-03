@@ -23,10 +23,8 @@ class SalaryResource extends JsonResource
             'basicSalary' => $this->basic,
             'totalOvertime' => $this->totalOvertime,
             'overtimeFee' => $this->overtimeFee,
-            'allowance' => $this->allowance,
             'bonus' => $this->bonus,
             'gross' => $this->gross,
-            'net' => $this->net,
         ];
     }
 }
