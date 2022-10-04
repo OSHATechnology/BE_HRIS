@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\SalaryAllowanceResource;
 use App\Models\SalaryAllowance;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
-class SalaryAllowanceController extends Controller
+class SalaryAllowanceController extends BaseController
 {
+    const VALIDATION_RULES = [
+        "salaryId" => "required|integer",
+        "allowanceName" => "required|string|max:255",
+        "nominal" => "required|integer",
+    ];
+
+    const NumPeginate = 10;
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +24,12 @@ class SalaryAllowanceController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        try {
+            $salaryAllowance = (new Collection(SalaryAllowanceResource::collection(SalaryAllowance::all())))->paginate(self::NumPeginate);
+            return $this->sendResponse($salaryAllowance, "salary allowance retrieved succesfully"); 
+        } catch (\Throwable $th) {
+            return $this->sendError($salaryAllowance, "salary allowance retrieved succesfully"); 
+        }
     }
 
     /**
@@ -35,7 +40,17 @@ class SalaryAllowanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $salaryAllowance = new SalaryAllowance;
+            $salaryAllowance->salaryId = $request->salaryId;
+            $salaryAllowance->allowanceName = $request->allowanceName;
+            $salaryAllowance->nominal = $request->nominal;
+            $salaryAllowance->save();
+            return $this->sendResponse(new SalaryAllowanceResource($salaryAllowance), "salary allowance created successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error creating salary allowance", $th->getMessage());
+        }
     }
 
     /**
@@ -44,20 +59,14 @@ class SalaryAllowanceController extends Controller
      * @param  \App\Models\SalaryAllowance  $salaryAllowance
      * @return \Illuminate\Http\Response
      */
-    public function show(SalaryAllowance $salaryAllowance)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SalaryAllowance  $salaryAllowance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SalaryAllowance $salaryAllowance)
-    {
-        //
+        try {
+            $salaryAllowance = SalaryAllowance::findOrFail($id);
+            return $this->sendResponse(new SalaryAllowanceResource($salaryAllowance), "salary allowance retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving salary allowance", $th->getMessage());
+        }
     }
 
     /**
@@ -67,9 +76,19 @@ class SalaryAllowanceController extends Controller
      * @param  \App\Models\SalaryAllowance  $salaryAllowance
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SalaryAllowance $salaryAllowance)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $salaryAllowance = SalaryAllowance::findOrFail($id);
+            $salaryAllowance->salaryId = $request->salaryId;
+            $salaryAllowance->allowanceName = $request->allowanceName;
+            $salaryAllowance->nominal = $request->nominal;
+            $salaryAllowance->save();
+            return $this->sendResponse($salaryAllowance, "salary allowance updated successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error updating salary allowance", $th->getMessage());
+        }
     }
 
     /**
@@ -78,8 +97,14 @@ class SalaryAllowanceController extends Controller
      * @param  \App\Models\SalaryAllowance  $salaryAllowance
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SalaryAllowance $salaryAllowance)
+    public function destroy($id)
     {
-        //
+        try {
+            $salaryAllowance = SalaryAllowance::findOrFail($id);
+            $salaryAllowance->delete();
+            return $this->sendResponse($salaryAllowance, "salary allowance deleted successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error deleting salary allowance", $th->getMessage());
+        }
     }
 }

@@ -23,6 +23,7 @@ use App\Http\Controllers\InsuranceItemController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\SalaryAllowanceController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SalaryCutDetailController;
 use App\Http\Controllers\SalaryInsuranceDetailController;
@@ -95,4 +96,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('loan', LoanController::class);
     Route::get('instalment_by_loan/{id}', [InstalmentController::class, 'showByLoan']);
     Route::apiResource('instalment', InstalmentController::class);
+    Route::apiResource('salary_allowance', SalaryAllowanceController::class);
 });

@@ -14,6 +14,8 @@ class SalaryAllowance extends Model
         "salaryId",
         "allowanceName",
         "nominal",
+        "created_at",
+        "updated_at",
     ];
 
     protected $primaryKey = "salaryAllowanceId";
