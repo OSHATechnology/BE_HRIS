@@ -7,6 +7,7 @@ use App\Http\Resources\OvertimeResource;
 use App\Models\Overtime;
 use App\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OvertimeController extends BaseController
 {
@@ -14,7 +15,6 @@ class OvertimeController extends BaseController
         'employeeId' => 'required|integer',
         'startAt' => 'required|date',
         'endAt' => 'date',
-        'assignedBy' => 'required|integer'
     ];
 
     const NumPaginate = 10;
@@ -61,7 +61,7 @@ class OvertimeController extends BaseController
             $overtime->employeeId = $request->employeeId;
             $overtime->startAt = $request->startAt;
             $overtime->endAt = $request->endAt;
-            $overtime->assignedBy = $request->assignedBy;
+            $overtime->assignedBy = Auth::id();
             $overtime->save();
             return $this->sendResponse(new OvertimeResource($overtime), 'Overtime created successfully.');
         } catch (\Throwable $th) {
@@ -101,7 +101,7 @@ class OvertimeController extends BaseController
             $overtime->employeeId = $request->employeeId;
             $overtime->startAt = $request->startAt;
             $overtime->endAt = $request->endAt;
-            $overtime->assignedBy = $request->assignedBy;
+            $overtime->assignedBy = Auth::id();
             $overtime->save();
             return $this->sendResponse($overtime, 'Overtime updated successfully.');
         } catch (\Throwable $th) {
