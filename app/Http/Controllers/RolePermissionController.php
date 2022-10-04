@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\PermissionsResource;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\RolePermission;
@@ -19,9 +20,19 @@ class RolePermissionController extends BaseController
 
     const NumPaginate = 10;
 
-    public function index()
+    public function index(Request $request)
     {
         try {
+            if ($request->has('roleId')) {
+
+                $column = $request->has('column') ? $request->column : 'tag';
+                $rolePermis = RolePermission::where('roleId', $request->roleId)->get();
+                $permissions = Permission::whereIn('permissionId', $rolePermis->pluck('permissionId'))->get();
+                $permissions = $permissions->groupBy($column);
+
+                return $this->sendResponse(new PermissionsResource($permissions), 'Permissions retrieved successfully.');
+            }
+
             $rolePermissions = (new Collection(RolePermission::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($rolePermissions, 'RolePermissions retrieved successfully.');
         } catch (\Exception $e) {
