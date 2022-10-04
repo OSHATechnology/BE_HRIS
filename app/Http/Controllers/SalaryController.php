@@ -89,12 +89,19 @@ class SalaryController extends BaseController
      */
     public function store(Request $request)
     {
-        // dd("hallo");
-        $emp = Employee::findOrFail($request->empId);
-            $overtime = Overtime::where('employeeId', $request->empId)->first();
-            $start = date('H', strtotime($overtime->startAt)); 
-            $end = date('H', strtotime($overtime->endAt)); 
-            $hour = $end - $start;
+        try {
+            $now = date('Y-m');
+            $emp = Employee::findOrFail($request->empId);
+            $overtime = Overtime::where('employeeId', $request->empId)
+                                ->where('startAt', 'like', $now . '%')
+                                ->get();
+            $totalHour = 0;
+            for ($i=0; $i <= count($overtime)-1; $i++) { 
+                $start = date('H', strtotime($overtime[$i]->startAt)); 
+                $end = date('H', strtotime($overtime[$i]->endAt)); 
+                $hour = $end - $start;
+                $totalHour = $totalHour + $hour;
+            }
             $basicEmp = BasicSalaryByEmployee::where('empId', $request->empId)->first();
             if ($basicEmp !== null) {
                 $basicByRole = BasicSalaryByRole::find($basicEmp->basicSalaryByRoleId);
@@ -103,20 +110,23 @@ class SalaryController extends BaseController
                 $basicByRole = BasicSalaryByRole::where('roleId', $emp->roleId)->first();
                 $basicSalary = $basicByRole->fee;
             }
-
-        $salary = new Salary;
-        $salary->empId = $request->empId;
-        $salary->basic = $basicSalary;
-        $salary->totalOvertime = $hour;
-
-        $overtimeFee = $hour * self::feeOneHour;
-        $salary->overtimeFee = $overtimeFee;
-
-        $bonus = $request->bonus;
-        $salary->bonus = $request->bonus;
-
-        $salary->gross = $basicSalary + $overtimeFee + $bonus;
-        $salary->save();
+            $salary = new Salary;
+            $salary->empId = $request->empId;
+            $salary->basic = $basicSalary;
+            $salary->totalOvertime = $totalHour;
+    
+            $overtimeFee = $hour * self::feeOneHour;
+            $salary->overtimeFee = $overtimeFee;
+    
+            $bonus = $request->bonus;
+            $salary->bonus = $request->bonus;
+    
+            $salary->gross = $basicSalary + $overtimeFee + $bonus;
+            $salary->save();
+            return $this->sendResponse(new SalaryResource($salary), "salary created succesfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error creating salary", $th->getMessage());
+        }
     }
 
     /**
