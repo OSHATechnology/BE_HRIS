@@ -39,6 +39,11 @@ class PermissionController extends BaseController
                 return $this->search(request());
             }
 
+            if (request()->has('show_role')) {
+                $Permissions =  (new Collection(Permission::with('roles')->get()))->paginate(self::NumPaginate);
+                return $this->sendResponse($Permissions, 'Permissions retrieved successfully.');
+            }
+
             $permissions = (new Collection(Permission::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($permissions, 'Permissions retrieved successfully.');
         } catch (\Throwable $th) {
