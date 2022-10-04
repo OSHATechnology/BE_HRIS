@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class TypeOfAllowance extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         "typeId",
@@ -18,4 +19,11 @@ class TypeOfAllowance extends Model
     ];
 
     protected $primaryKey = "typeId";
+
+    public function toSearchableArray()
+    {
+        return [
+            'name' => $this->name
+        ];
+    }
 }

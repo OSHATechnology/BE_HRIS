@@ -29,6 +29,7 @@ use App\Http\Controllers\SalaryCutDetailController;
 use App\Http\Controllers\SalaryInsuranceDetailController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TodayAttendanceController;
+use App\Http\Controllers\TypeOfAllowanceController;
 use App\Http\Controllers\WorkPermitController;
 use App\Models\BasicSalaryByEmployee;
 use App\Models\Employee;
@@ -97,4 +98,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('instalment_by_loan/{id}', [InstalmentController::class, 'showByLoan']);
     Route::apiResource('instalment', InstalmentController::class);
     Route::apiResource('salary_allowance', SalaryAllowanceController::class);
+    Route::apiResource('type_of_allowance', TypeOfAllowanceController::class);
 });
