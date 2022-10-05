@@ -20,6 +20,11 @@ class TypeOfAllowance extends Model
 
     protected $primaryKey = "typeId";
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'allowances', 'typeId', 'roleId');
+    }
+
     public function toSearchableArray()
     {
         return [

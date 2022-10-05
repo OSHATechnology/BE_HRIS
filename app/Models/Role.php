@@ -19,6 +19,13 @@ class Role extends Model
         return $this->belongsToMany(Permission::class, 'role_permissions', 'roleId', 'permissionId');
     }
 
+    public function type_of_allowances()
+    {
+        return $this->belongsToMany(TypeOfAllowance::class, 'allowances', 'roleId', 'typeId');
+    }
+
+
+
     public static function getIdsByName($name)
     {
         $role = self::where('nameRole', $name)->first();
