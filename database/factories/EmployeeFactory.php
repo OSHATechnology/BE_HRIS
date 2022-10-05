@@ -22,7 +22,7 @@ class EmployeeFactory extends Factory
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
             'password' => bcrypt('password'),
-            'photo' => 'assets/emp_img.png',
+            'photo' => 'emp_img.png',
             'gender' => $this->faker->randomElement(['man', 'woman']),
             'birthDate' => $this->faker->date(),
             'address' => $this->faker->address,
