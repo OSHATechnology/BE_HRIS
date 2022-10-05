@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employee;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -64,7 +65,7 @@ class EmployeeSeeder extends Seeder
 
             ]
         ];
-
         DB::table('employees')->insert($permissions);
+        Employee::factory()->count(50)->create();
     }
 }
