@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AllowanceController;
 use App\Http\Controllers\AttendanceStatusController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\NotificationController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TodayAttendanceController;
 use App\Http\Controllers\TypeOfAllowanceController;
 use App\Http\Controllers\WorkPermitController;
+use App\Models\Allowance;
 use App\Models\BasicSalaryByEmployee;
 use App\Models\Employee;
 use App\Models\WorkPermit;
@@ -99,4 +101,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('instalment', InstalmentController::class);
     Route::apiResource('salary_allowance', SalaryAllowanceController::class);
     Route::apiResource('type_of_allowance', TypeOfAllowanceController::class);
+    Route::apiResource('allowance', AllowanceController::class);
 });

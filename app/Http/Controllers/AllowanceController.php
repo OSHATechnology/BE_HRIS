@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\AllowanceResource;
 use App\Models\Allowance;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
-class AllowanceController extends Controller
+class AllowanceController extends BaseController
 {
+    const VALIDATION_RULES = [
+        "roleId" => "required|integer",
+        "typeId" => "required|integer",
+    ];
+
+    const NumPaginate = 10;
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +23,12 @@ class AllowanceController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        try {
+            $allowance = (new Collection(AllowanceResource::collection(Allowance::all())))->paginate(self::NumPaginate);
+            return $this->sendResponse($allowance, "allowance retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("error retrieving allowance", $th->getMessage());
+        }
     }
 
     /**
@@ -35,7 +39,16 @@ class AllowanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $allowance = new Allowance;
+            $allowance->roleId = $request->roleId;
+            $allowance->typeId = $request->typeId;
+            $allowance->save();
+            return $this->sendResponse(new AllowanceResource($allowance), "allowance created successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error creating allowance", $th->getMessage());
+        }
     }
 
     /**
@@ -44,20 +57,14 @@ class AllowanceController extends Controller
      * @param  \App\Models\Allowance  $allowance
      * @return \Illuminate\Http\Response
      */
-    public function show(Allowance $allowance)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Allowance  $allowance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Allowance $allowance)
-    {
-        //
+        try {
+            $allowance = Allowance::findOrFail($id);
+            return $this->sendResponse(new AllowanceResource($allowance), "allowance retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving allowance", $th->getMessage());
+        }
     }
 
     /**
@@ -67,9 +74,18 @@ class AllowanceController extends Controller
      * @param  \App\Models\Allowance  $allowance
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Allowance $allowance)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $this->validate($request, self::VALIDATION_RULES);
+            $allowance = Allowance::findOrFail($id);
+            $allowance->roleId = $request->roleId;
+            $allowance->typeId = $request->typeId;
+            $allowance->save();
+            return $this->sendResponse($allowance, "allowance updated successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error updating allowance", $th->getMessage());
+        }
     }
 
     /**
@@ -78,8 +94,14 @@ class AllowanceController extends Controller
      * @param  \App\Models\Allowance  $allowance
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Allowance $allowance)
+    public function destroy($id)
     {
-        //
+        try {
+            $allowance = Allowance::findOrFail($id);
+            $allowance->delete();
+            return $this->sendResponse($allowance, "allowance deleted successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error deleting allowance", $th->getMessage());
+        }
     }
 }

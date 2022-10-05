@@ -19,11 +19,11 @@ class Allowance extends Model
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, "roleId", "roleId");
     }
 
     public function typeOfAllowance()
     {
-        return $this->belongsTo(TypeOfAllowance::class);
+        return $this->belongsTo(TypeOfAllowance::class, "typeId", "typeId");
     }
 }
