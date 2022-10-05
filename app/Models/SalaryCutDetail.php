@@ -13,7 +13,7 @@ class SalaryCutDetail extends Model
         'salaryId',
         'totalAttendance',
         'attdFeeReduction',
-        'loan',
+        'loanId',
         'etc',
         'total',
         'net',
@@ -26,5 +26,10 @@ class SalaryCutDetail extends Model
     public function salary()
     {
         return $this->hasOne(Salary::class, 'salaryId', 'salaryId');
+    }
+
+    public function loan()
+    {
+        return $this->hasOne(Loan::class, 'loanId', 'loanId');
     }
 }

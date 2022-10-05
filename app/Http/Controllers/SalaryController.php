@@ -96,11 +96,14 @@ class SalaryController extends BaseController
                                 ->where('startAt', 'like', $now . '%')
                                 ->get();
             $totalHour = 0;
-            for ($i=0; $i <= count($overtime)-1; $i++) { 
-                $start = date('H', strtotime($overtime[$i]->startAt)); 
-                $end = date('H', strtotime($overtime[$i]->endAt)); 
-                $hour = $end - $start;
-                $totalHour = $totalHour + $hour;
+            $hour = 0;
+            if (count($overtime) !== 0) {
+                for ($i=0; $i <= count($overtime)-1; $i++) { 
+                    $start = date('H', strtotime($overtime[$i]->startAt)); 
+                    $end = date('H', strtotime($overtime[$i]->endAt)); 
+                    $hour = $end - $start;
+                    $totalHour = $totalHour + $hour;
+                }
             }
             $basicEmp = BasicSalaryByEmployee::where('empId', $request->empId)->first();
             if ($basicEmp !== null) {

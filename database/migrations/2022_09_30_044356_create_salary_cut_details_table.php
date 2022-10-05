@@ -25,6 +25,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('salaryId')->references('salaryId')->on('salaries');
+            $table->foreign('loanId')->references('loanId')->on('loans');
         });
     }
 

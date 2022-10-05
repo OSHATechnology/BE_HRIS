@@ -35,4 +35,14 @@ class Instalment extends Model
             return null;
         }
     }
+
+    public static function getLastNominal($loanId)
+    {
+        $lastRemainder = Instalment::where('loanId', $loanId)->orderBy('date', 'desc')->first();
+        if ($lastRemainder) {
+            return $lastRemainder->nominal;
+        } else {
+            return null;
+        }
+    }
 }
