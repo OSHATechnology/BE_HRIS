@@ -16,14 +16,24 @@ class AttendanceFactory extends Factory
      */
     public function definition()
     {
+        $type = $this->faker->numberBetween(1, 3);
         $empId = $this->faker->numberBetween(2, 10);
         $dateTime = $this->faker->dateTimeBetween('-1 month', 'now');
+        switch ($type) {
+            case 1:
+                $inOut = $this->faker->randomElement(['in', 'out']);
+                break;
+
+            default:
+                $inOut = '-';
+                break;
+        }
         return [
             'employeeId' => $empId,
-            'attendanceStatusId' => 1,
+            'attendanceStatusId' => $type,
             'submitedAt' => $dateTime,
             'submitedById' => $empId,
-            'typeInOut' => $this->faker->randomElement(['in', 'out']),
+            'typeInOut' => $inOut,
             'timeAttend' => $dateTime,
         ];
     }
