@@ -39,6 +39,10 @@ class DatabaseSeeder extends Seeder
             NotificationSeeder::class,
             BasicSalaryByRoleSeeder::class,
             EmployeeFamilyStatusSeeder::class,
+            InsuranceSeeder::class,
+            InsuranceItemSeeder::class,
+            TypeOfAllowanceSeeder::class,
+            AllowanceSeeder::class,
         ]);
     }
 }
