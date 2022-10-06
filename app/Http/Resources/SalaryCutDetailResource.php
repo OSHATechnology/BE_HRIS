@@ -18,7 +18,7 @@ class SalaryCutDetailResource extends JsonResource
             'id' => $this->salaryCutDetailsId,
             'salary' => ($this->salary) ? [
                 'id' => $this->salary->salaryId,
-                'employee' => $this->salary->emp->firstName . " " . $this->salary->emp->firstName,
+                'employee' => $this->salary->emp->firstName . " " . $this->salary->emp->lastName,
                 'basic' => $this->salary->basic,
                 'totalOvertime' => $this->salary->totalOvertime,
                 'overtimeFee' => $this->salary->overtimeFee,

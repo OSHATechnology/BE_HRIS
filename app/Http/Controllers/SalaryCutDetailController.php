@@ -101,20 +101,14 @@ class SalaryCutDetailController extends BaseController
      * @param  \App\Models\SalaryCutDetail  $salaryCutDetail
      * @return \Illuminate\Http\Response
      */
-    public function show(SalaryCutDetail $salaryCutDetail)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SalaryCutDetail  $salaryCutDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SalaryCutDetail $salaryCutDetail)
-    {
-        //
+        try {
+            $salaryCut = SalaryCutDetail::findOrFail($id);
+            return $this->sendResponse(new SalaryCutDetailResource($salaryCut), "salary cut detail retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving salary cut detail", $th->getMessage());
+        }
     }
 
     /**
@@ -124,9 +118,40 @@ class SalaryCutDetailController extends BaseController
      * @param  \App\Models\SalaryCutDetail  $salaryCutDetail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SalaryCutDetail $salaryCutDetail)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $now = date('Y-m');
+            $str = explode("-", $now);
+            $year = $str[0];
+            $month = $str[1];
+            $totalDay = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $salary = Salary::findOrFail($request->salaryId);
+            $totalAttendance = Attendance::where('employeeId', $salary->empId)
+                                            ->where('attendanceStatusId', 1)
+                                            ->where('typeInOut', "in")
+                                            ->get();
+            $percentAttendance = round((count($totalAttendance) / $totalDay) * 100);
+            $basicEmp = Salary::where('empId', $salary->empId)->first();
+            $gross = $basicEmp->gross;
+            $attendance_fee = ($gross * $percentAttendance) / 100;
+            
+            $this->validate($request, self::VALIDATION_RULES);
+            $salaryCut = SalaryCutDetail::findOrFail($id);
+            $salaryCut->salaryId = $request->salaryId;
+            $salaryCut->totalAttendance = count($totalAttendance);
+            $salaryCut->attdFeeReduction = $attendance_fee;
+            $salaryCut->loanId = $request->loanId;
+            $salaryCut->etc = $request->etc;
+            $instalmentNominal = Instalment::getLastNominal($request->loanId);
+            $total = $attendance_fee + $request->etc;
+            $salaryCut->total = $total;
+            $salaryCut->net = $gross - $total - $instalmentNominal;
+            $salaryCut->save();
+            return $this->sendResponse($salaryCut, "salary cut detail retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("error retrieving salary cut detail", $th->getMessage());
+        }
     }
 
     /**
@@ -135,8 +160,14 @@ class SalaryCutDetailController extends BaseController
      * @param  \App\Models\SalaryCutDetail  $salaryCutDetail
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SalaryCutDetail $salaryCutDetail)
+    public function destroy($id)
     {
-        //
+        try {
+            $salaryCut = SalaryCutDetail::findOrFail($id);
+            $salaryCut->delete();
+            return $this->sendResponse($salaryCut, "salary cut detail deleted successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error deleting salary cut detail", $th->getMessage());
+        }
     }
 }
