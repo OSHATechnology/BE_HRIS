@@ -13,6 +13,8 @@ class Allowance extends Model
         "allowanceId",
         "roleId",
         "typeId",
+        "created_at",
+        "updated_at"
     ];
 
     protected $primaryKey = "allowanceId";

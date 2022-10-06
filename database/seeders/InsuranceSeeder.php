@@ -20,13 +20,17 @@ class InsuranceSeeder extends Seeder
                 'insuranceId' => 1, 
                 'name' => "kesehatan", 
                 'companyName' => "BPJS Kesehatan", 
-                'address' => "Jl. Letjen Suprapto Kav. 20 No. 14 Cempaka Putih, Jakarta Pusat 10510"
+                'address' => "Jl. Letjen Suprapto Kav. 20 No. 14 Cempaka Putih, Jakarta Pusat 10510",
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             [
                 'insuranceId' => 2, 
                 'name' => "Ketenagakerjaan", 
                 'companyName' => "BPJS Ketenagakerjaan", 
-                'address' => "Jl. Gatot Subroto No.79, Karet Semanggi, Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12930"
+                'address' => "Jl. Gatot Subroto No.79, Karet Semanggi, Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12930",
+                'created_at' => now(),
+                'updated_at' => now()
             ]
         ];
 
