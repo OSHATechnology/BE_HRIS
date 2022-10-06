@@ -57,4 +57,39 @@ class BaseController extends Controller
 
         return response()->json($response, $code);
     }
+
+    /**
+     * return model class.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getModel($name)
+    {
+        switch ($name) {
+            case 'employee':
+                $modelName = 'App\Models\Employee';
+                break;
+
+            case 'role':
+                $modelName = 'App\Models\Role';
+                break;
+
+            case 'partner':
+                $modelName = 'App\Models\Partner';
+                break;
+
+            case 'permission':
+                $modelName = 'App\Models\Permission';
+                break;
+
+            case 'team':
+                $modelName = 'App\Models\Team';
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        return new $modelName;
+    }
 }

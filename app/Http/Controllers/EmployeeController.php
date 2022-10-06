@@ -44,7 +44,14 @@ class EmployeeController extends BaseController
             if (request()->has('search')) {
                 return $this->search(request());
             }
-            $employees = (new Collection(EmployeeResource::collection(Employee::all())))->paginate(self::numPaginate);
+
+            if (request()->has('per_page')) {
+                $numPaginate = request()->per_page;
+            } else {
+                $numPaginate = self::numPaginate;
+            }
+
+            $employees = (new Collection(EmployeeResource::collection(Employee::all())))->paginate($numPaginate);
             // $employees = Employee::paginate(1);
             return $this->sendResponse($employees, "employee retrieved successfully");
         } catch (\Throwable $th) {
@@ -270,10 +277,16 @@ class EmployeeController extends BaseController
     public function search(Request $request)
     {
         try {
-            if ($request->filled('search')) {
-                $users =   (new Collection(EmployeeResource::collection(Employee::search($request->search)->get())))->paginate(self::numPaginate);
+            if (request()->has('per_page')) {
+                $numPaginate = request()->per_page;
             } else {
-                $users = (new Collection(EmployeeResource::collection(Employee::all())))->paginate(self::numPaginate);
+                $numPaginate = self::numPaginate;
+            }
+
+            if ($request->filled('search')) {
+                $users =   (new Collection(EmployeeResource::collection(Employee::search($request->search)->get())))->paginate($numPaginate);
+            } else {
+                $users = (new Collection(EmployeeResource::collection(Employee::all())))->paginate($numPaginate);
             }
             return $this->sendResponse($users, "employee search successfully");
         } catch (\Throwable $th) {

@@ -22,6 +22,7 @@ use App\Http\Controllers\InstalmentController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\InsuranceItemController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SalaryAllowanceController;
@@ -102,4 +103,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('salary_allowance', SalaryAllowanceController::class);
     Route::apiResource('type_of_allowance', TypeOfAllowanceController::class);
     Route::apiResource('allowance', AllowanceController::class);
+
+    Route::get('/count', [MasterDataController::class, 'count']);
 });
