@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Overtime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -24,10 +25,11 @@ class OvertimeSeeder extends Seeder
                 'assignedBy' => 1,
                 'created_at' => now(),
                 'updated_at' => now()
-                
+
             ],
         ];
 
         DB::table('overtimes')->insert($overtime);
+        Overtime::factory()->count(7)->create();
     }
 }

@@ -23,6 +23,10 @@ class AttendanceStatusController extends BaseController
     public function index()
     {
         try {
+            if (request()->has('search')) {
+                $search = request()->get('search');
+                $attendanceStatus =  (new Collection(AttendanceStatus::where('status', 'like', "%{$search}%")))->paginate(self::NumPaginate);
+            }
             $attendanceStatus = (new Collection(AttendanceStatus::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($attendanceStatus, "attendace status retrieved successfully");
         } catch (\Throwable $th) {
@@ -46,9 +50,8 @@ class AttendanceStatusController extends BaseController
             $attendanceStatus->save();
             return $this->sendResponse($attendanceStatus, "attendace status creating successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("Error creating attendace status", $th->getMessage() );
+            return $this->sendError("Error creating attendace status", $th->getMessage());
         }
-        
     }
 
     /**
@@ -58,15 +61,14 @@ class AttendanceStatusController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {   
+    {
         try {
             $attendanceStatus = AttendanceStatus::findOrFail($id);
-            return $this->sendResponse($attendanceStatus,"attendace status retrieved successfully");
+            return $this->sendResponse($attendanceStatus, "attendace status retrieved successfully");
         } catch (\Throwable $th) {
             //throw $th;
             return $this->sendError('Error retrieving attendance status', $th->getMessage());
         }
-        
     }
 
     /**
@@ -79,7 +81,7 @@ class AttendanceStatusController extends BaseController
     {
         try {
             $attendanceStatus = AttendanceStatus::findOrFail($id);
-            return $this->sendResponse($attendanceStatus,"attendace status retrieved successfully");
+            return $this->sendResponse($attendanceStatus, "attendace status retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving attendance status', $th->getMessage());
         }
