@@ -24,6 +24,9 @@ class AllowanceController extends BaseController
     public function index()
     {
         try {
+            if (request()->has('search')) {
+                return $this->search(request());
+            }
             $allowance = (new Collection(AllowanceResource::collection(Allowance::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($allowance, "allowance retrieved successfully");
         } catch (\Throwable $th) {
@@ -102,6 +105,24 @@ class AllowanceController extends BaseController
             return $this->sendResponse($allowance, "allowance deleted successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error deleting allowance", $th->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            if ($request->filled('search')) {
+                $query = Allowance::join('type_of_allowances', 'allowances.typeId', '=', 'type_of_allowances.typeId')
+                                    ->join('roles', 'roles.roleId', '=', 'type_of_allowances.roleId')
+                                    ->where('type_of_allowances.name', 'like', '%' . $request->search . '%')
+                                    ->get();
+                $result =   (new Collection(AllowanceResource::collection($query)))->paginate(self::NumPaginate);
+            } else {
+                $result = (new Collection(AllowanceResource::collection(Allowance::all())))->paginate(self::NumPaginate);
+            }
+            return $this->sendResponse($result, "employee search successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error search employee failed", $th->getMessage());
         }
     }
 }
