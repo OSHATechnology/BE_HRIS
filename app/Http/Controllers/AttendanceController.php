@@ -8,6 +8,8 @@ use App\Http\Resources\FurloughResource;
 use App\Models\Attendance;
 use App\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends BaseController
 {
@@ -16,7 +18,7 @@ class AttendanceController extends BaseController
         'attendanceStatusId' => 'required|integer', 
         'submitedAt' => 'date', 
         'submitedById' => 'required|integer', 
-        'typeInOut' => 'required|string|max:255', 
+        // 'typeInOut' => 'required|string|max:255', 
         'timeAttend' => 'date'
     ];
 
@@ -64,7 +66,7 @@ class AttendanceController extends BaseController
             $attendance->employeeId = $request->employeeId;
             $attendance->attendanceStatusId = $request->attendanceStatusId;
             $attendance->submitedAt = $request->submitedAt;
-            $attendance->submitedById = $request->submitedById;
+            $attendance->submitedById = Auth::id();
             $attendance->typeInOut = $request->typeInOut;
             $attendance->timeAttend = $request->timeAttend;
             $attendance->save();
@@ -137,6 +139,17 @@ class AttendanceController extends BaseController
         try {
             $now = date('Y-m-d');
             $attendance = (new Collection(AttendanceResource::collection(Attendance::where('submitedAt', 'like', '%'. $now.'%')->get())))->paginate(self::NumPaginate);
+            return $this->sendResponse($attendance,  "Attendance retrievied successfully");
+        } catch (\Throwable $th) {
+            return $this->senderror("Error retrieving attendance", $th->getMessage());
+        }
+    }
+
+    public function todayByEmp($id)
+    {
+        try {
+            $now = date('Y-m-d');
+            $attendance = (new Collection(AttendanceResource::collection(Attendance::where('employeeId', $id)->where('submitedAt', 'like', '%'. $now.'%')->get())))->paginate(self::NumPaginate);
             return $this->sendResponse($attendance,  "Attendance retrievied successfully");
         } catch (\Throwable $th) {
             return $this->senderror("Error retrieving attendance", $th->getMessage());
