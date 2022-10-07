@@ -17,8 +17,7 @@ class AttendanceController extends BaseController
         'employeeId' => 'required|integer', 
         'attendanceStatusId' => 'required|integer', 
         'submitedAt' => 'date', 
-        'submitedById' => 'required|integer', 
-        // 'typeInOut' => 'required|string|max:255', 
+        'typeInOut' => 'required|string|max:255', 
         'timeAttend' => 'date'
     ];
 
@@ -107,7 +106,7 @@ class AttendanceController extends BaseController
             $attendance->employeeId = $request->employeeId;
             $attendance->attendanceStatusId = $request->attendanceStatusId;
             $attendance->submitedAt = $request->submitedAt;
-            $attendance->submitedById = $request->submitedById;
+            $attendance->submitedById = Auth::id();
             $attendance->typeInOut = $request->typeInOut;
             $attendance->timeAttend = $request->timeAttend;
             $attendance->save();
