@@ -115,6 +115,7 @@ class AllowanceController extends BaseController
                 $query = Allowance::join('type_of_allowances', 'allowances.typeId', '=', 'type_of_allowances.typeId')
                                     ->join('roles', 'roles.roleId', '=', 'allowances.roleId')
                                     ->where('type_of_allowances.name', 'like', '%' . $request->search . '%')
+                                    ->orwhere('roles.nameRole', 'like', '%' . $request->search . '%')
                                     ->get();
                 $result =   (new Collection(AllowanceResource::collection($query)))->paginate(self::NumPaginate);
             } else {
