@@ -209,4 +209,55 @@ class AttendanceController extends BaseController
             return $this->senderror("Error filtering attendance", $th->getMessage());
         }
     }
+
+    public function myToday(Request $request)
+    {
+        try {
+            $request->validate([
+                'type' => 'required',
+            ]);
+            $now = date('Y-m-d');
+
+            $checkLeaveToday = Attendance::where('employeeId', Auth::id())->where('submitedAt', 'like', '%' . $now . '%')->where('attendanceStatusId', '!=', 1)->get();
+
+            if ($checkLeaveToday->count() > 0) {
+                return $this->sendError("You have leave today", "cannot submit attendance");
+            }
+
+            if ($request->type == 'in') {
+                $check = Attendance::where('employeeId', Auth::id())->where('timeAttend', 'like', '%' . $now . '%')->where('typeInOut', 'in')->first();
+                if ($check) {
+                    return $this->sendError("Error attendance", "You already clock in");
+                }
+            }
+
+            if ($request->type == 'out') {
+                $checkClockIn = Attendance::where('employeeId', Auth::id())->where('timeAttend', 'like', '%' . $now . '%')->where('typeInOut', 'in')->first();
+
+                if (!$checkClockIn) {
+                    return $this->sendError("Error attendance", "You must clock in first");
+                }
+
+                $check = Attendance::where('employeeId', Auth::id())->where('timeAttend', 'like', '%' . $now . '%')->where('typeInOut', 'out')->first();
+                if ($check) {
+                    return $this->sendError("Error attendance", "You already clock out");
+                }
+            }
+
+            $now = date('Y-m-d H:i:s');
+
+            $Attend = new Attendance();
+            $Attend->employeeId = Auth::id();
+            $Attend->attendanceStatusId = Attendance::STATUS_WORK;
+            $Attend->submitedAt = $now;
+            $Attend->submitedById = Auth::id();
+            $Attend->typeInOut = $request->type;
+            $Attend->timeAttend = $now;
+            $Attend->save();
+
+            return $this->sendResponse("Done",  "Attendance successfully");
+        } catch (\Throwable $th) {
+            return $this->senderror("failed", $th->getMessage());
+        }
+    }
 }

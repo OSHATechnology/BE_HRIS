@@ -14,6 +14,8 @@ class Attendance extends Model
 
     protected $primaryKey = 'attendId';
 
+    const STATUS_WORK = 1;
+
     public function employee()
     {
         return $this->hasOne(Employee::class, 'employeeId', 'employeeId');
