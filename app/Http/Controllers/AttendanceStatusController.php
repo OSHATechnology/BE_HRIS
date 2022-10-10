@@ -25,7 +25,8 @@ class AttendanceStatusController extends BaseController
         try {
             if (request()->has('search')) {
                 $search = request()->get('search');
-                $attendanceStatus =  (new Collection(AttendanceStatus::where('status', 'like', "%{$search}%")))->paginate(self::NumPaginate);
+                $attendanceStatus =  (new Collection(AttendanceStatus::where('status', 'like', "%{$search}%")->get()))->paginate(self::NumPaginate);
+                return $this->sendResponse($attendanceStatus, "attendace status retrieved successfully");
             }
             $attendanceStatus = (new Collection(AttendanceStatus::all()))->paginate(self::NumPaginate);
             return $this->sendResponse($attendanceStatus, "attendace status retrieved successfully");
