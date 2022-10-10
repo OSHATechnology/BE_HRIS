@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\DB;
 class AttendanceController extends BaseController
 {
     const VALIDATION_RULES = [
-        'employeeId' => 'required|integer', 
-        'attendanceStatusId' => 'required|integer', 
-        'submitedAt' => 'date', 
-        'typeInOut' => 'required|string|max:255', 
+        'employeeId' => 'required|integer',
+        'attendanceStatusId' => 'required|integer',
+        'submitedAt' => 'date',
+        'typeInOut' => 'required|string|max:255',
         'timeAttend' => 'date'
     ];
 
@@ -31,16 +31,16 @@ class AttendanceController extends BaseController
     public function index()
     {
         try {
-            if(request()->has('search')){
+            if (request()->has('search')) {
                 return $this->search(request());
             }
-            if(request()->has('filter')){
+            if (request()->has('filter')) {
                 return $this->filter(request());
             }
-            if(request()->has('from_y') && request()->has('to_y')){
+            if (request()->has('from_y') && request()->has('to_y')) {
                 return $this->filterCustomYear(request());
             }
-            if(request()->has('from_m_y') && request()->has('to_m_y')){
+            if (request()->has('from_m_y') && request()->has('to_m_y')) {
                 return $this->filterCustomMonthYear(request());
             }
             $attendance =  (new Collection(AttendanceResource::collection(Attendance::get())))->paginate(self::NumPaginate);
@@ -74,7 +74,7 @@ class AttendanceController extends BaseController
             return $this->sendError("Error creating attendance", $th->getMessage());
         }
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -83,14 +83,14 @@ class AttendanceController extends BaseController
      */
     public function show($id)
     {
-        try {   
+        try {
             $attendance = new AttendanceResource(Attendance::findOrFail($id));
             return $this->sendResponse($attendance,  "Attendance retrivied successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error retrieving attendance", $th->getMessage());
         }
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -115,7 +115,7 @@ class AttendanceController extends BaseController
             return $this->sendError("Error attendance updating", $th->getMessage());
         }
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
@@ -137,7 +137,7 @@ class AttendanceController extends BaseController
     {
         try {
             $now = date('Y-m-d');
-            $attendance = (new Collection(AttendanceResource::collection(Attendance::where('submitedAt', 'like', '%'. $now.'%')->get())))->paginate(self::NumPaginate);
+            $attendance = (new Collection(AttendanceResource::collection(Attendance::where('submitedAt', 'like', '%' . $now . '%')->get())))->paginate(self::NumPaginate);
             return $this->sendResponse($attendance,  "Attendance retrievied successfully");
         } catch (\Throwable $th) {
             return $this->senderror("Error retrieving attendance", $th->getMessage());
@@ -148,7 +148,7 @@ class AttendanceController extends BaseController
     {
         try {
             $now = date('Y-m-d');
-            $attendance = (new Collection(AttendanceResource::collection(Attendance::where('employeeId', $id)->where('submitedAt', 'like', '%'. $now.'%')->get())))->paginate(self::NumPaginate);
+            $attendance = (new Collection(AttendanceResource::collection(Attendance::where('employeeId', $id)->where('submitedAt', 'like', '%' . $now . '%')->get())))->paginate(self::NumPaginate);
             return $this->sendResponse($attendance,  "Attendance retrievied successfully");
         } catch (\Throwable $th) {
             return $this->senderror("Error retrieving attendance", $th->getMessage());
@@ -158,13 +158,12 @@ class AttendanceController extends BaseController
     public function search(Request $request)
     {
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $query = Attendance::join('employees', 'attendances.employeeId', '=', 'employees.employeeId')
-                                    ->where('employees.firstName', 'like', '%'.$request->search.'%')
-                                    ->get();
+                    ->where('employees.firstName', 'like', '%' . $request->search . '%')
+                    ->get();
                 $users =   (new Collection(AttendanceResource::collection($query)))->paginate(self::NumPaginate);
-                
-            }else{
+            } else {
                 $users = (new Collection(AttendanceResource::collection(Attendance::all())))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($users, "employee search successfully");
@@ -176,8 +175,8 @@ class AttendanceController extends BaseController
     public function filter(Request $request)
     {
         try {
-            if($request->filled('filter')){
-                $attendance = (new Collection(AttendanceResource::collection(Attendance::where('submitedAt', 'like', '%'. $request->filter . '%')->get())))->paginate(self::NumPaginate);
+            if ($request->filled('filter')) {
+                $attendance = (new Collection(AttendanceResource::collection(Attendance::where('submitedAt', 'like', '%' . $request->filter . '%')->get())))->paginate(self::NumPaginate);
             } else {
                 $attendance = (new Collection(AttendanceResource::collection(Attendance::all())))->paginate(self::NumPaginate);
             }

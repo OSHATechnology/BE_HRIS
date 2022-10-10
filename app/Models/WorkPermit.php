@@ -9,7 +9,7 @@ class WorkPermit extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['workPermitId', 'employeeId', 'startAt', 'endAt', 'isConfirmed','confirmedBy', 'create_at', 'updated_at'];
+    protected $fillable = ['workPermitId', 'employeeId', 'startAt', 'endAt', 'isConfirmed', 'confirmedBy', 'confirmedAt', 'create_at', 'updated_at'];
 
     protected $primaryKey = 'workPermitId';
 

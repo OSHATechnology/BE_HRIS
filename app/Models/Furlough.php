@@ -10,12 +10,12 @@ class Furlough extends Model
     use HasFactory;
 
     public const TYPESTATUS = [
-        0 => 'Waiting Confirmation',
+        0 => 'Waiting For Approved',
         1 => 'Confirmed',
-        2 => 'Not Confirmed',
+        2 => 'Rejected',
     ];
 
-    protected $fillable = ['furloughId', 'furTypeId', 'employeeId', 'startAt', 'endAt', 'isConfirmed', 'confirmedBy', 'lastFurloughAt', 'created_at', 'updated_at'];
+    protected $fillable = ['furloughId', 'furTypeId', 'employeeId', 'startAt', 'endAt', 'isConfirmed', 'confirmedBy', 'message', 'confirmedAt', 'lastFurloughAt', 'created_at', 'updated_at'];
 
     protected $primaryKey = 'furloughId';
 

@@ -70,6 +70,16 @@ class Employee extends Authenticatable
         return $this->hasMany(Furlough::class, 'employeeId');
     }
 
+    public function work_permits()
+    {
+        return $this->hasMany(WorkPermit::class, 'employeeId');
+    }
+
+    public function overtimes()
+    {
+        return $this->hasMany(Overtime::class, 'employeeId');
+    }
+
     public function hasRoleName($roleName)
     {
         return $this->role->nameRole === $roleName;

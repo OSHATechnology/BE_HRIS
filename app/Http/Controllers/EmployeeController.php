@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\FurloughResource;
+use App\Http\Resources\OvertimeResource;
+use App\Http\Resources\WorkPermitResource;
 use App\Imports\EmployeesImport;
 use App\Models\Employee;
+use App\Models\Furlough;
+use App\Models\WorkPermit;
 use App\Support\Collection;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends BaseController
 {
@@ -274,6 +280,10 @@ class EmployeeController extends BaseController
         }
     }
 
+    /*
+    *   search data 
+    */
+
     public function search(Request $request)
     {
         try {
@@ -291,6 +301,43 @@ class EmployeeController extends BaseController
             return $this->sendResponse($users, "employee search successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error search employee failed", $th->getMessage());
+        }
+    }
+
+    /*
+    *   show my leave request
+    */
+
+    public function myLeaveRequests()
+    {
+        try {
+            $employee = Employee::findOrFail(Auth::user()->employeeId);
+            $collection = new Collection();
+
+            foreach ($employee->furloughs as $key => $value) {
+                $collection->push([
+                    'id' => "f" . $value->furloughId,
+                    'type' => 'furlough',
+                    'requestAt' => Carbon::parse($value->created_at)->format('H:i d M Y'),
+                    'confirmedAt' => $value->confirmedAt !== null ? Carbon::parse($value->confirmedAt)->format('H:i d M Y') : "",
+                    'status' => Furlough::TYPESTATUS[$value->isConfirmed],
+                    'msg' => $value->message,
+                ]);
+            }
+
+            foreach ($employee->work_permits as $key => $value) {
+                $collection->push([
+                    'id' => "wp" . $value->workPermitId,
+                    'type' => 'work permit',
+                    'requestAt' => Carbon::parse($value->created_at)->format('H:i d M Y'),
+                    'confirmedAt' => $value->confirmedAt !== null ? Carbon::parse($value->confirmedAt)->format('H:i d M Y') : "",
+                    'status' => $value->confirmedAt !== null ? ($value->isConfirmed !== 0 ? "Confirmed" : 'rejected') : "waiting for approved",
+                ]);
+            }
+
+            return $this->sendResponse($collection, "employee leave request retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error retrieving employee leave request", $th->getMessage());
         }
     }
 }
