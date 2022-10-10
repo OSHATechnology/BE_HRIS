@@ -20,7 +20,8 @@ return new class extends Migration
             $table->timestamp('startAt');
             $table->timestamp('endAt')->nullable();
             $table->boolean('isConfirmedBy')->default(0);
-            $table->unsignedBigInteger('confirmedBy');
+            $table->unsignedBigInteger('confirmedBy')->nullable();
+            $table->timestamp('confirmedAt')->nullable();
             $table->timestamp('lastFurloughAt')->nullable();
             $table->timestamps();
 

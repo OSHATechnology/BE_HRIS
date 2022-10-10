@@ -106,4 +106,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('allowance', AllowanceController::class);
 
     Route::get('/count', [MasterDataController::class, 'count']);
+    Route::get('/my/leave-requests', [EmployeeController::class, 'myLeaveRequests']);
 });

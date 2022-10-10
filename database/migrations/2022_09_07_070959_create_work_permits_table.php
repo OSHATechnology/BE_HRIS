@@ -20,10 +20,11 @@ return new class extends Migration
             $table->timestamp('endAt')->nullable();
             $table->boolean('isConfirmed')->default(0);
             $table->unsignedBigInteger('confirmedBy')->nullable();
+            $table->timestamp('confirmedAt')->nullable();
             $table->timestamps();
 
-            $table->foreign('confirmedBy')->references('employeeId')->on('employees');
-            $table->foreign('employeeId')->references('employeeId')->on('employees');
+            $table->foreign('confirmedBy')->references('employeeId')->on('employees')->nullOnDelete();
+            $table->foreign('employeeId')->references('employeeId')->on('employees')->cascadeOnDelete();
         });
     }
 
