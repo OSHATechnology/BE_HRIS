@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\FurloughTypeResource;
 use App\Models\FurloughType;
 use App\Support\Collection;
 use Illuminate\Http\Request;
@@ -10,8 +11,8 @@ use Illuminate\Http\Request;
 class FurloughTypeController extends BaseController
 {
     const VALIDATION_RULES = [
-        'name' => 'required|string|max:255', 
-        'type' => 'required|string|max:255', 
+        'name' => 'required|string|max:255',
+        'type' => 'required|string|max:255',
         'max' => 'required|integer',
     ];
 
@@ -25,10 +26,21 @@ class FurloughTypeController extends BaseController
     public function index()
     {
         try {
-            if(request()->has('search')){
+            if (request()->has('search')) {
                 return $this->search(request());
             }
-            $type = (new Collection(FurloughType::all()))->paginate(self::NumPaginate);
+
+            if (request()->has('show_all')) {
+                $showAll = request()->show_all;
+            } else {
+                $showAll = false;
+            }
+
+            if ($showAll) {
+                $type = FurloughType::all();
+            } else {
+                $type = (new Collection(FurloughType::all()))->paginate(self::NumPaginate);
+            }
             return $this->sendResponse($type, 'Furlough type retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving furlough type', $th->getMessage());
@@ -56,7 +68,7 @@ class FurloughTypeController extends BaseController
             return $this->sendError('Error creating furlough type', $th->getMessage());
         }
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -116,9 +128,9 @@ class FurloughTypeController extends BaseController
     {
         // dd($request->search);
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $users =   (new Collection((FurloughType::search($request->search)->get())))->paginate(self::NumPaginate);
-            }else{
+            } else {
                 $users = (new Collection((FurloughType::all())))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($users, "furlough type search successfully");
