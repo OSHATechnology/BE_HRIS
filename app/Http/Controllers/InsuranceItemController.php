@@ -9,6 +9,7 @@ use App\Models\Insurance;
 use App\Models\InsuranceItem;
 use App\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InsuranceItemController extends BaseController
 {
