@@ -13,7 +13,12 @@ class Insurance extends Model
     protected $fillable = ['insuranceId', 'name', 'companyName', 'address'];
 
     protected $primaryKey = 'insuranceId';
-
+    
+    public function insurance_items()
+    {
+        return $this->hasMany(InsuranceItem::class, 'insuranceId');
+    }
+    
     public function toSearchableArray()
     {
         return [

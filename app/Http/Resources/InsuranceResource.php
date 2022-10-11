@@ -19,6 +19,7 @@ class InsuranceResource extends JsonResource
             'name' => $this->name,
             'company' => $this->companyName,
             'address' => $this->address,
+            'data' => ($this->insurance_items) ? $this->insurance_items : ""
         ];
     }
 }

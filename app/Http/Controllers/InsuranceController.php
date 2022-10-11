@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\InsuranceResource;
 use App\Models\Insurance;
+use App\Models\InsuranceItem;
 use App\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InsuranceController extends BaseController
 {
