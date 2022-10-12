@@ -20,6 +20,7 @@ class WorkPermitResource extends JsonResource
                 'id' => $this->employee->employeeId,
                 'name' => $this->employee->firstName . " " . $this->employee->lastName,
             ] : "",
+            'file' => $this->workPermitFiles,
             'startAt' => $this->startAt,
             'endAt' =>$this->endAt,
             'isConfirmed' => $this->isConfirmed,

@@ -17,8 +17,14 @@ class WorkPermit extends Model
     {
         return $this->hasOne(Employee::class, 'employeeId', 'employeeId');
     }
+    
     public function confirmedByEmp()
     {
         return $this->hasOne(Employee::class, 'employeeId', 'confirmedBy');
+    }
+
+    public function workPermitFiles()
+    {
+        return $this->hasMany(WorkPermitFile::class, 'workPermitId');
     }
 }

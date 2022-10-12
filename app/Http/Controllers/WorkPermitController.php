@@ -78,6 +78,9 @@ class WorkPermitController extends BaseController
     {
         try {
             $workPermit = new WorkPermitResource(WorkPermit::findOrFail($id));
+            // $wp = WorkPermit::join('work_permit_files', 'work_permits.workPermitId', '=', 'work_permit_file.workPermitId')
+            //                     ->get();
+            // dd($wp);
             return $this->sendResponse($workPermit, 'Work permit retrivied successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retriving Work permit.', $th->getMessage());
