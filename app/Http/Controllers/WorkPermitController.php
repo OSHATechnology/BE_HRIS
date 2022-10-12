@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\WorkPermitResource;
 use App\Models\WorkPermit;
+use App\Models\WorkPermitFile;
 use App\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WorkPermitController extends BaseController
 {
@@ -14,8 +16,7 @@ class WorkPermitController extends BaseController
         'employeeId' => 'required|integer', 
         'startAt' => 'required|date', 
         'endAt' => 'required|date', 
-        'isConfirmed' => 'required|integer',
-        'confirmedBy' => 'required|integer'
+        'isConfirmed' => 'required|integer'
     ];
 
     const NumPaginate = 10;
@@ -51,8 +52,16 @@ class WorkPermitController extends BaseController
             $workPermit->startAt = $request->startAt;
             $workPermit->endAt = $request->endAt;
             $workPermit->isConfirmed = $request->isConfirmed;
-            $workPermit->confirmedBy = $request->confirmedBy;
+            $workPermit->confirmedBy = Auth::id();
             $workPermit->save();
+            if ($request->hasFile('file')) {
+                $fileName = time() . '.' . $request->file->extension();
+                $path = $request->file('file')->storeAs('public/work_permit_file', $fileName);
+                $workPermit->file = 'storage/work_permit_file/' . $fileName;
+            } else {
+                $workPermit->file = $request->file;
+            }
+            $file = WorkPermitFile::store($workPermit->workPermitId,$request->name, $path);
             return $this->sendResponse(new WorkPermitResource($workPermit), 'Work Permit created successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error creating work permit.', $th->getMessage());
@@ -94,6 +103,15 @@ class WorkPermitController extends BaseController
             $workPermit->isConfirmed = $request->isConfirmed;
             $workPermit->confirmedBy = $request->confirmedBy;
             $workPermit->save();
+
+            if ($request->hasFile('file')) {
+                $fileName = time() . '.' . $request->file->extension();
+                $path = $request->file('file')->storeAs('public/work_permit_file', $fileName);
+                $workPermit->file = 'storage/work_permit_file/' . $fileName;
+            } else {
+                $workPermit->file = $workPermit->file;
+            }
+            $file = WorkPermitFile::updateFile($id,$workPermit->workPermitId,$request->name, $path);
             return $this->sendResponse($workPermit, 'Work Permit updated successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error updating work permit.', $th->getMessage());
