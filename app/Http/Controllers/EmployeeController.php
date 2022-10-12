@@ -308,9 +308,10 @@ class EmployeeController extends BaseController
     *   show my leave request
     */
 
-    public function myLeaveRequests()
+    public function myLeaveRequests(Request $request)
     {
         try {
+            $showAll = $request->has('show_all') ? $request->show_all : false;
             $employee = Employee::findOrFail(Auth::user()->employeeId);
             $collection = new Collection();
 
@@ -318,8 +319,8 @@ class EmployeeController extends BaseController
                 $collection->push([
                     'id' => "f" . $value->furloughId,
                     'type' => 'furlough',
-                    'requestAt' => Carbon::parse($value->created_at)->format('H:i d M Y'),
-                    'confirmedAt' => $value->confirmedAt !== null ? Carbon::parse($value->confirmedAt)->format('H:i d M Y') : "",
+                    'requestAt' => $value->created_at,
+                    'confirmedAt' => $value->confirmedAt !== null ? $value->confirmedAt : "",
                     'status' => Furlough::TYPESTATUS[$value->isConfirmed],
                     'msg' => $value->message,
                 ]);
@@ -329,15 +330,75 @@ class EmployeeController extends BaseController
                 $collection->push([
                     'id' => "wp" . $value->workPermitId,
                     'type' => 'work permit',
-                    'requestAt' => Carbon::parse($value->created_at)->format('H:i d M Y'),
-                    'confirmedAt' => $value->confirmedAt !== null ? Carbon::parse($value->confirmedAt)->format('H:i d M Y') : "",
+                    'requestAt' => $value->created_at,
+                    'confirmedAt' => $value->confirmedAt !== null ? $value->confirmedAt : "",
                     'status' => $value->confirmedAt !== null ? ($value->isConfirmed !== 0 ? "Confirmed" : 'rejected') : "waiting for approved",
                 ]);
             }
 
-            return $this->sendResponse($collection, "employee leave request retrieved successfully");
+            if ($showAll) {
+                $data = (new Collection($collection->sortBy('requestAt')->values()->all()))->paginate(self::numPaginate);
+            } else {
+                $data = $collection;
+            }
+
+            return $this->sendResponse($data, "employee leave request retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error retrieving employee leave request", $th->getMessage());
+        }
+    }
+
+    /*
+    * action add leave request employee
+    */
+
+    public function addLeaveRequest(Request $request)
+    {
+        try {
+            $request->validate([
+                'type' => 'required',
+            ]);
+
+            $empId = Auth::user()->employeeId;
+
+            switch ($request->type) {
+                case 'furlough':
+                    $request->validate([
+                        'type_furlough' => 'required',
+                        'start_at' => 'required',
+                        'end_at' => 'required',
+                    ]);
+
+                    $furlough = new Furlough();
+                    $furlough->employeeId = $empId;
+                    $furlough->furTypeId = $request->type_furlough;
+                    $furlough->startAt = $request->start_at;
+                    $furlough->endAt = $request->end_at;
+                    $furlough->lastFurloughAt = Furlough::getLastFurlough($empId);
+                    $furlough->save();
+                    break;
+
+                case 'work_permit':
+                    $request->validate([
+                        'start_at' => 'required',
+                        'end_at' => 'required',
+                    ]);
+
+                    $workPermit = new WorkPermit();
+                    $workPermit->employeeId = $empId;
+                    $workPermit->startAt = $request->start_at;
+                    $workPermit->endAt = $request->end_at;
+                    $workPermit->save();
+                    break;
+
+                default:
+                    return $this->sendError("Error add leave request", "type not found");
+                    break;
+            }
+
+            return $this->sendResponse($request->type, "request sent successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("Error adding leave request", $th->getMessage());
         }
     }
 }
