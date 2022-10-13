@@ -64,11 +64,29 @@ class InsuranceController extends BaseController
      * @param  \App\Models\Insurance  $insurance
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         try {
-            $insurance = new InsuranceResource(Insurance::findOrFail($id));
-            return $this->sendResponse($insurance, 'Insurance retrieved successfully');
+            if ($request->search != null) {
+                $insurance = Insurance::findOrFail($id);
+                // dd($insurance->insuranceId);
+                $search = $request->search;
+                $insItem = InsuranceItem::where('insuranceId', $id)
+                ->where('name', 'like', '%'. $search . '%')
+                ->paginate(10);
+                $result = [
+                    'id' => $insurance->insuranceId,
+                    'name' => $insurance->name,
+                    'company' => $insurance->companyName,
+                    'address' => $insurance->address,
+                    'data' => $insItem
+                ];
+                return $this->sendResponse($result, 'Insurance retrieved successfully');
+            } else {
+                $insurance = new InsuranceResource(Insurance::findOrFail($id));
+                return $this->sendResponse($insurance, 'Insurance retrieved successfully');
+            }
+
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving insurance', $th->getMessage());
         }
