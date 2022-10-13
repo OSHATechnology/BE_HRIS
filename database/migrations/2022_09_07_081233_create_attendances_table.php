@@ -16,16 +16,16 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id('attendId');
             $table->unsignedBigInteger('employeeId');
-            $table->unsignedBigInteger('attendanceStatusId');
+            $table->unsignedBigInteger('attendanceStatusId')->nullable();
             $table->timestamp('submitedAt')->nullable();
-            $table->unsignedBigInteger('submitedById');
+            $table->unsignedBigInteger('submitedById')->nullable();
             $table->string('typeInOut');
             $table->timestamp('timeAttend')->nullable();
             $table->timestamps();
 
-            $table->foreign('employeeId')->references('employeeId')->on('employees');
-            $table->foreign('attendanceStatusId')->references('attendanceStatusId')->on('attendance_statuses');
-            $table->foreign('submitedById')->references('employeeId')->on('employees');
+            $table->foreign('employeeId')->references('employeeId')->on('employees')->cascadeOnDelete();
+            $table->foreign('attendanceStatusId')->references('attendanceStatusId')->on('attendance_statuses')->nullOnDelete();
+            $table->foreign('submitedById')->references('employeeId')->on('employees')->nullOnDelete();
         });
     }
 

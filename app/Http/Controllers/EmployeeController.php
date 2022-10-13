@@ -10,6 +10,7 @@ use App\Http\Resources\WorkPermitResource;
 use App\Imports\EmployeesImport;
 use App\Models\Employee;
 use App\Models\Furlough;
+use App\Models\Overtime;
 use App\Models\WorkPermit;
 use App\Support\Collection;
 use Carbon\Carbon;
@@ -336,10 +337,21 @@ class EmployeeController extends BaseController
                 ]);
             }
 
+            foreach ($employee->overtimes as $key => $value) {
+                $collection->push([
+                    'id' => "ot" . $value->overtimeId,
+                    'type' => 'overtime',
+                    'requestAt' => $value->created_at,
+                    'confirmedAt' => $value->confirmedAt !== null ? $value->confirmedAt : "",
+                    'status' => $value->confirmedAt !== null ? ($value->isConfirmed !== 0 ? "Confirmed" : 'rejected') : "waiting for approved",
+                ]);
+            }
+
             if ($showAll) {
-                $data = (new Collection($collection->sortBy('requestAt')->values()->all()))->paginate(self::numPaginate);
+                $data = (new Collection($collection->sortByDesc('requestAt')->values()->all()))->paginate(self::numPaginate);
             } else {
-                $data = $collection;
+                $collection =  $collection->sortByDesc('requestAt')->values()->all();
+                $data = array_slice($collection, 0, 5);
             }
 
             return $this->sendResponse($data, "employee leave request retrieved successfully");
@@ -389,6 +401,20 @@ class EmployeeController extends BaseController
                     $workPermit->startAt = $request->start_at;
                     $workPermit->endAt = $request->end_at;
                     $workPermit->save();
+                    break;
+
+                case "overtime":
+                    $request->validate([
+                        'start_at' => 'required',
+                        'end_at' => 'required',
+                    ]);
+
+                    $overtime = new Overtime();
+                    $overtime->employeeId = $empId;
+                    $overtime->startAt = $request->start_at;
+                    $overtime->endAt = $request->end_at;
+                    $overtime->assignedBy = $empId;
+                    $overtime->save();
                     break;
 
                 default:
