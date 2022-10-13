@@ -74,7 +74,7 @@ class InsuranceController extends BaseController
                 ->where('name', 'like', '%'. $search . '%')
                 ->paginate(self::NumPaginate);
             } else {
-                $insItem = InsuranceItem::where('insuranceId', $id)->get();
+                $insItem = InsuranceItem::where('insuranceId', $id)->paginate(self::NumPaginate);
             }
             $result = [
                 'id' => $insurance->insuranceId,
