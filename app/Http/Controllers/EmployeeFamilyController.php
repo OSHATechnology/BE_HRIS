@@ -126,10 +126,10 @@ class EmployeeFamilyController extends BaseController
         }
     }
 
-    public function showByEmpId($id)
+    public function showByEmpId(Request $request)
     {
         try {
-            $empFam = new EmployeeFamilyResource(EmployeeFamily::where('empId',$id)->get());
+            $empFam = new EmployeeFamilyResource(EmployeeFamily::where('empId',$request->empId)->get());
             return $this->sendResponse($empFam, "Employee Family retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendResponse("Error employee Family creating", $th->getMessage());
