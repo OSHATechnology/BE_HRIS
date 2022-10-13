@@ -30,6 +30,9 @@ class EmployeeFamilyController extends BaseController
             if (request()->has('search')) {
                 return $this->search(request());
             }
+            if (request()->has('empId')) {
+                return $this->showByEmpId(request());
+            }
             $empFam = (new Collection(EmployeeFamilyResource::collection(EmployeeFamily::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($empFam, "Employee Family retrieved successfully");
         } catch (\Throwable $th) {
@@ -120,6 +123,16 @@ class EmployeeFamilyController extends BaseController
             return $this->sendResponse($empFam, "Employee Family deleted successfully");
         } catch (\Throwable $th) {
             return $this->sendResponse("Error employee Family deleting", $th->getMessage());
+        }
+    }
+
+    public function showByEmpId($id)
+    {
+        try {
+            $empFam = new EmployeeFamilyResource(EmployeeFamily::where('empId',$id)->get());
+            return $this->sendResponse($empFam, "Employee Family retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("Error employee Family creating", $th->getMessage());
         }
     }
 
