@@ -17,11 +17,11 @@ return new class extends Migration
             $table->id('insItemId');
             $table->unsignedBigInteger('insuranceId');
             $table->string('name');
-            $table->enum('type',['allowance','deduction']);
+            $table->enum('type', ['allowance', 'deduction']);
             $table->float('percent');
             $table->timestamps();
 
-            $table->foreign('insuranceId')->references('insuranceId')->on('insurances');
+            $table->foreign('insuranceId')->references('insuranceId')->on('insurances')->cascadeOnDelete();
         });
     }
 

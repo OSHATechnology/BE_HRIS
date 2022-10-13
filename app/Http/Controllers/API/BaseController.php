@@ -86,6 +86,10 @@ class BaseController extends Controller
                 $modelName = 'App\Models\Team';
                 break;
 
+            case 'total-leave':
+                $modelName = 'App\Models\Attendance';
+                break;
+
             default:
                 # code...
                 break;

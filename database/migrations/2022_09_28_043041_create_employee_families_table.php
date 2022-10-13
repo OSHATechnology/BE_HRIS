@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('statusId')->references('empFamStatId')->on('employee_family_statuses');
-            $table->foreign('empId')->references('employeeId')->on('employees');
+            $table->foreign('empId')->references('employeeId')->on('employees')->cascadeOnDelete();
         });
     }
 
