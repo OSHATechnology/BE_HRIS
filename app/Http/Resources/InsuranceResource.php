@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Insurance;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class InsuranceResource extends JsonResource
@@ -20,7 +19,7 @@ class InsuranceResource extends JsonResource
             'name' => $this->name,
             'company' => $this->companyName,
             'address' => $this->address,
-            'data' => Insurance::insItem()
+            'data' => ($this->insurance_items) ? $this->insurance_items : ""
         ];
     }
 }

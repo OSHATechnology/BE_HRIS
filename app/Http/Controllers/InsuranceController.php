@@ -67,26 +67,23 @@ class InsuranceController extends BaseController
     public function show($id, Request $request)
     {
         try {
+            $insurance = Insurance::findOrFail($id);
             if ($request->search != null) {
-                $insurance = Insurance::findOrFail($id);
-                // dd($insurance->insuranceId);
                 $search = $request->search;
                 $insItem = InsuranceItem::where('insuranceId', $id)
                 ->where('name', 'like', '%'. $search . '%')
-                ->paginate(10);
-                $result = [
-                    'id' => $insurance->insuranceId,
-                    'name' => $insurance->name,
-                    'company' => $insurance->companyName,
-                    'address' => $insurance->address,
-                    'data' => $insItem
-                ];
-                return $this->sendResponse($result, 'Insurance retrieved successfully');
+                ->paginate(self::NumPaginate);
             } else {
-                $insurance = new InsuranceResource(Insurance::findOrFail($id));
-                return $this->sendResponse($insurance, 'Insurance retrieved successfully');
+                $insItem = InsuranceItem::where('insuranceId', $id)->paginate(self::NumPaginate);
             }
-
+            $result = [
+                'id' => $insurance->insuranceId,
+                'name' => $insurance->name,
+                'company' => $insurance->companyName,
+                'address' => $insurance->address,
+                'data' => $insItem
+            ];
+            return $this->sendResponse($result, 'Insurance retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving insurance', $th->getMessage());
         }

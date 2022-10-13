@@ -18,11 +18,6 @@ class Insurance extends Model
     {
         return $this->hasMany(InsuranceItem::class, 'insuranceId');
     }
-
-    public static function insItem()
-    {
-        return InsuranceItem::paginate(10);
-    }
     
     public function toSearchableArray()
     {
