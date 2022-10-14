@@ -1,6 +1,9 @@
 ![This is an image](https://oshatechnology.com/static/media/oranye.9f948cc76edf88d2a4fc.png)
 
 # **Human Resource Information System**
+- [Installation](https://github.com/OSHATechnology/BE_HRIS/tree/develop#installation)
+- [Api Referance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#api-reference)
+  - [login](https://github.com/OSHATechnology/BE_HRIS/tree/develop#login-user-api)
 
 ##   **Installation**
 
