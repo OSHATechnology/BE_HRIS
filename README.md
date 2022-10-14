@@ -39,6 +39,13 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-employee-family-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-family-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-family-api)
+  - [Status Hire](https://github.com/OSHATechnology/BE_HRIS/tree/develop#status-hire-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-status-hire-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-status-hire-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-status-hire-by-employee-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-status-hire-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-status-hire-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-status-hire-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -381,17 +388,61 @@ GET api/employee_family?empId={id}
 ```
 
 <!-- template example -->
+### Status Hire API
+### Show All Status Hire API
+#### Endpoint
+```
+GET api/status_hire
+```
+### Create Status Hire API
+#### Endpoint
+```
+POST api/status_hire
+```
+#### Body request example
+```json
+{
+  "name": "Active"
+}
+```
+### Show Status Hire By Employee ID API
+#### Endpoint
+```
+GET api/status_hire/{id}
+```
+### Update Status Hire API
+#### Endpoint
+```
+PUT api/status_hire/{id}
+```
+#### Body request example
+```json
+{
+  "name": "Activated",
+}
+```
+### Delete Status Hire API
+#### Endpoint
+```
+DELETE api/status_hire/{id}
+```
+### Search Status Hire API
+#### Endpoint
+```
+GET api/status_hire?search={key}
+```
+<!-- template example -->
 <!-- ### name = Employee Family
 ### Employee Family API
 ### Show All Employee Family API
 #### Endpoint
 ```
-GET
+GET 
 ```
 ### Create Employee Family API
 #### Endpoint
 ```
-POST
+POST 
 ```
 #### Body request example
 ```json
@@ -418,10 +469,10 @@ PUT
 ### Delete Employee Family API
 #### Endpoint
 ```
-DELETE
+DELETE 
 ```
 ### Search Employee Family API
 #### Endpoint
 ```
-GET
+GET 
 ``` -->
