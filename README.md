@@ -12,6 +12,13 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-role-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-role-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-role-api)
+  - [Permission](https://github.com/OSHATechnology/BE_HRIS/tree/develop#permission-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-permission-api)
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-permission-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-permission-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-permission-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-permission-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-permission-api)
   - [Employee](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-api)
@@ -117,6 +124,61 @@ DELETE api/roles/{id}
 #### Endpoint
 ```
 DELETE api/roles?search={role}
+```
+
+### Permission API
+### Show All Permission API
+#### Endpoint
+```
+GET /api/permissions
+```
+
+### Create Permission API
+#### Endpoint
+```
+POST /api/permissions
+```
+#### Body request example
+```json
+{
+    "namePermission":"can create a role",
+    "description": "user can create a new role",
+    "tag": "Skill Management",
+    "slug": "can_create_role"
+}
+```
+
+### Show Permission By ID API
+#### Endpoint
+```
+GET /api/permissions/{id}
+```
+
+### Update Permission API
+#### Endpoint
+```
+PUT /api/permissions/{id}
+```
+#### Body request example
+```json
+{
+    "namePermission":"can create a Employee",
+    "description": "user can create a new employee",
+    "tag": "Skill Management",
+    "slug": "can_create_role"
+}
+```
+
+### Delete Permission API
+#### Endpoint
+```
+DELETE /api/permissions/{id}
+```
+
+### Search Permission API
+#### Endpoint
+```
+GET /api/permissions?search={namePermission}
 ```
 
 ### Employee API
