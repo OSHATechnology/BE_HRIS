@@ -3,7 +3,8 @@
 # **Human Resource Information System**
 - [Installation](https://github.com/OSHATechnology/BE_HRIS/tree/develop#installation)
 - [Api Referance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#api-reference)
-  - [login](https://github.com/OSHATechnology/BE_HRIS/tree/develop#login-user-api)
+  - [Login](https://github.com/OSHATechnology/BE_HRIS/tree/develop#login-user-api)
+  - [Logout](https://github.com/OSHATechnology/BE_HRIS/tree/develop#logout-user-api)
   - [Role](https://github.com/OSHATechnology/BE_HRIS/tree/develop#role-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-role-api)
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-role-api)
@@ -50,18 +51,22 @@ php artisan migrate --seed
 if you want to see json response you can install [postman](https://www.postman.com/). If you have logged in, don't forget to enter the token in the postman token bearer at each endpoint.
 
 ### Login User API
-
 #### Endpoint
 ```
 POST api/auth/login
 ```
-
 #### Body request example
 ```json
 {
   "email": "example@email.com",
   "password": "password"
 }
+```
+
+### Logout User API
+#### Endpoint
+```
+POST api/auth/logout
 ```
 
 ### Role API
