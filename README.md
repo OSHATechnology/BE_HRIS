@@ -4,10 +4,17 @@
 - [Installation](https://github.com/OSHATechnology/BE_HRIS/tree/develop#installation)
 - [Api Referance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#api-reference)
   - [login](https://github.com/OSHATechnology/BE_HRIS/tree/develop#login-user-api)
+  - [Role](https://github.com/OSHATechnology/BE_HRIS/tree/develop#role-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-role-api)
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-role-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-role-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-role-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-role-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-role-api)
   - [Employee](https://github.com/OSHATechnology/BE_HRIS/tree/develop#login-user-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-api)
-    - [show](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-by-id-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-by-id-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-api)
     - [Soft Delete trash](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-trash-employee-api)
     - [Soft Delete restore](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-restore-employee-api)
@@ -56,8 +63,57 @@ POST api/auth/login
 }
 ```
 
-### Employee API
+### Role API
+### Show All Role API
+#### Endpoint
+```
+GET api/roles
+```
 
+### Create Role API
+#### Endpoint
+```
+POST api/roles
+```
+#### Body request example
+```json
+{
+  "nameRole": "employee",
+  "description": "this is role for employee"
+}
+```
+### Show Role By ID API
+#### Endpoint
+```
+GET api/roles/{id}
+```
+
+### Update Role API
+#### Endpoint
+```
+PUT api/roles/{id}
+```
+#### Body request example
+```json
+{
+  "nameRole": "cashier",
+  "description": "this is role for cashier"
+}
+```
+
+### Delete Role API
+#### Endpoint
+```
+DELETE api/roles/{id}
+```
+
+### Search Role API
+#### Endpoint
+```
+DELETE api/roles?search={role}
+```
+
+### Employee API
 ### Show All Employee API
 #### Endpoint
 ```
