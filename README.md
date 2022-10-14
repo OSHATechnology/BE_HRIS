@@ -383,12 +383,12 @@ GET api/employee_family?empId={id}
 <!-- template example -->
 <!-- ### name = Employee Family
 ### Employee Family API
-### Show All Employee Family
+### Show All Employee Family API
 #### Endpoint
 ```
 GET
 ```
-### Create Employee Family
+### Create Employee Family API
 #### Endpoint
 ```
 POST
@@ -404,7 +404,7 @@ POST
 ```
 GET 
 ```
-### Update Employee Family
+### Update Employee Family API
 #### Endpoint
 ```
 PUT 
@@ -415,12 +415,12 @@ PUT
   "": "",
 }
 ```
-### Delete Employee Family
+### Delete Employee Family API
 #### Endpoint
 ```
 DELETE
 ```
-### Search Employee Family
+### Search Employee Family API
 #### Endpoint
 ```
 GET
