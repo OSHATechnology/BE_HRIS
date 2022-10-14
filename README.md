@@ -30,8 +30,7 @@ php artisan migrate --seed
 ```
 
 ## **API Reference**
-if you want to see json response you can install postman 
-https://www.postman.com/
+if you want to see json response you can install [postman](https://www.postman.com/)
 
 ### Login User API
 
