@@ -21,8 +21,8 @@
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-permission-api)
   - [Role Permission](https://github.com/OSHATechnology/BE_HRIS/tree/develop#role-permission-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-role-permission-api)
-    - [Attach](https://github.com/OSHATechnology/BE_HRIS/tree/develop#Attach-role-permission-api)
-    - [Dettach](https://github.com/OSHATechnology/BE_HRIS/tree/develop#Dettach-role-permission-api)
+    - [Attach](https://github.com/OSHATechnology/BE_HRIS/tree/develop#attach-role-permission-api)
+    - [Dettach](https://github.com/OSHATechnology/BE_HRIS/tree/develop#dettach-role-permission-api)
   - [Employee](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-api)
@@ -186,7 +186,7 @@ GET /api/permissions?search={namePermission}
 ```
 
 ### Role Permission API
-### Show All Permssion API
+### Show All Role Permssion API
 #### Endpoint
 ```
 GET api/role-permissions
