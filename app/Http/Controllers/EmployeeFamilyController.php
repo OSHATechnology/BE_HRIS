@@ -36,7 +36,7 @@ class EmployeeFamilyController extends BaseController
             $empFam = (new Collection(EmployeeFamilyResource::collection(EmployeeFamily::all())))->paginate(self::NumPaginate);
             return $this->sendResponse($empFam, "Employee Family retrieved successfully");
         } catch (\Throwable $th) {
-            return $this->sendResponse("Error employee Family retrieving", $th->getMessage());
+            return $this->sendError("Error employee Family retrieving", $th->getMessage());
         }
     }
     
@@ -60,7 +60,7 @@ class EmployeeFamilyController extends BaseController
             $empFam->save();
             return $this->sendResponse(new EmployeeFamilyResource($empFam), "Employee Family created successfully");
         } catch (\Throwable $th) {
-            return $this->sendResponse("Error employee Family creating", $th->getMessage());
+            return $this->sendError("Error employee Family creating", $th->getMessage());
         }
     }
 
@@ -76,7 +76,7 @@ class EmployeeFamilyController extends BaseController
             $empFam = new EmployeeFamilyResource(EmployeeFamily::findOrFail($id));
             return $this->sendResponse($empFam, "Employee Family retrieved successfully");
         } catch (\Throwable $th) {
-            return $this->sendResponse("Error employee Family creating", $th->getMessage());
+            return $this->sendError("Error employee Family creating", $th->getMessage());
         }
     }
 
@@ -105,7 +105,7 @@ class EmployeeFamilyController extends BaseController
             $empFam->save();
             return $this->sendResponse($empFam, "Employee Family updated successfully");
         } catch (\Throwable $th) {
-            return $this->sendResponse("Error employee Family updating", $th->getMessage());
+            return $this->sendError("Error employee Family updating", $th->getMessage());
         }
     }
     
@@ -122,17 +122,17 @@ class EmployeeFamilyController extends BaseController
             $empFam->delete();
             return $this->sendResponse($empFam, "Employee Family deleted successfully");
         } catch (\Throwable $th) {
-            return $this->sendResponse("Error employee Family deleting", $th->getMessage());
+            return $this->sendError("Error employee Family deleting", $th->getMessage());
         }
     }
 
     public function showByEmpId(Request $request)
     {
         try {
-            $empFam = new EmployeeFamilyResource(EmployeeFamily::where('empId',$request->empId)->get());
+            $empFam = (new Collection(EmployeeFamilyResource::collection(EmployeeFamily::where('empId',$request->empId)->get())))->paginate(self::NumPaginate);
             return $this->sendResponse($empFam, "Employee Family retrieved successfully");
         } catch (\Throwable $th) {
-            return $this->sendResponse("Error employee Family creating", $th->getMessage());
+            return $this->sendError("Error employee Family creating", $th->getMessage());
         }
     }
 
