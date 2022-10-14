@@ -32,6 +32,21 @@
     - [Soft Delete trash](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-trash-employee-api)
     - [Soft Delete restore](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-restrore-employee-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-api)
+  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-family-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-family-by-employee-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-employee-family-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-family-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-family-api)
+  <!-- name = employee-family
+  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-family-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-family-by-employee-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-employee-family-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-family-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-family-api) -->
 
 ##   **Installation**
 
@@ -312,3 +327,101 @@ GET api/employee/restrore
 ```
 GET api/employee?search={firstname}
 ```
+
+### Employee Family API
+### Show All Employee Family
+#### Endpoint
+```
+GET api/employee_family
+```
+### Create Employee Family
+#### Endpoint
+```
+POST api/employee_family
+```
+#### Body request example
+```json
+{
+  "empId": 1,
+  "name": "john",
+  "statusId": 1,
+  "isAlive": 1,
+  "identityNumber": "001"
+}
+```
+### Show Employee Family By Employee ID API
+#### Endpoint
+```
+GET api/employee_family/{id}
+```
+### Update Employee Family
+#### Endpoint
+```
+PUT api/employee_family/{id}
+```
+#### Body request example
+```json
+{
+  "empId": 1,
+  "name": "john",
+  "statusId": 1,
+  "isAlive": 1,
+  "identityNumber": "001"
+}
+```
+### Delete Employee Family
+#### Endpoint
+```
+DELETE api/employee_family/{id}
+```
+### Search Employee Family
+#### Endpoint
+```
+GET api/employee_family?empId={id}
+```
+
+<!-- template example -->
+<!-- ### name = Employee Family
+### Employee Family API
+### Show All Employee Family
+#### Endpoint
+```
+GET
+```
+### Create Employee Family
+#### Endpoint
+```
+POST
+```
+#### Body request example
+```json
+{
+  "": ""
+}
+```
+### Show Employee Family By Employee ID API
+#### Endpoint
+```
+GET 
+```
+### Update Employee Family
+#### Endpoint
+```
+PUT 
+```
+#### Body request example
+```json
+{
+  "": "",
+}
+```
+### Delete Employee Family
+#### Endpoint
+```
+DELETE
+```
+### Search Employee Family
+#### Endpoint
+```
+GET
+``` -->
