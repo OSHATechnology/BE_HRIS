@@ -33,7 +33,7 @@ https://www.postman.com/
 ### Login User API
 
 #### Endpoint
-```http
+```
 POST api/auth/login
 ```
 
