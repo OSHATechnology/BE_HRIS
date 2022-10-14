@@ -5,12 +5,12 @@
 - [Api Referance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#api-reference)
   - [login](https://github.com/OSHATechnology/BE_HRIS/tree/develop#login-user-api)
   - [Employee](https://github.com/OSHATechnology/BE_HRIS/tree/develop#login-user-api)
-    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee) 
-    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee)
-    - [show](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-by_id)
-    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee)
-    - [Soft Delete trash](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-trash-employee)
-    - [Soft Delete restore](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-restore-employee)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-api)
+    - [show](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-by-id-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-api)
+    - [Soft Delete trash](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-trash-employee-api)
+    - [Soft Delete restore](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-restore-employee-api)
 
 ##   **Installation**
 
@@ -42,12 +42,12 @@ if you want to see json response you can install [postman](https://www.postman.c
 
 ### Login User API
 
-##### Endpoint
+#### Endpoint
 ```
 POST api/auth/login
 ```
 
-##### Body request example
+#### Body request example
 ```json
 {
   "email": "example@email.com",
@@ -57,18 +57,18 @@ POST api/auth/login
 
 ### Employee API
 
-#### show all employee
-##### Endpoint
+### Show All Employee API
+#### Endpoint
 ```
 GET api/employee
 ```
 
-#### create employee
-##### Endpoint
+### Create Employee API
+#### Endpoint
 ```
 POST api/employee
 ```
-##### Body request example
+#### Body request example
 ```json
 {
   "firstName": "John",
@@ -92,18 +92,18 @@ POST api/employee
 }
 ```
 
-#### show employee by id
-##### Endpoint
+### Show Employee By Id API
+#### Endpoint
 ```
 GET api/employee/{id}
 ```
 
-#### update employee
-##### Endpoint
+### Update Employee API
+#### Endpoint
 ```
 PUT api/employee/{id}
 ```
-##### Body request example
+#### Body request example
 ```json
 {
   "firstName": "Charles",
@@ -127,20 +127,20 @@ PUT api/employee/{id}
 }
 ```
 
-#### Delete employee
-##### Endpoint
+### Delete Employee API
+#### Endpoint
 ```
 DELETE api/employee/{id}
 ```
 
-#### Soft delete trash employee
-##### Endpoint
+### Soft Delete Trash Employee API
+#### Endpoint
 ```
 GET api/employee/trash
 ```
 
-#### Soft delete restrore employee
-##### Endpoint
+### Soft Delete Restrore Employee API
+#### Endpoint
 ```
 GET api/employee/restrore
 ```
