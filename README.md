@@ -11,6 +11,7 @@
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-api)
     - [Soft Delete trash](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-trash-employee-api)
     - [Soft Delete restore](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-restore-employee-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-api)
 
 ##   **Installation**
 
@@ -143,4 +144,10 @@ GET api/employee/trash
 #### Endpoint
 ```
 GET api/employee/restrore
+```
+
+### Search Employee API
+#### Endpoint
+```
+GET api/employee?search={firstname}
 ```
