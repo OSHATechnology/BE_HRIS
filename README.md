@@ -405,7 +405,7 @@ POST api/status_hire
   "name": "Active"
 }
 ```
-### Show Status Hire By Employee ID API
+### Show Status Hire By ID API
 #### Endpoint
 ```
 GET api/status_hire/{id}
@@ -450,7 +450,7 @@ POST
   "": ""
 }
 ```
-### Show Employee Family By Employee ID API
+### Show Employee Family By ID API
 #### Endpoint
 ```
 GET 
