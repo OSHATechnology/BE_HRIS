@@ -28,6 +28,11 @@ class Loan extends Model
         return $this->hasOne(Employee::class, 'employeeId', 'empId');
     }
 
+    public function instalments()
+    {
+        return $this->hasMany(Instalment::class, 'loanId');
+    }
+
     public static function getLastLoan($id)
     {
         $lastLoan = Loan::where("empId", $id)->where('status', 0)->orderBy('created_at', 'desc')->first();

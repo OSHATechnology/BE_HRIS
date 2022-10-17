@@ -27,7 +27,8 @@ class EmployeeFamilyResource extends JsonResource
                 'id' => $this->status->empFamStatId,
                 'status' => $this->status->status,
             ] : "",
-            'isAlive' => EmployeeFamily::TYPESTATUS[$this->isAlive],
+            'statusAlive' => EmployeeFamily::TYPESTATUS[$this->isAlive],
+            'isAlive' => $this->isAlive,
         ];
     }
 }

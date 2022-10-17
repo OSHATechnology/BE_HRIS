@@ -11,18 +11,40 @@ class Overtime extends Model
 
     protected $fillable = [
         'overtimeId', 'employeeId', 'startAt', 'endAt', 'assignedBy',
-        'isConfirmed', 'confirmedBy	', 'message', 'created_at', 'updated_at'
+        'isConfirmed', 'confirmedBy', 'message', 'created_at', 'updated_at'
     ];
 
     protected $primaryKey = 'overtimeId';
+
+    public const STATUS = [
+        0 => 'Pending',
+        1 => 'Confirmed',
+        2 => 'Rejected'
+    ];
 
     public function employee()
     {
         return $this->hasOne(Employee::class, 'employeeId', 'employeeId');
     }
+
     public function assignedByEmp()
     {
         return $this->hasOne(Employee::class, 'employeeId', 'assignedBy');
+    }
+
+    public static function confirmed()
+    {
+        return self::where('isConfirmed', 1)->get();
+    }
+
+    public function scopeConfirmed($query)
+    {
+        return $query->where('isConfirmed', 1);
+    }
+
+    public function scopeWithoutPending($query)
+    {
+        return $query->where('isConfirmed', '!=', 0);
     }
 
     public static function changeStatus($id, $status)

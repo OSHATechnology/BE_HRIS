@@ -27,7 +27,7 @@ class LoanController extends BaseController
     public function index()
     {
         try {
-            if(request()->has('search')){
+            if (request()->has('search')) {
                 return $this->search(request());
             }
             $loan = (new Collection(LoanResource::collection(Loan::all())))->paginate(self::NumPaginate);
@@ -47,7 +47,7 @@ class LoanController extends BaseController
     {
         try {
             $this->validate($request, self::VALIDATION_RULES);
-            
+
             $statusLastLoan = Loan::getLastLoan($request->empId);
             if ($statusLastLoan === null) {
                 $loan = new Loan;
@@ -128,18 +128,44 @@ class LoanController extends BaseController
     public function search(Request $request)
     {
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $query = Loan::join('employees', 'loans.empId', '=', 'employees.employeeId')
-                                    ->where('employees.firstName', 'like', '%'.$request->search.'%')
-                                    ->get();
+                    ->where('employees.firstName', 'like', '%' . $request->search . '%')
+                    ->get();
                 $users =   (new Collection(LoanResource::collection($query)))->paginate(self::NumPaginate);
-                
-            }else{
+            } else {
                 $users = (new Collection(LoanResource::collection(Loan::all())))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($users, "employee search successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error search employee failed", $th->getMessage());
+        }
+    }
+
+    public function myLoan()
+    {
+        try {
+            $TotalLoans = Loan::where('empId', auth()->user()->employeeId)->where('status', 0)->sum('nominal');
+
+            $TotalPaid = 0;
+
+            $Loans = Loan::where('empId', auth()->user()->employeeId)->where('status', 0)->get();
+
+            foreach ($Loans as $value) {
+                foreach ($value->instalments as $key => $v) {
+                    $TotalPaid += $v->nominal;
+                }
+            }
+
+            $Loan = new Collection([
+                'totalLoan' => $TotalLoans ?? 0,
+                'totalPaid' => $TotalPaid ?? 0,
+                'totalUnPaid' => $TotalLoans - $TotalPaid ?? 0,
+            ]);
+
+            return $this->sendResponse($Loan, "my loan retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError("error retrieving my loan", $th->getMessage());
         }
     }
 }
