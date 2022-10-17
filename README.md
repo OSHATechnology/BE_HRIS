@@ -49,7 +49,7 @@
   - [Partner](https://github.com/OSHATechnology/BE_HRIS/tree/develop#partner-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-partner-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-partner-api)
-    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-partner-by-employee-id-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-partner-by-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-partner-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-partner-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-partner-api)
@@ -57,7 +57,7 @@
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-family-api)
-    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-family-by-employee-id-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-family-by-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-employee-family-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-family-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-family-api) -->
