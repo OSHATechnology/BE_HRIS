@@ -80,6 +80,7 @@ git clone https://github.com/OSHATechnology/BE_HRIS.git
 ```
 composer install
 ```
+if you haven't installed [composer](https://getcomposer.org/) then install [composer](https://getcomposer.org/) first and repeat the above command
 
 3. Setting database in `.env`
 
@@ -91,6 +92,11 @@ php artisan key:generate
 5. Run migration and seeder
 ```
 php artisan migrate --seed
+```
+
+6. Run laravel
+```
+php artisan serve
 ```
 
 ## **API Reference**
