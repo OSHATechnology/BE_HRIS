@@ -69,6 +69,9 @@
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-attendance-api)
     - [Today Attendance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#today-attendance-api)
     - [Today Attendance By Employee](https://github.com/OSHATechnology/BE_HRIS/tree/develop#today-attendance-By-Employee-api)
+    - [Filter](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-attendance-api)
+    - [Filter Year](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-year-attendance-api)
+    - [Filter Year Month](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-year-attendance-api)
   - [Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#overtime-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-overtime-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-overtime-api)
@@ -664,6 +667,21 @@ GET api/attendance/today
 #### Endpoint
 ```
 GET api/attendance/employee/{id}/today
+```
+### Filter API
+#### Endpoint
+```
+GET api/attendance?filter={YYYY:mm:dd}
+```
+### Filter Year API
+#### Endpoint
+```
+GET api/attendance?from_y={YYYY}&to_y={YYYY}
+```
+### Filter Year Month API
+#### Endpoint
+```
+GET api/attendance?from_m_y={YYYY-mm}&to_m_y={YYYY-mm}
 ```
 
 ### name = Overtime
