@@ -668,17 +668,17 @@ GET api/attendance/today
 ```
 GET api/attendance/employee/{id}/today
 ```
-### Filter API
+### Filter Attendance API
 #### Endpoint
 ```
 GET api/attendance?filter={YYYY:mm:dd}
 ```
-### Filter Year API
+### Filter Year Attendance API
 #### Endpoint
 ```
 GET api/attendance?from_y={YYYY}&to_y={YYYY}
 ```
-### Filter Year Month API
+### Filter Year Month Attendance API
 #### Endpoint
 ```
 GET api/attendance?from_m_y={YYYY-mm}&to_m_y={YYYY-mm}
