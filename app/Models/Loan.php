@@ -30,7 +30,7 @@ class Loan extends Model
 
     public static function getLastLoan($id)
     {
-        $lastLoan = Loan::where("empId", $id)->orderBy('created_at', 'desc')->first();
+        $lastLoan = Loan::where("empId", $id)->where('status', 0)->orderBy('created_at', 'desc')->first();
         if ($lastLoan) {
             return $lastLoan->status;
         } else {
