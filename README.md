@@ -83,13 +83,22 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-work-permit-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-work-permit-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-work-permit-api)
-  - [Furlough](https://github.com/OSHATechnology/BE_HRIS/tree/develop#furlough-type-api)
+  - [Furlough Type](https://github.com/OSHATechnology/BE_HRIS/tree/develop#furlough-type-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-furlough-type-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-furlough-type-api)
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-furlough-type-by-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-furlough-type-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-furlough-type-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-furlough-type-api)
+  - [Furlough](https://github.com/OSHATechnology/BE_HRIS/tree/develop#furlough-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-furlough-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-furlough-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-furlough-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-furlough-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-furlough-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-furlough-api)
+    - [Accepted](https://github.com/OSHATechnology/BE_HRIS/tree/develop#accepted-furlough-api)
+    - [Declined](https://github.com/OSHATechnology/BE_HRIS/tree/develop#declined-furlough-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -812,6 +821,78 @@ DELETE api/furlough_type/{id}
 #### Endpoint
 ```
 GET api/furlough_type?search={key}
+```
+
+### Furlough API
+### Show All Furlough API
+#### Endpoint
+```
+GET api/furlough 
+```
+### Create Furlough API
+#### Endpoint
+```
+POST api/furlough
+```
+#### Body request example
+```json
+{
+    "employeeId":2,
+    "furTypeId":1,
+    "startAt":"2022-10-07 07:01:08",
+    "endAt":"2022-10-31 15:01:08"
+}
+```
+### Show Furlough By ID API
+#### Endpoint
+```
+GET api/furlough/{id}
+```
+### Update Furlough API
+#### Endpoint
+```
+PUT api/furlough/{id}
+```
+#### Body request example
+```json
+{
+    "employeeId":2,
+    "furTypeId":2,
+    "startAt":"2022-10-07 07:01:08",
+    "endAt":"2022-10-31 15:01:08"
+}
+```
+### Delete Furlough API
+#### Endpoint
+```
+DELETE api/furlough/{id}
+```
+### Search Furlough API
+#### Endpoint
+```
+GET api/furlough?search={key}
+```
+### Accepted Furlough API
+#### Endpoint
+```
+PUT api/furlough/attendance_accepted/{id}
+```
+#### Body request example
+```json
+{
+    "message": "anda diperbolehkan cuti"
+}
+```
+### Declined Furlough API
+#### Endpoint
+```
+GET api/furlough/attendance_declined/{id}
+```
+#### Body request example
+```json
+{
+    "message": "anda tidak diperbolehkan cuti"
+}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
