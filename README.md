@@ -32,6 +32,10 @@
     - [Soft Delete trash](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-trash-employee-api)
     - [Soft Delete restore](https://github.com/OSHATechnology/BE_HRIS/tree/develop#soft-delete-restrore-employee-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-api)
+    - [Update Password](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-password-employee-api)
+    - [Import](https://github.com/OSHATechnology/BE_HRIS/tree/develop#import-employee-api)
+    - [Leave Request](https://github.com/OSHATechnology/BE_HRIS/tree/develop#import-employee-api)
+    - [Add Leave Request](https://github.com/OSHATechnology/BE_HRIS/tree/develop#import-employee-api)
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-family-api)
@@ -355,7 +359,7 @@ GET api/employee/{id}
 ### Update Employee API
 #### Endpoint
 ```
-PUT api/employee/{id}
+POST api/employee/{id}
 ```
 #### Body request example
 ```json
@@ -403,6 +407,49 @@ GET api/employee/restrore
 #### Endpoint
 ```
 GET api/employee?search={firstname}
+```
+### Update Passowrd Employee API
+#### Endpoint
+```
+GET api/employee/update_password/{id}
+```
+#### Body request example
+```json
+{
+    "oldPassword": "andi12345",
+    "newPassword": "andi1234",
+    "confirmPassword": "andi1234"
+}
+```
+### Import Employee API
+#### Endpoint
+```
+POST api/employee/import
+```
+#### Body request example
+```json
+{
+    "file": "employee.xls"
+}
+```
+### Leave Request Employee API
+#### Endpoint
+```
+GET api/my/leave-requests
+```
+### Add Leave Request Employee API
+#### Endpoint
+```
+GET api/my/add-leave-requests
+```
+#### Body request example
+```json
+{
+    "type": "furlough",
+    "type_furlough": "pregnant",
+    "startAt": "2022-10-17",
+    "endAt": "2022-11-17"
+}
 ```
 
 ### Employee Family API
@@ -457,7 +504,6 @@ DELETE api/employee_family/{id}
 GET api/employee_family?empId={id}
 ```
 
-<!-- template example -->
 ### Status Hire API
 ### Show All Status Hire API
 #### Endpoint
