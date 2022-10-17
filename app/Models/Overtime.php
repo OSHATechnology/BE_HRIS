@@ -51,4 +51,24 @@ class Overtime extends Model
             return false;
         }
     }
+
+    public static function declineOT($overtimeId, $message = null)
+    {
+        try {
+            $dataOT = self::findOrFail($overtimeId);
+            $dataOT->isConfirmed = 2;
+            $dataOT->confirmedBy = auth()->user()->employeeId;
+            $dataOT->message = $message;
+            if (!$dataOT->save()) {
+                return false;
+            }
+            // send notification
+            // $message = $message == null ? "Overtime request has been declined" : $message;
+            // Notification::sendNotification($dataOT->employeeId, auth()->user()->employeeId, $message, "overtime", $overtimeId);
+
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
 }

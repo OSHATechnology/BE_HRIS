@@ -204,4 +204,27 @@ class OvertimeController extends BaseController
             return $this->sendError('Error confirming overtime', $th->getMessage());
         }
     }
+
+    public function decline(Request $request)
+    {
+        $request->validate([
+            'overtime_id' => 'required|numeric',
+        ]);
+
+        try {
+            if ($request->has('message')) {
+                $message = $request->message;
+            } else {
+                $message = '';
+            }
+
+            $overtime = Overtime::declineOT($request->overtime_id, $message);
+            if (!$overtime) {
+                $this->sendError('Error declining overtime', 'Error declining overtime');
+            }
+            return $this->sendResponse("success", 'Overtime declined successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error declining overtime', $th->getMessage());
+        }
+    }
 }

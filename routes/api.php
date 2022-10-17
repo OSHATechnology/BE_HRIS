@@ -21,6 +21,7 @@ use App\Http\Controllers\FurloughTypeController;
 use App\Http\Controllers\InstalmentController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\InsuranceItemController;
+use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\OvertimeController;
@@ -82,6 +83,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('attendance/employee/{id}/today', [AttendanceController::class, 'todayByEmp']);
     Route::apiResource('attendance', AttendanceController::class);
     Route::post('overtime/confirm', [OvertimeController::class, 'confirm']);
+    Route::post('overtime/decline', [OvertimeController::class, 'decline']);
     Route::apiResource('overtime', OvertimeController::class);
     Route::apiResource('work_permit', WorkPermitController::class);
     Route::apiResource('team', TeamController::class);
@@ -104,6 +106,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('salary_allowance', SalaryAllowanceController::class);
     Route::apiResource('type_of_allowance', TypeOfAllowanceController::class);
     Route::apiResource('allowance', AllowanceController::class);
+    Route::get('leave-requests', [LeaveRequestController::class, 'index']);
 
     Route::get('/count', [MasterDataController::class, 'count']);
     Route::post('/my/attendance', [AttendanceController::class, 'myToday']);
