@@ -182,6 +182,7 @@ class FurloughController extends BaseController
             $type = Furlough::findOrFail($id);
             $type->isConfirmed = 1;
             $type->confirmedBy = Auth::id();
+            $type->confirmedAt = now();
             $type->message = $request->message;
 
             $attendance = new Attendance;
@@ -191,7 +192,7 @@ class FurloughController extends BaseController
             $attendance->submitedById = Auth::id();
             $attendance->typeInOut = "-";
             $attendance->timeAttend = $type->created_at->format('Y-m-d h:i:s');
-            
+
             $employee = Employee::findOrFail($type->employeeId);
             $notif = new Notification;
             $notif->empId = $type->employeeId;
@@ -203,7 +204,7 @@ class FurloughController extends BaseController
             $notif->senderBy = Auth::id();
             $notif->scheduleAt = now();
             $notif->status = "Accepted";
-    
+
             $type->save();
             $attendance->save();
             $notif->save();
@@ -220,7 +221,7 @@ class FurloughController extends BaseController
             $type->isConfirmed = 2;
             $type->confirmedBy = Auth::id();
             $type->message = $request->message;
-            
+
             $employee = Employee::findOrFail($type->employeeId);
             $notif = new Notification;
             $notif->empId = $id;
@@ -232,7 +233,7 @@ class FurloughController extends BaseController
             $notif->senderBy = Auth::id();
             $notif->scheduleAt = now();
             $notif->status = "Declined";
-    
+
             $type->save();
             $notif->save();
             return $this->sendResponse($type, "employee update successfully");

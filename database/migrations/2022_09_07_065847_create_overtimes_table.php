@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('overtimes', function (Blueprint $table) {
             $table->id('overtimeId');
             $table->unsignedBigInteger('employeeId');
-            $table->timestamp('startAt');
+            $table->timestamp('startAt')->nullable();
             $table->timestamp('endAt')->nullable();
             $table->unsignedBigInteger('assignedBy');
             $table->timestamps();

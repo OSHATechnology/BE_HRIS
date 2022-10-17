@@ -39,7 +39,7 @@ class EmployeeFamilyController extends BaseController
             return $this->sendError("Error employee Family retrieving", $th->getMessage());
         }
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -91,13 +91,11 @@ class EmployeeFamilyController extends BaseController
     {
         try {
             $request->validate([
-                'empId' => 'required|integer',
                 'name' => 'required|string|max:255',
                 'statusId' => 'required|integer',
                 'isAlive' => 'required|boolean'
             ]);
             $empFam = EmployeeFamily::findOrFail($id);
-            $empFam->empId = $request->empId;
             $empFam->identityNumber = $request->identityNumber;
             $empFam->name = $request->name;
             $empFam->statusId = $request->statusId;
@@ -108,7 +106,7 @@ class EmployeeFamilyController extends BaseController
             return $this->sendError("Error employee Family updating", $th->getMessage());
         }
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
@@ -129,7 +127,7 @@ class EmployeeFamilyController extends BaseController
     public function showByEmpId(Request $request)
     {
         try {
-            $empFam = (new Collection(EmployeeFamilyResource::collection(EmployeeFamily::where('empId',$request->empId)->get())))->paginate(self::NumPaginate);
+            $empFam = (new Collection(EmployeeFamilyResource::collection(EmployeeFamily::where('empId', $request->empId)->get())))->paginate(self::NumPaginate);
             return $this->sendResponse($empFam, "Employee Family retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error employee Family creating", $th->getMessage());
@@ -139,13 +137,12 @@ class EmployeeFamilyController extends BaseController
     public function search(Request $request)
     {
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $query = EmployeeFamily::join('employees', 'employee_families.empId', '=', 'employees.employeeId')
-                                    ->where('employees.firstName', 'like', '%'.$request->search.'%')
-                                    ->get();
+                    ->where('employees.firstName', 'like', '%' . $request->search . '%')
+                    ->get();
                 $users =   (new Collection(EmployeeFamilyResource::collection($query)))->paginate(self::NumPaginate);
-                
-            }else{
+            } else {
                 $users = (new Collection(EmployeeFamilyResource::collection(EmployeeFamily::all())))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($users, "employee search successfully");

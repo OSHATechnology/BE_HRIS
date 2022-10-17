@@ -27,7 +27,7 @@ class OvertimeController extends BaseController
     public function index()
     {
         try {
-            if (request()->has('search')) {
+            if (request()->has('search') && request()->get('search') != '') {
                 return $this->search(request());
             }
             if (request()->has('filter')) {
@@ -39,7 +39,7 @@ class OvertimeController extends BaseController
             if (request()->has('from_m_y') && request()->has('to_m_y')) {
                 return $this->filterCustomMonthYear(request());
             }
-            $overtime = (new Collection(OvertimeResource::collection(Overtime::all())))->paginate(self::NumPaginate);
+            $overtime = (new Collection(OvertimeResource::collection(Overtime::withoutPending()->get())))->paginate(self::NumPaginate);
             return $this->sendResponse($overtime, 'Overtime retrieved successfully');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving overtime', $th->getMessage());
@@ -131,11 +131,10 @@ class OvertimeController extends BaseController
         try {
             if ($request->filled('search')) {
                 $query = Overtime::join('employees', 'overtimes.employeeId', '=', 'employees.employeeId')
-                    ->where('employees.firstName', 'like', '%' . $request->search . '%')
-                    ->get();
+                    ->where('employees.firstName', 'like', '%' . $request->search . '%')->withoutPending()->get();
                 $users =   (new Collection(OvertimeResource::collection($query)))->paginate(self::NumPaginate);
             } else {
-                $users = (new Collection(OvertimeResource::collection(Overtime::all())))->paginate(self::NumPaginate);
+                $users = (new Collection(OvertimeResource::collection(Overtime::withoutPending())))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($users, "employee search successfully");
         } catch (\Throwable $th) {
@@ -185,17 +184,22 @@ class OvertimeController extends BaseController
     {
         $request->validate([
             'overtime_id' => 'required|numeric',
-            'assigned_by' => 'required|numeric',
         ]);
 
         try {
+            if ($request->has('assigned_by')) {
+                $assigned_by = $request->assigned_by;
+            } else {
+                $assigned_by = Auth::id();
+            }
+
             if ($request->has('message')) {
                 $message = $request->message;
             } else {
                 $message = '';
             }
 
-            $overtime = Overtime::confirmOT($request->overtime_id, $request->assigned_by, $message);
+            $overtime = Overtime::confirmOT($request->overtime_id, $assigned_by, $message);
             if (!$overtime) {
                 $this->sendError('Error confirming overtime', 'Error confirming overtime');
             }

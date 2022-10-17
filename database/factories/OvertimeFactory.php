@@ -17,11 +17,12 @@ class OvertimeFactory extends Factory
     public function definition()
     {
         $type = $this->faker->randomElement(['acc', 'pending']);
-        $empId = $this->faker->numberBetween(2, 30);
+        $empId = $this->faker->numberBetween(2, 40);
 
+        $time = now();
         switch ($type) {
             case 'acc':
-                $startAt = now();
+                $startAt = $time;
                 $endAt = now()->addHours($this->faker->numberBetween(2, 3));
                 return [
                     'employeeId'  => $empId,
@@ -34,7 +35,7 @@ class OvertimeFactory extends Factory
                 break;
 
             default:
-                $startAt = now();
+                $startAt = $time;
                 $endAt = now()->addHours($this->faker->numberBetween(2, 5));
                 return [
                     'employeeId'  => $empId,
@@ -42,6 +43,7 @@ class OvertimeFactory extends Factory
                     'endAt' => $endAt,
                     'assignedBy' => $empId,
                     'isConfirmed' => 0,
+                    'message' => $this->faker->text(100),
                 ];
                 break;
         }

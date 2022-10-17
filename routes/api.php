@@ -5,7 +5,6 @@ use App\Http\Controllers\AttendanceStatusController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StatusHireController;
-use App\Models\StatusHire;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
@@ -31,13 +30,8 @@ use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SalaryCutDetailController;
 use App\Http\Controllers\SalaryInsuranceDetailController;
 use App\Http\Controllers\TeamMemberController;
-use App\Http\Controllers\TodayAttendanceController;
 use App\Http\Controllers\TypeOfAllowanceController;
 use App\Http\Controllers\WorkPermitController;
-use App\Models\Allowance;
-use App\Models\BasicSalaryByEmployee;
-use App\Models\Employee;
-use App\Models\WorkPermit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -110,6 +104,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/count', [MasterDataController::class, 'count']);
     Route::post('/my/attendance', [AttendanceController::class, 'myToday']);
+    Route::get('/my/loan', [LoanController::class, 'myLoan']);
     Route::get('/my/leave-requests', [EmployeeController::class, 'myLeaveRequests']);
     Route::post('/my/add-leave-request', [EmployeeController::class, 'addLeaveRequest']);
 });

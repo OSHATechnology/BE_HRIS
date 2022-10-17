@@ -342,8 +342,8 @@ class EmployeeController extends BaseController
                     'id' => "ot" . $value->overtimeId,
                     'type' => 'overtime',
                     'requestAt' => $value->created_at,
-                    'confirmedAt' => $value->confirmedAt !== null ? $value->confirmedAt : "",
-                    'status' => $value->confirmedAt !== null ? ($value->isConfirmed !== 0 ? "Confirmed" : 'rejected') : "waiting for approved",
+                    'confirmedAt' => $value->isConfirmed !== 0 ? $value->updated_at : "-",
+                    'status' => Overtime::STATUS[$value->isConfirmed] ? Overtime::STATUS[$value->isConfirmed] : "waiting for approved",
                 ]);
             }
 
