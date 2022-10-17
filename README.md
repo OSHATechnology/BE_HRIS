@@ -444,10 +444,27 @@ GET api/my/leave-requests
 GET api/my/add-leave-requests
 ```
 #### Body request example
+> if the worker is on leave
 ```json
 {
     "type": "furlough",
     "type_furlough": "pregnant",
+    "startAt": "2022-10-17",
+    "endAt": "2022-11-17"
+}
+```
+> if the worker permits work
+```json
+{
+    "type": "work_permit",
+    "startAt": "2022-10-17",
+    "endAt": "2022-11-17"
+}
+```
+> if workers work overtime
+```json
+{
+    "type": "work_permit",
     "startAt": "2022-10-17",
     "endAt": "2022-11-17"
 }
@@ -721,13 +738,13 @@ GET api/attendance/employee/{id}/today
 POST api/my/attendance
 ```
 #### Body request example
-if attendance comes in
+> if attendance comes in
 ```json
 {
   "type":"in"
 }
 ```
-if attendance comes out
+> if attendance comes out
 ```json
 {
   "type":"out"
