@@ -76,6 +76,13 @@
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-overtime-api)
     - [Confirm Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#confirm-overtime-api)
     - [Decline Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#decline-overtime-api)
+  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#work-permit-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-work-permit-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-work-permit-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-work-permit-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-work-permit-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-work-permit-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-work-permit-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -696,6 +703,60 @@ GET api/overtime/decline
   "employee_id": 1,
   "message": "your overtime is declined"
 }
+```
+
+### Work Permit API
+### Show All Work Permit API
+#### Endpoint
+```
+GET api/work_permit
+```
+### Create Work Permit API
+#### Endpoint
+```
+POST api/work_permit
+```
+#### Body request example
+```json
+{
+  "employeeId": 1,
+  "startAt": "2022-09-16 03:41:18",
+  "endAt": "2022-09-17 03:41:18",
+  "isConfirmed": 0,
+  "name": "surat izin sakit",
+  "file": "sakit.pdf",
+}
+```
+### Show Work Permit By ID API
+#### Endpoint
+```
+GET api/work_permit/{id}
+```
+### Update Work Permit API
+#### Endpoint
+```
+PUT api/work_permit/{id}
+```
+#### Body request example
+```json
+{
+  "employeeId": 1,
+  "startAt": "2022-09-16 03:41:18",
+  "endAt": "2022-09-18 03:41:18",
+  "isConfirmed": 0,
+  "name": "surat izin sakit",
+  "file": "sakit.pdf",
+}
+```
+### Delete Work Permit API
+#### Endpoint
+```
+DELETE api/work_permit/{id}
+```
+### Search Work Permit API
+#### Endpoint
+```
+GET api/work_permit?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
