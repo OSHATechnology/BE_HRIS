@@ -83,7 +83,7 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-work-permit-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-work-permit-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-work-permit-api)
-  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#furlough-type-api)
+  - [Furlough](https://github.com/OSHATechnology/BE_HRIS/tree/develop#furlough-type-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-furlough-type-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-furlough-type-api)
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-furlough-type-by-id-api)
