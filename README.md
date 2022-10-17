@@ -83,6 +83,13 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-work-permit-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-work-permit-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-work-permit-api)
+  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#furlough-type-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-furlough-type-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-furlough-type-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-furlough-type-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-furlough-type-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-furlough-type-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-furlough-type-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -757,6 +764,54 @@ DELETE api/work_permit/{id}
 #### Endpoint
 ```
 GET api/work_permit?search={key}
+```
+
+### Furlough Type API
+### Show All Furlough Type API
+#### Endpoint
+```
+GET api/furlough_type
+```
+### Create Furlough Type API
+#### Endpoint
+```
+POST api/furlough_type
+```
+#### Body request example
+```json
+{
+  "name": "pregrant",
+  "type": "yearly",
+  "max": 2
+}
+```
+### Show Furlough Type By ID API
+#### Endpoint
+```
+GET api/furlough_type/{id}
+```
+### Update Furlough Type API
+#### Endpoint
+```
+PUT api/furlough_type/{id}
+```
+#### Body request example
+```json
+{
+  "name": "pregrant",
+  "type": "yearly",
+  "max": 5
+}
+```
+### Delete Furlough Type API
+#### Endpoint
+```
+DELETE api/furlough_type/{id}
+```
+### Search Furlough Type API
+#### Endpoint
+```
+GET api/furlough_type?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
