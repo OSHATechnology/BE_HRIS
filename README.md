@@ -67,6 +67,8 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-attendance-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-attendance-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-attendance-api)
+    - [Today Attendance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#today-attendance-api)
+    - [Today Attendance By Employee](https://github.com/OSHATechnology/BE_HRIS/tree/develop#today-attendance-By-Employee-api)
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#overtime-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-overtime-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-overtime-api)
@@ -646,6 +648,16 @@ DELETE api/attendance/{id}
 #### Endpoint
 ```
 GET api/attendance?search={key}
+```
+### Today Attendance API
+#### Endpoint
+```
+GET api/attendance/today
+```
+### Today Attendance By Employee API
+#### Endpoint
+```
+GET api/attendance/employee/{id}/today
 ```
 
 ### name = Overtime
