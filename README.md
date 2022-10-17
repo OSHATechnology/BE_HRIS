@@ -464,7 +464,7 @@ GET api/my/add-leave-requests
 > if workers work overtime
 ```json
 {
-    "type": "work_permit",
+    "type": "overtime",
     "startAt": "2022-10-17",
     "endAt": "2022-11-17"
 }
