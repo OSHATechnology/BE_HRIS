@@ -76,7 +76,7 @@
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-overtime-api)
     - [Confirm Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#confirm-overtime-api)
     - [Decline Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#decline-overtime-api)
-  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#work-permit-api)
+  - [Work Permit](https://github.com/OSHATechnology/BE_HRIS/tree/develop#work-permit-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-work-permit-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-work-permit-api)
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-work-permit-by-id-api)
