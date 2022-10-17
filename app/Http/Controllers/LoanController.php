@@ -49,7 +49,7 @@ class LoanController extends BaseController
             $this->validate($request, self::VALIDATION_RULES);
 
             $statusLastLoan = Loan::getLastLoan($request->empId);
-            if ($statusLastLoan == null) {
+            if ($statusLastLoan === null) {
                 $loan = new Loan;
                 $loan->empId = $request->empId;
                 $loan->name = $request->name;
@@ -59,7 +59,7 @@ class LoanController extends BaseController
                 $loan->status = $request->status;
                 $loan->save();
                 return $this->sendResponse(new LoanResource($loan), "loan created successfully");
-            } else if ($statusLastLoan == 0) {
+            } else if ($statusLastLoan === 0) {
                 return $this->sendResponse([], "you can't make a loan because the previous loan has not been paid off", 400);
             }
         } catch (\Throwable $th) {
