@@ -60,6 +60,14 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-attendance-status-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-attendance-status-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-attendance-status-api)
+  name = attendance
+  - [Attendance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#attendance-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-attendance-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-attendance-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-attendance-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-attendance-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-attendance-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-attendance-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -552,6 +560,61 @@ DELETE api/attendance_status/{id}
 #### Endpoint
 ```
 GET api/attendance_status?search={key}
+```
+
+### name = Attendance
+### Attendance API
+### Show All Attendance API
+#### Endpoint
+```
+GET api/attendance
+```
+### Create Attendance API
+#### Endpoint
+```
+POST api/attendance
+```
+#### Body request example
+```json
+{
+  "employeeId": 2,
+  "attendanceStatusId": 1,
+  "submitedAt": "2022-07-10 17:00:00",
+  "submitedById": 1,
+  "typeInOut": "in",
+  "timeAttend": "2022-07-10 17:00:00",
+}
+```
+### Show Attendance By ID API
+#### Endpoint
+```
+GET api/attendance/{id}
+```
+### Update Attendance API
+#### Endpoint
+```
+PUT api/attendance/{id}
+```
+#### Body request example
+```json
+{
+  "employeeId": 2,
+  "attendanceStatusId": 1,
+  "submitedAt": "2022-07-10 17:00:00",
+  "submitedById": 1,
+  "typeInOut": "Out",
+  "timeAttend": "2022-07-10 17:00:00",
+}
+```
+### Delete Attendance API
+#### Endpoint
+```
+DELETE api/attendance/{id}
+```
+### Search Attendance API
+#### Endpoint
+```
+GET api/attendance?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
