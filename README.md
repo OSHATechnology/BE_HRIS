@@ -122,14 +122,13 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-team-member-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-team-member-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-team-member-api)
-  <!-- name = employee-family
-  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
-    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
-    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-family-api)
-    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-family-by-id-api)
-    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-employee-family-api)
-    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-family-api)
-    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-family-api) -->
+  - [Notification](https://github.com/OSHATechnology/BE_HRIS/tree/develop#notification-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-notification-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-notification-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-notification-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-notification-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-notification-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-notification-api)
 
 ##   **Installation**
 
@@ -1112,6 +1111,62 @@ DELETE api/team_member/{id}
 #### Endpoint
 ```
 GET api/team_member?search={key}
+```
+### name = Notification
+### Notification API
+### Show All Notification API
+#### Endpoint
+```
+GET api/notification
+```
+### Create Notification API
+#### Endpoint
+```
+POST api/notification
+```
+#### Body request example
+```json
+{
+  "empId": 2,
+  "name": "Accepted Furlough",
+  "content": "Notification",
+  "type": "Furlough",
+  "senderBy": 1,
+  "scheduleAt": "2022-09-14 09:11:30",
+  "status": "Accepted",
+}
+```
+### Show Notification By ID API
+#### Endpoint
+```
+GET api/notification/{id}
+```
+### Update Notification API
+#### Endpoint
+```
+PUT api/notification/{id}
+```
+#### Body request example
+```json
+{
+  "empId": 2,
+  "name": "Declined Furlough",
+  "content": "decline furlough for 2022-10-20",
+  "type": "Furlough",
+  "senderBy": 1,
+  "scheduleAt": "2022-09-14 09:11:30",
+  "status": "Declined",
+}
+```
+### Delete Notification API
+#### Endpoint
+```
+DELETE api/notification/{id}
+```
+### Search Notification API
+#### Endpoint
+```
+GET api/notification?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
