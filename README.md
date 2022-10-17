@@ -115,6 +115,13 @@
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-team-by-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-team-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-team-api)
+  - [Team Member](https://github.com/OSHATechnology/BE_HRIS/tree/develop#team-member-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-team-member-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-team-member-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-team-member-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-team-member-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-team-member-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-team-member-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -756,7 +763,6 @@ GET api/attendance?from_y={YYYY}&to_y={YYYY}
 GET api/attendance?from_m_y={YYYY-mm}&to_m_y={YYYY-mm}
 ```
 
-### name = Overtime
 ### Overtime API
 ### Show All Overtime API
 #### Endpoint
@@ -1054,6 +1060,58 @@ PUT api/team/{id}
 #### Endpoint
 ```
 DELETE api/team/{id}
+```
+### name = Team Member
+### Team Member API
+### Show All Team Member API
+#### Endpoint
+```
+GET api/team_member
+```
+### Create Team Member API
+#### Endpoint
+```
+POST api/team_member
+```
+#### Body request example
+```json
+{
+  "teamId": 1,
+  "empId": 2,
+  "assignedBy": 1,
+  "joinedAt": "2022-09-14 05:51:09",
+}
+```
+### Show Team Member By ID API
+#### Endpoint
+```
+GET api/team_member/{id}
+```
+### Update Team Member API
+#### Endpoint
+```
+PUT api/team_member/{id}
+```
+#### Body request example
+```json
+{
+  {
+  "teamId": 2,
+  "empId": 2,
+  "assignedBy": 1,
+  "joinedAt": "2022-09-14 05:51:09",
+}
+}
+```
+### Delete Team Member API
+#### Endpoint
+```
+DELETE api/team_member/{id}
+```
+### Search Team Member API
+#### Endpoint
+```
+GET api/team_member?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
