@@ -101,6 +101,12 @@
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-furlough-api)
     - [Accepted](https://github.com/OSHATechnology/BE_HRIS/tree/develop#accepted-furlough-api)
     - [Declined](https://github.com/OSHATechnology/BE_HRIS/tree/develop#declined-furlough-api)
+  - [Team](https://github.com/OSHATechnology/BE_HRIS/tree/develop#team-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-team-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-team-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-team-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-team-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-team-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -905,6 +911,49 @@ GET api/furlough/attendance_declined/{id}
 {
     "message": "anda tidak diperbolehkan cuti"
 }
+```
+
+### Team API
+### Show All Team API
+#### Endpoint
+```
+GET api/team
+```
+### Create Team API
+#### Endpoint
+```
+POST api/team
+```
+#### Body request example
+```json
+{
+  "name": "Front End",
+  "leadBy": 2,
+  "createdBy": 1
+}
+```
+### Show Team By ID API
+#### Endpoint
+```
+GET api/team/{id}
+```
+### Update Team API
+#### Endpoint
+```
+PUT api/team/{id}
+```
+#### Body request example
+```json
+{
+  "name": "Back End",
+  "leadBy": 2,
+  "createdBy": 1
+}
+```
+### Delete Team API
+#### Endpoint
+```
+DELETE api/team/{id}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
