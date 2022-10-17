@@ -53,6 +53,13 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-partner-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-partner-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-partner-api)
+  - [Attendance Status](https://github.com/OSHATechnology/BE_HRIS/tree/develop#attendance-status-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-attendance-status-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-attendance-status-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-attendance-status-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-attendance-status-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-attendance-status-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-attendance-status-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -495,6 +502,50 @@ DELETE /api/partners/{id}
 #### Endpoint
 ```
 GET /api/partners?search={key}
+```
+
+### Attendance Status API
+### Show All Attendance Status API
+#### Endpoint
+```
+GET api/attendance_status
+```
+### Create Attendance Status API
+#### Endpoint
+```
+POST api/attendance_status
+```
+#### Body request example
+```json
+{
+  "status": "work"
+}
+```
+### Show Attendance Status By ID API
+#### Endpoint
+```
+GET api/attendance_status/{id}
+```
+### Update Attendance Status API
+#### Endpoint
+```
+PUT api/attendance_status/{id}
+```
+#### Body request example
+```json
+{
+  "status": "furlough",
+}
+```
+### Delete Attendance Status API
+#### Endpoint
+```
+DELETE api/attendance_status/{id}
+```
+### Search Attendance Status API
+#### Endpoint
+```
+GET api/attendance_status?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
