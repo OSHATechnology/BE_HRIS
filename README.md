@@ -73,6 +73,7 @@
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-attendance-api)
     - [Today Attendance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#today-attendance-api)
     - [Today Attendance By Employee](https://github.com/OSHATechnology/BE_HRIS/tree/develop#today-attendance-By-Employee-api)
+    - [Today Attendance Employee](https://github.com/OSHATechnology/BE_HRIS/tree/develop#today-attendance-Employee-api)
     - [Filter](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-attendance-api)
     - [Filter Year](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-year-attendance-api)
     - [Filter Year Month](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-year-attendance-api)
@@ -713,6 +714,24 @@ GET api/attendance/today
 #### Endpoint
 ```
 GET api/attendance/employee/{id}/today
+```
+### Today Attendance Employee API
+#### Endpoint
+```
+POST api/my/attendance
+```
+#### Body request example
+if attendance comes in
+```json
+{
+  "type":"in"
+}
+```
+if attendance comes out
+```json
+{
+  "type":"out"
+}
 ```
 ### Filter Attendance API
 #### Endpoint
