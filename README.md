@@ -49,7 +49,6 @@
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-status-hire-by-employee-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-status-hire-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-status-hire-api)
-    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-status-hire-api)
   - [Partner](https://github.com/OSHATechnology/BE_HRIS/tree/develop#partner-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-partner-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-partner-api)
@@ -63,7 +62,6 @@
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-attendance-status-by-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-attendance-status-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-attendance-status-api)
-    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-attendance-status-api)
   - [Attendance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#attendance-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-attendance-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-attendance-api)
@@ -86,13 +84,15 @@
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-overtime-api)
     - [Confirm Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#confirm-overtime-api)
     - [Decline Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#decline-overtime-api)
+    - [Filter](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-overtime-api)
+    - [Filter Year](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-year-overtime-api)
+    - [Filter Year Month](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-year-month-overtime-api)
   - [Work Permit](https://github.com/OSHATechnology/BE_HRIS/tree/develop#work-permit-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-work-permit-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-work-permit-api)
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-work-permit-by-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-work-permit-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-work-permit-api)
-    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-work-permit-api)
   - [Furlough Type](https://github.com/OSHATechnology/BE_HRIS/tree/develop#furlough-type-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-furlough-type-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-furlough-type-api)
@@ -560,11 +560,6 @@ PUT api/status_hire/{id}
 ```
 DELETE api/status_hire/{id}
 ```
-### Search Status Hire API
-#### Endpoint
-```
-GET api/status_hire?search={key}
-```
 
 ### Partner API
 ### Show All Partner API
@@ -661,11 +656,6 @@ PUT api/attendance_status/{id}
 #### Endpoint
 ```
 DELETE api/attendance_status/{id}
-```
-### Search Attendance Status API
-#### Endpoint
-```
-GET api/attendance_status?search={key}
 ```
 
 ### name = Attendance
@@ -814,6 +804,21 @@ DELETE api/overtime/{id}
 ```
 GET api/overtime?search={key}
 ```
+### Filter Overtime API
+#### Endpoint
+```
+GET api/overtime?filter={YYYY-mm-dd}
+```
+### Filter Year Overtime API
+#### Endpoint
+```
+GET api/overtime?from_y={YYYY}&to_y={YYYY}
+```
+### Filter Year Month Overtime API
+#### Endpoint
+```
+GET api/overtime?from_m_y={YYYY-mm}&to_m_y={YYYY-mm}
+```
 ### Confirm Overtime API
 #### Endpoint
 ```
@@ -886,11 +891,6 @@ PUT api/work_permit/{id}
 #### Endpoint
 ```
 DELETE api/work_permit/{id}
-```
-### Search Work Permit API
-#### Endpoint
-```
-GET api/work_permit?search={key}
 ```
 
 ### Furlough Type API
