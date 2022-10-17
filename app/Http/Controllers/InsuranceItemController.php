@@ -87,9 +87,12 @@ class InsuranceItemController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, [
+                'name' => 'required|string|max:255',
+                'type' => 'required|string|max:255',
+                'percent' => 'required',
+            ]);
             $insItem = InsuranceItem::findOrFail($id);
-            $insItem->insuranceId = $request->insuranceId;
             $insItem->name = $request->name;
             $insItem->type = $request->type;
             $insItem->percent = $request->percent;
