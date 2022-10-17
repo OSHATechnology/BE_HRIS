@@ -46,11 +46,41 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-status-hire-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-status-hire-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-status-hire-api)
+  - [Partner](https://github.com/OSHATechnology/BE_HRIS/tree/develop#partner-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-partner-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-partner-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-partner-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-partner-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-partner-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-partner-api)
+  - [Attendance Status](https://github.com/OSHATechnology/BE_HRIS/tree/develop#attendance-status-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-attendance-status-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-attendance-status-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-attendance-status-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-attendance-status-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-attendance-status-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-attendance-status-api)
+  - [Attendance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#attendance-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-attendance-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-attendance-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-attendance-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-attendance-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-attendance-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-attendance-api)
+  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#overtime-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-overtime-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-overtime-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-overtime-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-overtime-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-overtime-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-overtime-api)
+    - [Confirm Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#confirm-overtime-api)
+    - [Decline Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#decline-overtime-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-family-api)
-    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-family-by-employee-id-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-family-by-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-employee-family-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-family-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-family-api) -->
@@ -66,6 +96,7 @@ git clone https://github.com/OSHATechnology/BE_HRIS.git
 ```
 composer install
 ```
+if you haven't installed [composer](https://getcomposer.org/) then install [composer](https://getcomposer.org/) first and repeat the above command
 
 3. Setting database in `.env`
 
@@ -77,6 +108,11 @@ php artisan key:generate
 5. Run migration and seeder
 ```
 php artisan migrate --seed
+```
+
+6. Run laravel
+```
+php artisan serve
 ```
 
 ## **API Reference**
@@ -430,6 +466,236 @@ DELETE api/status_hire/{id}
 #### Endpoint
 ```
 GET api/status_hire?search={key}
+```
+
+### Partner API
+### Show All Partner API
+#### Endpoint
+```
+GET /api/partners
+```
+### Create Partner API
+#### Endpoint
+```
+POST /api/partners
+```
+#### Body request example
+```json
+{
+  "name": "PT. GenZ",
+  "description": "Perusahaan Baju",
+  "resposibleBy": "Subabjo",
+  "phone": "(021) 1111 22",
+  "address": "Jl. Raya Timur No.102",
+  "assignedBy": "1",
+  "photo": "ptgenz.jpg",
+  "joinedAt": "2022-09-15 06:48:44"
+}
+```
+### Show Partner By ID API
+#### Endpoint
+```
+GET /api/partners/{id}
+```
+### Update Partner API
+#### Endpoint
+```
+PUT /api/partners/{id}
+```
+#### Body request example
+```json
+{
+  "name": "PT. GenZ",
+  "description": "Perusahaan Teknologi",
+  "resposibleBy": "Subabjo",
+  "phone": "(021) 1111 22",
+  "address": "Jl. Raya Timur No.102",
+  "assignedBy": "1",
+  "photo": "ptgenz.jpg",
+  "joinedAt": "2022-09-15 06:48:44"
+}
+```
+### Delete Partner API
+#### Endpoint
+```
+DELETE /api/partners/{id}
+```
+### Search Partner API
+#### Endpoint
+```
+GET /api/partners?search={key}
+```
+
+### Attendance Status API
+### Show All Attendance Status API
+#### Endpoint
+```
+GET api/attendance_status
+```
+### Create Attendance Status API
+#### Endpoint
+```
+POST api/attendance_status
+```
+#### Body request example
+```json
+{
+  "status": "work"
+}
+```
+### Show Attendance Status By ID API
+#### Endpoint
+```
+GET api/attendance_status/{id}
+```
+### Update Attendance Status API
+#### Endpoint
+```
+PUT api/attendance_status/{id}
+```
+#### Body request example
+```json
+{
+  "status": "furlough",
+}
+```
+### Delete Attendance Status API
+#### Endpoint
+```
+DELETE api/attendance_status/{id}
+```
+### Search Attendance Status API
+#### Endpoint
+```
+GET api/attendance_status?search={key}
+```
+
+### name = Attendance
+### Attendance API
+### Show All Attendance API
+#### Endpoint
+```
+GET api/attendance
+```
+### Create Attendance API
+#### Endpoint
+```
+POST api/attendance
+```
+#### Body request example
+```json
+{
+  "employeeId": 2,
+  "attendanceStatusId": 1,
+  "submitedAt": "2022-07-10 17:00:00",
+  "submitedById": 1,
+  "typeInOut": "in",
+  "timeAttend": "2022-07-10 17:00:00",
+}
+```
+### Show Attendance By ID API
+#### Endpoint
+```
+GET api/attendance/{id}
+```
+### Update Attendance API
+#### Endpoint
+```
+PUT api/attendance/{id}
+```
+#### Body request example
+```json
+{
+  "employeeId": 2,
+  "attendanceStatusId": 1,
+  "submitedAt": "2022-07-10 17:00:00",
+  "submitedById": 1,
+  "typeInOut": "Out",
+  "timeAttend": "2022-07-10 17:00:00",
+}
+```
+### Delete Attendance API
+#### Endpoint
+```
+DELETE api/attendance/{id}
+```
+### Search Attendance API
+#### Endpoint
+```
+GET api/attendance?search={key}
+```
+
+### name = Overtime
+### Overtime API
+### Show All Overtime API
+#### Endpoint
+```
+GET api/overtime
+```
+### Create Overtime API
+#### Endpoint
+```
+POST api/overtime
+```
+#### Body request example
+```json
+{
+  "employeeId": 1,
+  "startAt": "2022-10-02 09:00:40",
+  "endAt": "2022-10-02 12:57:40"
+}
+```
+### Show Overtime By ID API
+#### Endpoint
+```
+GET api/overtime/{id}
+```
+### Update Overtime API
+#### Endpoint
+```
+PUT api/overtime/{id}
+```
+#### Body request example
+```json
+{
+  "employeeId": 1,
+  "startAt": "2022-10-02 10:00:40",
+  "endAt": "2022-10-02 12:57:40"
+}
+```
+### Delete Overtime API
+#### Endpoint
+```
+DELETE api/overtime/{id}
+```
+### Search Overtime API
+#### Endpoint
+```
+GET api/overtime?search={key}
+```
+### Confirm Overtime API
+#### Endpoint
+```
+GET api/overtime/confirm
+```
+#### Body request example
+```json
+{
+  "employee_id": 1,
+  "message": "your overtime is accepted"
+}
+```
+### Decline Overtime API
+#### Endpoint
+```
+GET api/overtime/decline
+```
+#### Body request example
+```json
+{
+  "employee_id": 1,
+  "message": "your overtime is declined"
+}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
