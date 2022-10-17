@@ -46,6 +46,13 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-status-hire-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-status-hire-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-status-hire-api)
+  - [Partner](https://github.com/OSHATechnology/BE_HRIS/tree/develop#partner-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-partner-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-partner-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-partner-by-employee-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-partner-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-partner-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-partner-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -430,6 +437,64 @@ DELETE api/status_hire/{id}
 #### Endpoint
 ```
 GET api/status_hire?search={key}
+```
+
+### Partner API
+### Show All Partner API
+#### Endpoint
+```
+GET /api/partners
+```
+### Create Partner API
+#### Endpoint
+```
+POST /api/partners
+```
+#### Body request example
+```json
+{
+  "name": "PT. GenZ",
+  "description": "Perusahaan Baju",
+  "resposibleBy": "Subabjo",
+  "phone": "(021) 1111 22",
+  "address": "Jl. Raya Timur No.102",
+  "assignedBy": "1",
+  "photo": "ptgenz.jpg",
+  "joinedAt": "2022-09-15 06:48:44"
+}
+```
+### Show Partner By ID API
+#### Endpoint
+```
+GET /api/partners/{id}
+```
+### Update Partner API
+#### Endpoint
+```
+PUT /api/partners/{id}
+```
+#### Body request example
+```json
+{
+  "name": "PT. GenZ",
+  "description": "Perusahaan Teknologi",
+  "resposibleBy": "Subabjo",
+  "phone": "(021) 1111 22",
+  "address": "Jl. Raya Timur No.102",
+  "assignedBy": "1",
+  "photo": "ptgenz.jpg",
+  "joinedAt": "2022-09-15 06:48:44"
+}
+```
+### Delete Partner API
+#### Endpoint
+```
+DELETE /api/partners/{id}
+```
+### Search Partner API
+#### Endpoint
+```
+GET /api/partners?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
