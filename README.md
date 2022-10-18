@@ -136,6 +136,13 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-insurance-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-insurance-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-insurance-api)
+  - [Insurance Item](https://github.com/OSHATechnology/BE_HRIS/tree/develop#insurance-item-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-insurance-item-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-insurance-item-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-insurance-item-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-insurance-item-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-insurance-item-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-insurance-item-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -1198,7 +1205,7 @@ POST api/insurance
 ```json
 {
   "name": "BPJS Ketenagakerjaan",
-  "companyName": "Jaminan Pensiun (JP)",
+  "companyName": "BPJS Ketenagakerjaan",
   "address": "Jl. Letjen Suprapto Kav. 20 No. 14 Cempaka Putih, Jakarta Pusat 10510"
 }
 ```
@@ -1215,8 +1222,8 @@ PUT api/insurance/{id}
 #### Body request example
 ```json
 {
-  "name": "BPJS Ketenagakerjaan",
-  "companyName": "Jaminan Hari Tua (JHT)",
+  "name": "BPJS Kesehatan",
+  "companyName": "BPJS Kesehatan",
   "address": "Jl. Letjen Suprapto Kav. 20 No. 14 Cempaka Putih, Jakarta Pusat 10510"
 }
 ```
@@ -1229,6 +1236,56 @@ DELETE api/insurance/{id}
 #### Endpoint
 ```
 GET api/insurance?search={key}
+```
+
+### Insurance Item API
+### Show All Insurance Item API
+#### Endpoint
+```
+GET api/insurance_item
+```
+### Create Insurance Item API
+#### Endpoint
+```
+POST api/insurance_item
+```
+#### Body request example
+```json
+{
+  "insuranceId": 2,
+  "name": "Jaminan Hari Tua (JHT)",
+  "type": "deduction",
+  "percent": 1
+}
+```
+### Show Insurance Item By ID API
+#### Endpoint
+```
+GET api/insurance_item/{id}
+```
+### Update Insurance Item API
+#### Endpoint
+```
+PUT api/insurance_item/{id}
+```
+#### Body request example
+```json
+{
+  "insuranceId": 2,
+  "name": "Jaminan Hari Tua (JHT)",
+  "type": "allowance",
+  "percent": 4
+}
+```
+### Delete Insurance Item API
+#### Endpoint
+```
+DELETE api/insurance_item/{id}
+```
+### Search Insurance Item API
+#### Endpoint
+```
+GET api/insurance_item?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
