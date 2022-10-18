@@ -129,7 +129,21 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-notification-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-notification-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-notification-api)
-
+  - [Insurance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#insurance-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-insurance-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-insurance-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-insurance-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-insurance-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-insurance-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-insurance-api)
+  <!-- name = employee-family
+  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-family-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-family-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-employee-family-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-family-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-family-api) -->
 ##   **Installation**
 
 1. Clone project
@@ -1167,6 +1181,54 @@ DELETE api/notification/{id}
 #### Endpoint
 ```
 GET api/notification?search={key}
+```
+
+### Insurance API
+### Show All Insurance API
+#### Endpoint
+```
+GET api/insurance
+```
+### Create Insurance API
+#### Endpoint
+```
+POST api/insurance
+```
+#### Body request example
+```json
+{
+  "name": "BPJS Ketenagakerjaan",
+  "companyName": "Jaminan Pensiun (JP)",
+  "address": "Jl. Letjen Suprapto Kav. 20 No. 14 Cempaka Putih, Jakarta Pusat 10510"
+}
+```
+### Show Insurance By ID API
+#### Endpoint
+```
+GET api/insurance/{id}
+```
+### Update Insurance API
+#### Endpoint
+```
+PUT api/insurance/{id}
+```
+#### Body request example
+```json
+{
+  "name": "BPJS Ketenagakerjaan",
+  "companyName": "Jaminan Hari Tua (JHT)",
+  "address": "Jl. Letjen Suprapto Kav. 20 No. 14 Cempaka Putih, Jakarta Pusat 10510"
+}
+```
+### Delete Insurance API
+#### Endpoint
+```
+DELETE api/insurance/{id}
+```
+### Search Insurance API
+#### Endpoint
+```
+GET api/insurance?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
