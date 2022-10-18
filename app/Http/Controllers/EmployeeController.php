@@ -321,7 +321,7 @@ class EmployeeController extends BaseController
                     'id' => "f" . $value->furloughId,
                     'type' => 'furlough',
                     'requestAt' => $value->created_at,
-                    'confirmedAt' => $value->confirmedAt !== null ? $value->confirmedAt : "",
+                    'confirmedAt' => $value->confirmedAt !== null ? $value->confirmedAt : null,
                     'status' => Furlough::TYPESTATUS[$value->isConfirmed],
                     'msg' => $value->message,
                 ]);
@@ -332,7 +332,7 @@ class EmployeeController extends BaseController
                     'id' => "wp" . $value->workPermitId,
                     'type' => 'work permit',
                     'requestAt' => $value->created_at,
-                    'confirmedAt' => $value->confirmedAt !== null ? $value->confirmedAt : "",
+                    'confirmedAt' => $value->confirmedAt !== null ? $value->confirmedAt : null,
                     'status' => $value->confirmedAt !== null ? ($value->isConfirmed !== 0 ? "Confirmed" : 'rejected') : "waiting for approved",
                 ]);
             }
@@ -342,7 +342,7 @@ class EmployeeController extends BaseController
                     'id' => "ot" . $value->overtimeId,
                     'type' => 'overtime',
                     'requestAt' => $value->created_at,
-                    'confirmedAt' => $value->isConfirmed !== 0 ? $value->updated_at : "-",
+                    'confirmedAt' => $value->isConfirmed !== 0 ? $value->updated_at : null,
                     'status' => Overtime::STATUS[$value->isConfirmed] ? Overtime::STATUS[$value->isConfirmed] : "waiting for approved",
                 ]);
             }
