@@ -150,6 +150,13 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-type-of-allowance-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-type-of-allowance-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-type-of-allowance-api)
+  - [Allowance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#allowance-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-allowance-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-allowance-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-allowance-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-allowance-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-allowance-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-allowance-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -1339,6 +1346,52 @@ DELETE api/type_of_allowance/{id}
 #### Endpoint
 ```
 GET api/type_of_allowance?search={key}
+```
+
+### Allowance API
+### Show All Allowance API
+#### Endpoint
+```
+GET api/allowance
+```
+### Create Allowance API
+#### Endpoint
+```
+POST api/allowance
+```
+#### Body request example
+```json
+{
+  "roleId": 2,
+  "typeId": 1
+}
+```
+### Show Allowance By ID API
+#### Endpoint
+```
+GET api/allowance/{id}
+```
+### Update Allowance API
+#### Endpoint
+```
+PUT api/allowance/{id}
+```
+#### Body request example
+```json
+{
+  "roleId": 2,
+  "typeId": 2
+}
+```
+### Delete Allowance API
+#### Endpoint
+```
+DELETE api/allowance/{id}
+```
+### Search Allowance API
+#### Endpoint
+```
+GET api/allowance?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
