@@ -143,6 +143,13 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-insurance-item-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-insurance-item-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-insurance-item-api)
+  - [Type Of Allowance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#type-of-allowance-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-type-of-allowance-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-type-of-allowance-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-type-of-allowance-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-type-of-allowance-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-type-of-allowance-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-type-of-allowance-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -1286,6 +1293,52 @@ DELETE api/insurance_item/{id}
 #### Endpoint
 ```
 GET api/insurance_item?search={key}
+```
+
+### Type Of Allowance API
+### Show All Type Of Allowance API
+#### Endpoint
+```
+GET api/type_of_allowance
+```
+### Create Type Of Allowance API
+#### Endpoint
+```
+POST api/type_of_allowance
+```
+#### Body request example
+```json
+{
+  "name": "makan",
+  "nominal": 3000000,
+}
+```
+### Show Type Of Allowance By ID API
+#### Endpoint
+```
+GET api/type_of_allowance/{id}
+```
+### Update Type Of Allowance API
+#### Endpoint
+```
+PUT api/type_of_allowance/{id}
+```
+#### Body request example
+```json
+{
+  "name": "makan",
+  "nominal": 2000000,
+}
+```
+### Delete Type Of Allowance API
+#### Endpoint
+```
+DELETE api/type_of_allowance/{id}
+```
+### Search Type Of Allowance API
+#### Endpoint
+```
+GET api/type_of_allowance?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
