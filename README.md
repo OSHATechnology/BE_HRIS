@@ -49,7 +49,6 @@
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-status-hire-by-employee-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-status-hire-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-status-hire-api)
-    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-status-hire-api)
   - [Partner](https://github.com/OSHATechnology/BE_HRIS/tree/develop#partner-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-partner-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-partner-api)
@@ -63,7 +62,6 @@
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-attendance-status-by-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-attendance-status-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-attendance-status-api)
-    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-attendance-status-api)
   - [Attendance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#attendance-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-attendance-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-attendance-api)
@@ -86,13 +84,15 @@
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-overtime-api)
     - [Confirm Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#confirm-overtime-api)
     - [Decline Overtime](https://github.com/OSHATechnology/BE_HRIS/tree/develop#decline-overtime-api)
+    - [Filter](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-overtime-api)
+    - [Filter Year](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-year-overtime-api)
+    - [Filter Year Month](https://github.com/OSHATechnology/BE_HRIS/tree/develop#filter-year-month-overtime-api)
   - [Work Permit](https://github.com/OSHATechnology/BE_HRIS/tree/develop#work-permit-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-work-permit-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-work-permit-api)
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-work-permit-by-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-work-permit-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-work-permit-api)
-    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-work-permit-api)
   - [Furlough Type](https://github.com/OSHATechnology/BE_HRIS/tree/develop#furlough-type-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-furlough-type-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-furlough-type-api)
@@ -115,14 +115,20 @@
     - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-team-by-id-api)
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-team-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-team-api)
-  <!-- name = employee-family
-  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
-    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
-    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-family-api)
-    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-family-by-id-api)
-    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-employee-family-api)
-    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-family-api)
-    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-family-api) -->
+  - [Team Member](https://github.com/OSHATechnology/BE_HRIS/tree/develop#team-member-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-team-member-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-team-member-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-team-member-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-team-member-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-team-member-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-team-member-api)
+  - [Notification](https://github.com/OSHATechnology/BE_HRIS/tree/develop#notification-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-notification-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-notification-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-notification-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-notification-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-notification-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-notification-api)
 
 ##   **Installation**
 
@@ -560,11 +566,6 @@ PUT api/status_hire/{id}
 ```
 DELETE api/status_hire/{id}
 ```
-### Search Status Hire API
-#### Endpoint
-```
-GET api/status_hire?search={key}
-```
 
 ### Partner API
 ### Show All Partner API
@@ -661,11 +662,6 @@ PUT api/attendance_status/{id}
 #### Endpoint
 ```
 DELETE api/attendance_status/{id}
-```
-### Search Attendance Status API
-#### Endpoint
-```
-GET api/attendance_status?search={key}
 ```
 
 ### name = Attendance
@@ -766,7 +762,6 @@ GET api/attendance?from_y={YYYY}&to_y={YYYY}
 GET api/attendance?from_m_y={YYYY-mm}&to_m_y={YYYY-mm}
 ```
 
-### name = Overtime
 ### Overtime API
 ### Show All Overtime API
 #### Endpoint
@@ -813,6 +808,21 @@ DELETE api/overtime/{id}
 #### Endpoint
 ```
 GET api/overtime?search={key}
+```
+### Filter Overtime API
+#### Endpoint
+```
+GET api/overtime?filter={YYYY-mm-dd}
+```
+### Filter Year Overtime API
+#### Endpoint
+```
+GET api/overtime?from_y={YYYY}&to_y={YYYY}
+```
+### Filter Year Month Overtime API
+#### Endpoint
+```
+GET api/overtime?from_m_y={YYYY-mm}&to_m_y={YYYY-mm}
 ```
 ### Confirm Overtime API
 #### Endpoint
@@ -886,11 +896,6 @@ PUT api/work_permit/{id}
 #### Endpoint
 ```
 DELETE api/work_permit/{id}
-```
-### Search Work Permit API
-#### Endpoint
-```
-GET api/work_permit?search={key}
 ```
 
 ### Furlough Type API
@@ -1054,6 +1059,114 @@ PUT api/team/{id}
 #### Endpoint
 ```
 DELETE api/team/{id}
+```
+### name = Team Member
+### Team Member API
+### Show All Team Member API
+#### Endpoint
+```
+GET api/team_member
+```
+### Create Team Member API
+#### Endpoint
+```
+POST api/team_member
+```
+#### Body request example
+```json
+{
+  "teamId": 1,
+  "empId": 2,
+  "assignedBy": 1,
+  "joinedAt": "2022-09-14 05:51:09",
+}
+```
+### Show Team Member By ID API
+#### Endpoint
+```
+GET api/team_member/{id}
+```
+### Update Team Member API
+#### Endpoint
+```
+PUT api/team_member/{id}
+```
+#### Body request example
+```json
+{
+  {
+  "teamId": 2,
+  "empId": 2,
+  "assignedBy": 1,
+  "joinedAt": "2022-09-14 05:51:09",
+}
+}
+```
+### Delete Team Member API
+#### Endpoint
+```
+DELETE api/team_member/{id}
+```
+### Search Team Member API
+#### Endpoint
+```
+GET api/team_member?search={key}
+```
+### name = Notification
+### Notification API
+### Show All Notification API
+#### Endpoint
+```
+GET api/notification
+```
+### Create Notification API
+#### Endpoint
+```
+POST api/notification
+```
+#### Body request example
+```json
+{
+  "empId": 2,
+  "name": "Accepted Furlough",
+  "content": "Notification",
+  "type": "Furlough",
+  "senderBy": 1,
+  "scheduleAt": "2022-09-14 09:11:30",
+  "status": "Accepted",
+}
+```
+### Show Notification By ID API
+#### Endpoint
+```
+GET api/notification/{id}
+```
+### Update Notification API
+#### Endpoint
+```
+PUT api/notification/{id}
+```
+#### Body request example
+```json
+{
+  "empId": 2,
+  "name": "Declined Furlough",
+  "content": "decline furlough for 2022-10-20",
+  "type": "Furlough",
+  "senderBy": 1,
+  "scheduleAt": "2022-09-14 09:11:30",
+  "status": "Declined",
+}
+```
+### Delete Notification API
+#### Endpoint
+```
+DELETE api/notification/{id}
+```
+### Search Notification API
+#### Endpoint
+```
+GET api/notification?search={key}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family

@@ -47,7 +47,7 @@ class SalaryInsuranceDetailController extends BaseController
             $this->validate($request, self::VALIDATION_RULES);
             $salary = Salary::findOrFail($request->salaryId);
             $insurance = InsuranceItem::findOrFail($request->insItemId);
-            $totalEmployee = EmployeeFamily::where("empId", $salary->empId)->get();
+            $totalEmployee = EmployeeFamily::where("empId", $salary->empId)->where("isAlive", 1)->get();
             $plusPercent = 0;
             if (count($totalEmployee) > 5 && $insurance->type == "deduction" && strtolower($insurance->name) == "bpjs kesehatan") {
                 $plusPercent = count($totalEmployee) - 5;

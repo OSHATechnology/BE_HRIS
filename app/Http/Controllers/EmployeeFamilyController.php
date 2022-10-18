@@ -15,7 +15,7 @@ class EmployeeFamilyController extends BaseController
         'identityNumber' => 'required|string|unique:employee_families|max:255',
         'name' => 'required|string|max:255',
         'statusId' => 'required|integer',
-        'isAlive' => 'required|boolean'
+        'isAlive' => 'boolean'
     ];
 
     const NumPaginate = 10;
