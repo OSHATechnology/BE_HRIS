@@ -165,6 +165,10 @@
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-loan-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-loan-api)
     - [Show Total Loan By EmployeeID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-total-loan-by-employeeid-api)
+  - [Instalment](https://github.com/OSHATechnology/BE_HRIS/tree/develop#instalment-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-instalment-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-instalment-api)
+    - [Instalment By Loan](https://github.com/OSHATechnology/BE_HRIS/tree/develop#instalment-by-Loan-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -1458,6 +1462,30 @@ GET api/loan?search={value}
 #### Endpoint
 ```
 GET api/my/loan
+```
+### Instalment API
+### Show All Instalment API
+#### Endpoint
+```
+GET api/instalment
+```
+### Create Instalment API
+#### Endpoint
+```
+POST api/instalment
+```
+#### Body request example
+```json
+{
+  "loanId": 2,
+  "dateate": "2022-09-20 13:08:00"
+}
+```
+
+### Instalment By Loan API
+#### Endpoint
+```
+GET api/instalment_by_loan/{id}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
