@@ -157,6 +157,14 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-allowance-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-allowance-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-allowance-api)
+  - [Loan](https://github.com/OSHATechnology/BE_HRIS/tree/develop#loan-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-loan-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-loan-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-loan-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-loan-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-loan-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-loan-api)
+    - [Show Total Loan By EmployeeID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-total-loan-by-employeeid-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -165,6 +173,7 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-employee-family-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-family-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-family-api) -->
+
 ##   **Installation**
 
 1. Clone project
@@ -657,7 +666,7 @@ DELETE /api/partners/{id}
 ### Search Partner API
 #### Endpoint
 ```
-GET /api/partners?search={key}
+GET /api/partners?search={value}
 ```
 
 ### Attendance Status API
@@ -751,7 +760,7 @@ DELETE api/attendance/{id}
 ### Search Attendance API
 #### Endpoint
 ```
-GET api/attendance?search={key}
+GET api/attendance?search={value}
 ```
 ### Today Attendance API
 #### Endpoint
@@ -842,7 +851,7 @@ DELETE api/overtime/{id}
 ### Search Overtime API
 #### Endpoint
 ```
-GET api/overtime?search={key}
+GET api/overtime?search={value}
 ```
 ### Filter Overtime API
 #### Endpoint
@@ -978,7 +987,7 @@ DELETE api/furlough_type/{id}
 ### Search Furlough Type API
 #### Endpoint
 ```
-GET api/furlough_type?search={key}
+GET api/furlough_type?search={value}
 ```
 
 ### Furlough API
@@ -1028,7 +1037,7 @@ DELETE api/furlough/{id}
 ### Search Furlough API
 #### Endpoint
 ```
-GET api/furlough?search={key}
+GET api/furlough?search={value}
 ```
 ### Accepted Furlough API
 #### Endpoint
@@ -1145,7 +1154,7 @@ DELETE api/team_member/{id}
 ### Search Team Member API
 #### Endpoint
 ```
-GET api/team_member?search={key}
+GET api/team_member?search={value}
 ```
 ### name = Notification
 ### Notification API
@@ -1201,7 +1210,7 @@ DELETE api/notification/{id}
 ### Search Notification API
 #### Endpoint
 ```
-GET api/notification?search={key}
+GET api/notification?search={value}
 ```
 
 ### Insurance API
@@ -1249,7 +1258,7 @@ DELETE api/insurance/{id}
 ### Search Insurance API
 #### Endpoint
 ```
-GET api/insurance?search={key}
+GET api/insurance?search={value}
 ```
 
 ### Insurance Item API
@@ -1299,7 +1308,7 @@ DELETE api/insurance_item/{id}
 ### Search Insurance Item API
 #### Endpoint
 ```
-GET api/insurance_item?search={key}
+GET api/insurance_item?search={value}
 ```
 
 ### Type Of Allowance API
@@ -1345,7 +1354,7 @@ DELETE api/type_of_allowance/{id}
 ### Search Type Of Allowance API
 #### Endpoint
 ```
-GET api/type_of_allowance?search={key}
+GET api/type_of_allowance?search={value}
 ```
 
 ### Allowance API
@@ -1391,7 +1400,64 @@ DELETE api/allowance/{id}
 ### Search Allowance API
 #### Endpoint
 ```
-GET api/allowance?search={key}
+GET api/allowance?search={value}
+```
+
+### Loan API
+### Show All Loan API
+#### Endpoint
+```
+GET api/loan
+```
+### Create Loan API
+#### Endpoint
+```
+POST api/loan
+```
+#### Body request example
+```json
+{
+  "empId": 2,
+  "name": "education",
+  "nominal": 5000000,
+  "loanDate": "2022-09-20 13:08:00",
+  "status": 0
+}
+```
+### Show Loan By ID API
+#### Endpoint
+```
+GET api/loan/{id}
+```
+### Update Loan API
+#### Endpoint
+```
+PUT api/loan/{id}
+```
+#### Body request example
+```json
+{
+  "empId": 2,
+  "name": "education",
+  "nominal": 4000000,
+  "loanDate": "2022-09-20 13:08:00",
+  "status": 0
+}
+```
+### Delete Loan API
+#### Endpoint
+```
+DELETE api/loan/{id}
+```
+### Search Loan API
+#### Endpoint
+```
+GET api/loan?search={value}
+```
+### Show Total Loan By EmployeeID API
+#### Endpoint
+```
+GET api/my/loan
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
