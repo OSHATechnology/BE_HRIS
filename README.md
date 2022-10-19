@@ -176,6 +176,13 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-basic-salary-by-role-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-basic-salary-by-role-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-basic-salary-by-role-api)
+  - [Basic Salary By Employee](https://github.com/OSHATechnology/BE_HRIS/tree/develop#basic-salary-by-employee-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-basic-salary-by-employee-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-basic-salary-by-employee-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-basic-salary-by-employee-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-basic-salary-by-employee-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-basic-salary-by-employee-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-basic-salary-by-employee-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -1539,6 +1546,54 @@ DELETE api/basic_salary_by_role/{id}
 #### Endpoint
 ```
 GET api/basic_salary_by_role?search={value}
+```
+
+### Basic Salary By Employee API
+### Show All Basic Salary By Employee API
+#### Endpoint
+```
+GET api/basic_salary_by_employee
+```
+### Create Basic Salary By Employee API
+#### Endpoint
+```
+POST api/basic_salary_by_employee
+```
+#### Body request example
+```json
+{
+  "empId": 3,
+  "basicSalaryByRoleId": 3,
+  "fee": 1000000,
+}
+```
+### Show Basic Salary By Employee By ID API
+#### Endpoint
+```
+GET api/basic_salary_by_employee/{id}
+```
+### Update Basic Salary By Employee API
+#### Endpoint
+```
+PUT api/basic_salary_by_employee/{id}
+```
+#### Body request example
+```json
+{
+  "empId": 3,
+  "basicSalaryByRoleId": 3,
+  "fee": 1000000,
+}
+```
+### Delete Basic Salary By Employee API
+#### Endpoint
+```
+DELETE api/basic_salary_by_employee/{id}
+```
+### Search Basic Salary By Employee API
+#### Endpoint
+```
+GET api/basic_salary_by_employee?search={value}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
