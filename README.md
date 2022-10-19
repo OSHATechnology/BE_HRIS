@@ -169,6 +169,13 @@
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-instalment-api) 
     - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-instalment-api)
     - [Instalment By Loan](https://github.com/OSHATechnology/BE_HRIS/tree/develop#instalment-by-Loan-api)
+  - [Basic Salary By Role](https://github.com/OSHATechnology/BE_HRIS/tree/develop#basic-salary-by-role-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-basic-salary-by-role-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-basic-salary-by-role-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-basic-salary-by-role-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-basic-salary-by-role-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-basic-salary-by-role-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-basic-salary-by-role-api)
   <!-- name = employee-family
   - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
     - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
@@ -1486,6 +1493,52 @@ POST api/instalment
 #### Endpoint
 ```
 GET api/instalment_by_loan/{id}
+```
+
+### Basic Salary By Role API
+### Show All Basic Salary By Role API
+#### Endpoint
+```
+GET api/basic_salary_by_role
+```
+### Create Basic Salary By Role API
+#### Endpoint
+```
+POST api/basic_salary_by_role
+```
+#### Body request example
+```json
+{
+  "roleId": 2,
+  "fee": 6000000,
+}
+```
+### Show Basic Salary By Role By ID API
+#### Endpoint
+```
+GET api/basic_salary_by_role/{id}
+```
+### Update Basic Salary By Role API
+#### Endpoint
+```
+PUT api/basic_salary_by_role/{id}
+```
+#### Body request example
+```json
+{
+  "roleId": 2,
+  "fee": 6000000,
+}
+```
+### Delete Basic Salary By Role API
+#### Endpoint
+```
+DELETE api/basic_salary_by_role/{id}
+```
+### Search Basic Salary By Role API
+#### Endpoint
+```
+GET api/basic_salary_by_role?search={value}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
