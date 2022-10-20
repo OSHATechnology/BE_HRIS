@@ -122,31 +122,45 @@ class SalaryController extends BaseController
     public function getDeduction($month, $GrossEmployee)
     {
         $employees = Employee::all();
-        $payroll_date = 31;
+        $payroll_date = 25;
         $monthPayroll = date('Y-m-d', strtotime($payroll_date . '-' . $month));
         $endDate = date('t', strtotime($payroll_date));
-        if ($payroll_date > 1) {
-            $isAMonth = !true;
-        } else {
-            $isAMonth = true;
-        }
 
-        dd($isAMonth);
-        $firstDatePayroll = date('Y-m-d', strtotime(date('Y-m-' . $payroll_date, strtotime(date('Y-m', strtotime($monthPayroll . " -1 month")))) . " -1 day"));
+        $firstDatePayroll = date('Y-m-d', strtotime($monthPayroll . " -1 month"));
+        $startDate = date('d', strtotime($firstDatePayroll));
         $dataDeduction = [];
         $dataAttendance = [];
         $daysWorking = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+        $dateWorking = [];
+        $dateOff = [];
+        $dateHoliday = [];
 
-        for ($i = 1; $i <= 30; $i++) {
-            $date = date('Y-m-d', strtotime($firstDatePayroll . " +$i day"));
+        $dateArray = $this->getDates($firstDatePayroll, $monthPayroll);
+
+        for ($i = 0; $i < count($dateArray); $i++) {
+            $date = $dateArray[$i];
             $day = date('D', strtotime($date));
             if (in_array($day, $daysWorking)) {
-                $dataAttendance[] = [
-                    'date' => $date,
-                    'attend' => []
-                ];
+                $dateWorking[] = $date;
+            } else {
+                $dateOff[] = $date;
             }
         }
+
+        dd($dateWorking, $dateOff);
+
+        dd($endDate, $firstDatePayroll, $monthPayroll, $startDate, $dateWorking);
+
+        // for ($i = 1; $i <= 30; $i++) {
+        //     $date = date('Y-m-d', strtotime($firstDatePayroll . " +$i day"));
+        //     $day = date('D', strtotime($date));
+        //     if (in_array($day, $daysWorking)) {
+        //         $dataAttendance[] = [
+        //             'date' => $date,
+        //             'attend' => []
+        //         ];
+        //     }
+        // }
 
         // dd($monthPayroll, $firstDatePayroll, $dataAttendance);
 
@@ -160,14 +174,21 @@ class SalaryController extends BaseController
             $totalInsurance = 0;
             $totalDeduction = 0;
 
-            // if($isAMonth){
-
-            // }
-
             // $value->totalAttendance = $dataAttendance;
         }
 
         dd($employees);
+    }
+
+    public function getDates($startDate, $stopDate)
+    {
+        $dates = [];
+        $currentDate = $startDate;
+        while (strtotime($currentDate) <= strtotime($stopDate)) {
+            $dates[] = $currentDate;
+            $currentDate = date('Y-m-d', strtotime($currentDate . ' + 1 day'));
+        }
+        return $dates;
     }
 
     public function automatic_data($id)
