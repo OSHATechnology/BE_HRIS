@@ -24,8 +24,6 @@ class Role extends Model
         return $this->belongsToMany(TypeOfAllowance::class, 'allowances', 'roleId', 'typeId');
     }
 
-
-
     public static function getIdsByName($name)
     {
         $role = self::where('nameRole', $name)->first();
@@ -40,5 +38,10 @@ class Role extends Model
         return [
             'nameRole' => $this->nameRole,
         ];
+    }
+
+    public function basic_salary()
+    {
+        return $this->hasOne(BasicSalaryByRole::class, 'roleId', 'roleId');
     }
 }

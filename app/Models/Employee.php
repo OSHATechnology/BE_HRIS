@@ -85,6 +85,11 @@ class Employee extends Authenticatable
         return $this->role->nameRole === $roleName;
     }
 
+    public function basic_salary()
+    {
+        return $this->hasOne(BasicSalaryByEmployee::class, 'empId', 'employeeId');
+    }
+
     public function toSearchableArray()
     {
         return [

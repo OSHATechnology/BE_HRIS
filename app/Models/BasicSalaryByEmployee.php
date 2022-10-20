@@ -24,8 +24,8 @@ class BasicSalaryByEmployee extends Model
         return $this->hasOne(Employee::class, 'employeeId', 'empId');
     }
 
-    public function salaryByRole()
-    {
-        return $this->hasOne(BasicSalaryByRole::class, 'basicSalaryByRoleId', 'basicSalaryByRoleId');
-    }
+    // public function salaryByRole()
+    // {
+    //     return $this->hasOne(BasicSalaryByRole::class, 'basicSalaryByRoleId', 'basicSalaryByRoleId');
+    // }
 }
