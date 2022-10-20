@@ -1582,7 +1582,7 @@ PUT api/basic_salary_by_employee/{id}
 {
   "empId": 3,
   "basicSalaryByRoleId": 3,
-  "fee": 1000000,
+  "fee": 2000000,
 }
 ```
 ### Delete Basic Salary By Employee API
