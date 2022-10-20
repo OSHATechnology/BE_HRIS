@@ -129,6 +129,68 @@
     - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-notification-api)
     - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-notification-api)
     - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-notification-api)
+  - [Insurance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#insurance-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-insurance-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-insurance-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-insurance-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-insurance-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-insurance-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-insurance-api)
+  - [Insurance Item](https://github.com/OSHATechnology/BE_HRIS/tree/develop#insurance-item-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-insurance-item-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-insurance-item-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-insurance-item-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-insurance-item-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-insurance-item-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-insurance-item-api)
+  - [Type Of Allowance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#type-of-allowance-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-type-of-allowance-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-type-of-allowance-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-type-of-allowance-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-type-of-allowance-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-type-of-allowance-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-type-of-allowance-api)
+  - [Allowance](https://github.com/OSHATechnology/BE_HRIS/tree/develop#allowance-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-allowance-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-allowance-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-allowance-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-allowance-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-allowance-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-allowance-api)
+  - [Loan](https://github.com/OSHATechnology/BE_HRIS/tree/develop#loan-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-loan-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-loan-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-loan-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-loan-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-loan-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-loan-api)
+    - [Show Total Loan By EmployeeID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-total-loan-by-employeeid-api)
+  - [Instalment](https://github.com/OSHATechnology/BE_HRIS/tree/develop#instalment-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-instalment-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-instalment-api)
+    - [Instalment By Loan](https://github.com/OSHATechnology/BE_HRIS/tree/develop#instalment-by-Loan-api)
+  - [Basic Salary By Role](https://github.com/OSHATechnology/BE_HRIS/tree/develop#basic-salary-by-role-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-basic-salary-by-role-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-basic-salary-by-role-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-basic-salary-by-role-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-basic-salary-by-role-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-basic-salary-by-role-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-basic-salary-by-role-api)
+  - [Basic Salary By Employee](https://github.com/OSHATechnology/BE_HRIS/tree/develop#basic-salary-by-employee-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-basic-salary-by-employee-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-basic-salary-by-employee-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-basic-salary-by-employee-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-basic-salary-by-employee-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-basic-salary-by-employee-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-basic-salary-by-employee-api)
+  <!-- name = employee-family
+  - [Employee Family](https://github.com/OSHATechnology/BE_HRIS/tree/develop#employee-family-api)
+    - [Show All](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-all-employee-family-api) 
+    - [Create](https://github.com/OSHATechnology/BE_HRIS/tree/develop#create-employee-family-api)
+    - [Show By ID](https://github.com/OSHATechnology/BE_HRIS/tree/develop#show-employee-family-by-id-api)
+    - [Update](https://github.com/OSHATechnology/BE_HRIS/tree/develop#update-employee-family-api)
+    - [Delete](https://github.com/OSHATechnology/BE_HRIS/tree/develop#delete-employee-family-api)
+    - [Search](https://github.com/OSHATechnology/BE_HRIS/tree/develop#search-employee-family-api) -->
 
 ##   **Installation**
 
@@ -622,7 +684,7 @@ DELETE /api/partners/{id}
 ### Search Partner API
 #### Endpoint
 ```
-GET /api/partners?search={key}
+GET /api/partners?search={value}
 ```
 
 ### Attendance Status API
@@ -716,7 +778,7 @@ DELETE api/attendance/{id}
 ### Search Attendance API
 #### Endpoint
 ```
-GET api/attendance?search={key}
+GET api/attendance?search={value}
 ```
 ### Today Attendance API
 #### Endpoint
@@ -807,7 +869,7 @@ DELETE api/overtime/{id}
 ### Search Overtime API
 #### Endpoint
 ```
-GET api/overtime?search={key}
+GET api/overtime?search={value}
 ```
 ### Filter Overtime API
 #### Endpoint
@@ -943,7 +1005,7 @@ DELETE api/furlough_type/{id}
 ### Search Furlough Type API
 #### Endpoint
 ```
-GET api/furlough_type?search={key}
+GET api/furlough_type?search={value}
 ```
 
 ### Furlough API
@@ -993,7 +1055,7 @@ DELETE api/furlough/{id}
 ### Search Furlough API
 #### Endpoint
 ```
-GET api/furlough?search={key}
+GET api/furlough?search={value}
 ```
 ### Accepted Furlough API
 #### Endpoint
@@ -1110,7 +1172,7 @@ DELETE api/team_member/{id}
 ### Search Team Member API
 #### Endpoint
 ```
-GET api/team_member?search={key}
+GET api/team_member?search={value}
 ```
 ### name = Notification
 ### Notification API
@@ -1166,7 +1228,372 @@ DELETE api/notification/{id}
 ### Search Notification API
 #### Endpoint
 ```
-GET api/notification?search={key}
+GET api/notification?search={value}
+```
+
+### Insurance API
+### Show All Insurance API
+#### Endpoint
+```
+GET api/insurance
+```
+### Create Insurance API
+#### Endpoint
+```
+POST api/insurance
+```
+#### Body request example
+```json
+{
+  "name": "BPJS Ketenagakerjaan",
+  "companyName": "BPJS Ketenagakerjaan",
+  "address": "Jl. Letjen Suprapto Kav. 20 No. 14 Cempaka Putih, Jakarta Pusat 10510"
+}
+```
+### Show Insurance By ID API
+#### Endpoint
+```
+GET api/insurance/{id}
+```
+### Update Insurance API
+#### Endpoint
+```
+PUT api/insurance/{id}
+```
+#### Body request example
+```json
+{
+  "name": "BPJS Kesehatan",
+  "companyName": "BPJS Kesehatan",
+  "address": "Jl. Letjen Suprapto Kav. 20 No. 14 Cempaka Putih, Jakarta Pusat 10510"
+}
+```
+### Delete Insurance API
+#### Endpoint
+```
+DELETE api/insurance/{id}
+```
+### Search Insurance API
+#### Endpoint
+```
+GET api/insurance?search={value}
+```
+
+### Insurance Item API
+### Show All Insurance Item API
+#### Endpoint
+```
+GET api/insurance_item
+```
+### Create Insurance Item API
+#### Endpoint
+```
+POST api/insurance_item
+```
+#### Body request example
+```json
+{
+  "insuranceId": 2,
+  "name": "Jaminan Hari Tua (JHT)",
+  "type": "deduction",
+  "percent": 1
+}
+```
+### Show Insurance Item By ID API
+#### Endpoint
+```
+GET api/insurance_item/{id}
+```
+### Update Insurance Item API
+#### Endpoint
+```
+PUT api/insurance_item/{id}
+```
+#### Body request example
+```json
+{
+  "insuranceId": 2,
+  "name": "Jaminan Hari Tua (JHT)",
+  "type": "allowance",
+  "percent": 4
+}
+```
+### Delete Insurance Item API
+#### Endpoint
+```
+DELETE api/insurance_item/{id}
+```
+### Search Insurance Item API
+#### Endpoint
+```
+GET api/insurance_item?search={value}
+```
+
+### Type Of Allowance API
+### Show All Type Of Allowance API
+#### Endpoint
+```
+GET api/type_of_allowance
+```
+### Create Type Of Allowance API
+#### Endpoint
+```
+POST api/type_of_allowance
+```
+#### Body request example
+```json
+{
+  "name": "makan",
+  "nominal": 3000000,
+}
+```
+### Show Type Of Allowance By ID API
+#### Endpoint
+```
+GET api/type_of_allowance/{id}
+```
+### Update Type Of Allowance API
+#### Endpoint
+```
+PUT api/type_of_allowance/{id}
+```
+#### Body request example
+```json
+{
+  "name": "makan",
+  "nominal": 2000000,
+}
+```
+### Delete Type Of Allowance API
+#### Endpoint
+```
+DELETE api/type_of_allowance/{id}
+```
+### Search Type Of Allowance API
+#### Endpoint
+```
+GET api/type_of_allowance?search={value}
+```
+
+### Allowance API
+### Show All Allowance API
+#### Endpoint
+```
+GET api/allowance
+```
+### Create Allowance API
+#### Endpoint
+```
+POST api/allowance
+```
+#### Body request example
+```json
+{
+  "roleId": 2,
+  "typeId": 1
+}
+```
+### Show Allowance By ID API
+#### Endpoint
+```
+GET api/allowance/{id}
+```
+### Update Allowance API
+#### Endpoint
+```
+PUT api/allowance/{id}
+```
+#### Body request example
+```json
+{
+  "roleId": 2,
+  "typeId": 2
+}
+```
+### Delete Allowance API
+#### Endpoint
+```
+DELETE api/allowance/{id}
+```
+### Search Allowance API
+#### Endpoint
+```
+GET api/allowance?search={value}
+```
+
+### Loan API
+### Show All Loan API
+#### Endpoint
+```
+GET api/loan
+```
+### Create Loan API
+#### Endpoint
+```
+POST api/loan
+```
+#### Body request example
+```json
+{
+  "empId": 2,
+  "name": "education",
+  "nominal": 5000000,
+  "loanDate": "2022-09-20 13:08:00",
+  "status": 0
+}
+```
+### Show Loan By ID API
+#### Endpoint
+```
+GET api/loan/{id}
+```
+### Update Loan API
+#### Endpoint
+```
+PUT api/loan/{id}
+```
+#### Body request example
+```json
+{
+  "empId": 2,
+  "name": "education",
+  "nominal": 4000000,
+  "loanDate": "2022-09-20 13:08:00",
+  "status": 0
+}
+```
+### Delete Loan API
+#### Endpoint
+```
+DELETE api/loan/{id}
+```
+### Search Loan API
+#### Endpoint
+```
+GET api/loan?search={value}
+```
+### Show Total Loan By EmployeeID API
+#### Endpoint
+```
+GET api/my/loan
+```
+### Instalment API
+### Show All Instalment API
+#### Endpoint
+```
+GET api/instalment
+```
+### Create Instalment API
+#### Endpoint
+```
+POST api/instalment
+```
+#### Body request example
+```json
+{
+  "loanId": 2,
+  "dateate": "2022-09-20 13:08:00"
+}
+```
+
+### Instalment By Loan API
+#### Endpoint
+```
+GET api/instalment_by_loan/{id}
+```
+
+### Basic Salary By Role API
+### Show All Basic Salary By Role API
+#### Endpoint
+```
+GET api/basic_salary_by_role
+```
+### Create Basic Salary By Role API
+#### Endpoint
+```
+POST api/basic_salary_by_role
+```
+#### Body request example
+```json
+{
+  "roleId": 2,
+  "fee": 6000000,
+}
+```
+### Show Basic Salary By Role By ID API
+#### Endpoint
+```
+GET api/basic_salary_by_role/{id}
+```
+### Update Basic Salary By Role API
+#### Endpoint
+```
+PUT api/basic_salary_by_role/{id}
+```
+#### Body request example
+```json
+{
+  "roleId": 2,
+  "fee": 6000000,
+}
+```
+### Delete Basic Salary By Role API
+#### Endpoint
+```
+DELETE api/basic_salary_by_role/{id}
+```
+### Search Basic Salary By Role API
+#### Endpoint
+```
+GET api/basic_salary_by_role?search={value}
+```
+
+### Basic Salary By Employee API
+### Show All Basic Salary By Employee API
+#### Endpoint
+```
+GET api/basic_salary_by_employee
+```
+### Create Basic Salary By Employee API
+#### Endpoint
+```
+POST api/basic_salary_by_employee
+```
+#### Body request example
+```json
+{
+  "empId": 3,
+  "basicSalaryByRoleId": 3,
+  "fee": 1000000,
+}
+```
+### Show Basic Salary By Employee By ID API
+#### Endpoint
+```
+GET api/basic_salary_by_employee/{id}
+```
+### Update Basic Salary By Employee API
+#### Endpoint
+```
+PUT api/basic_salary_by_employee/{id}
+```
+#### Body request example
+```json
+{
+  "empId": 3,
+  "basicSalaryByRoleId": 3,
+  "fee": 1000000,
+}
+```
+### Delete Basic Salary By Employee API
+#### Endpoint
+```
+DELETE api/basic_salary_by_employee/{id}
+```
+### Search Basic Salary By Employee API
+#### Endpoint
+```
+GET api/basic_salary_by_employee?search={value}
 ```
 <!-- template example -->
 <!-- ### name = Employee Family
