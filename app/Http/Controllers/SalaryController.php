@@ -36,26 +36,24 @@ class SalaryController extends BaseController
     {
         try {
             $type = $request->type ?? 'gross';
-            $month = date('m-Y', strtotime($request->month)) ?? date('m-Y');
+            if ($request->has('month')) {
+                $month = date('m-Y', strtotime($request->month));
+            } else {
+                $month = date('m-Y');
+            }
             $year = date('Y', strtotime("01-" . $month));
             $payroll_date = 24;
-            $monthNow = date('Y-m-d');
+            // $monthNow = date('Y-m-d');
 
             if (strtotime($payroll_date . "-" . $month) > strtotime($payroll_date . "-" . date('m-Y'))) {
                 return $this->sendError('Month is not valid');
             }
-
-            // if ($month !== date('m-Y', strtotime($monthNow))) {
-            //     // return $this->sendError('On Development');
-            //     $Salaries = Salary::where('salaryDate', 'like', '%' . date('Y-m-d', strtotime($payroll_date . "-" . $month)) . '%')->get();
-            // }
 
             $data = [
                 'type' => $type,
                 'salaryDate' => date('M Y', strtotime("01-" . $month . "-" . $year)),
                 'data' => '',
             ];
-
             switch ($type) {
                 case 'deduction':
                     $data['data'] = $this->getDeduction($month);
