@@ -45,9 +45,10 @@ class SalaryController extends BaseController
                 return $this->sendError('Month is not valid');
             }
 
-            if ($month !== date('m-Y', strtotime($monthNow))) {
-                return $this->sendError('On Development');
-            }
+            // if ($month !== date('m-Y', strtotime($monthNow))) {
+            //     // return $this->sendError('On Development');
+            //     $Salaries = Salary::where('salaryDate', 'like', '%' . date('Y-m-d', strtotime($payroll_date . "-" . $month)) . '%')->get();
+            // }
 
             $data = [
                 'type' => $type,
@@ -87,11 +88,28 @@ class SalaryController extends BaseController
 
     public function getGrossSalary($month)
     {
+        $SalaryGrossEmployees = [];
+        if ($month !== date('m-Y', strtotime(date('d-m-Y')))) {
+            $Salaries = Salary::whereMonth('salaryDate', date('m', strtotime("01-" . $month)))->whereYear('salaryDate', date('Y', strtotime("01-" . $month)))->orderBy('empId', 'asc')->get();
+            foreach ($Salaries as $key => $value) {
+                $SalaryGrossEmployees[$key] = [
+                    'empId' => $value->empId,
+                    'empName' => $value->emp ? $value->emp->firstName . ' ' . $value->emp->lastName : '',
+                    'salaryDate' => $month,
+                    'basicSalary' => $value->basic,
+                    'totalOvertime' => $value->totalOvertime,
+                    'overtimeFee' => $value->overtimeFee,
+                    'totalBonus' => $value->bonus,
+                    'total' => $value->gross,
+                ];
+            }
+
+            return $SalaryGrossEmployees;
+        }
         $employees = Employee::all();
 
         $firstDay = date('Y-m-01');
         $lastDay = date('Y-m-t');
-        $SalaryGrossEmployees = [];
         foreach ($employees as $key => $emp) {
             if ($emp->basic_salary != null) {
                 $basicRole = $emp->role->basic_salary->fee ?? 0;
