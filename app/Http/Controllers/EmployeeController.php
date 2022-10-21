@@ -154,7 +154,6 @@ class EmployeeController extends BaseController
             $employee->firstName = $request->firstName;
             $employee->lastName = $request->lastName;
             $employee->phone = $request->phone;
-            $employee->password = bcrypt($request->password);
 
             $employee->firstName = $request->firstName;
             $employee->lastName = $request->lastName;
