@@ -15,10 +15,7 @@ use App\Models\InsuranceItem;
 use App\Models\Loan;
 use App\Models\Overtime;
 use App\Models\Salary;
-use App\Models\SalaryInsuranceDetail;
-use App\Support\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class SalaryController extends BaseController
 {
@@ -39,58 +36,17 @@ class SalaryController extends BaseController
     {
         try {
             $type = $request->type ?? 'gross';
-            $month = $request->month ?? date('m-Y');
+            $month = date('m-Y', strtotime($request->month)) ?? date('m-Y');
             $year = date('Y', strtotime("01-" . $month));
-            $salaryDate = 1;
+            $payroll_date = 24;
             $monthNow = date('Y-m-d');
 
+            if (strtotime($payroll_date . "-" . $month) > strtotime($payroll_date . "-" . date('m-Y'))) {
+                return $this->sendError('Month is not valid');
+            }
+
             if ($month !== date('m-Y', strtotime($monthNow))) {
-                return $this->sendError("error retrieving salary", "on development");
-            }
-
-            $firstDay = date('Y-m-01');
-            $lastDay = date('Y-m-t');
-
-            $employees = Employee::all();
-
-            $SalaryGrossEmployees = [];
-
-            foreach ($employees as $key => $emp) {
-                if ($emp->basic_salary != null) {
-                    $basicRole = $emp->role->basic_salary->fee ?? 0;
-                    $basicSalary = $basicRole + $emp->basic_salary->fee;
-                } else {
-                    $basicSalary = $emp->role->basic_salary->fee ?? 0;
-                }
-
-                $totalOvertime = $this->getTotalOvertime($emp->employeeId, $firstDay, $lastDay);
-                $overtimeFee = $totalOvertime * self::feeOneHour;
-                $bonus = 0;
-                $gross = $basicSalary + $overtimeFee + $bonus;
-                $SalaryGrossEmployees[$key] = [
-                    'empId' => $emp->employeeId,
-                    'empName' => $emp->firstName . ' ' . $emp->lastName,
-                    'salaryDate' => $month,
-                    'basicSalary' => $basicSalary,
-                    'totalOvertime' => $totalOvertime,
-                    'overtimeFee' => $overtimeFee,
-                    'totalBonus' => $bonus,
-                    'total' => $gross,
-                ];
-            }
-
-            switch ($type) {
-                case 'deduction':
-                    $dataDeduction = $this->getDeduction($month);
-                    break;
-
-                case 'net':
-                    $dataNet = $this->getNetSalary($month);
-                    break;
-
-                default:
-                    $SalaryGrossEmployees = $this->getGrossSalary($month);
-                    break;
+                return $this->sendError('On Development');
             }
 
             $data = [
@@ -101,20 +57,19 @@ class SalaryController extends BaseController
 
             switch ($type) {
                 case 'deduction':
-                    $data['data'] = $dataDeduction;
+                    $data['data'] = $this->getDeduction($month);
                     break;
                 case 'net':
-                    $data['data'] = $dataNet;
+                    $data['data'] = $this->getNetSalary($month);
                     break;
                 default:
-                    $data['data'] = $SalaryGrossEmployees;
+                    $data['data'] = $this->getGrossSalary($month);
                     break;
             }
 
             return $this->sendResponse($data, "salary retrieved successfully");
-            // dd("asd");
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->sendError($th->getMessage());
         }
     }
 
