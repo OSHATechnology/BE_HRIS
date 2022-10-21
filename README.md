@@ -226,6 +226,8 @@ php artisan serve
 **Important!!!**
 if you want to see json response you can install [postman](https://www.postman.com/). If you have logged in, don't forget to enter the token in the postman token bearer at each endpoint.
 
+You can see the relation diagram [here](https://drive.google.com/file/d/121GGhGHi7vGVnOmG6BWGCZY-w-4k3gpt/view?usp=sharing).
+
 ### Login User API
 #### Endpoint
 ```
