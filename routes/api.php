@@ -108,6 +108,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/my/loan', [LoanController::class, 'myLoan']);
     Route::get('/my/leave-requests', [EmployeeController::class, 'myLeaveRequests']);
     Route::post('/my/add-leave-request', [EmployeeController::class, 'addLeaveRequest']);
+    Route::get('salary', [SalaryController::class, 'index']);
 });
-
-Route::get('salary', [SalaryController::class, 'index']);
