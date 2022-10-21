@@ -12,6 +12,7 @@ use App\Models\Employee;
 use App\Models\EmployeeFamily;
 use App\Models\Insurance;
 use App\Models\InsuranceItem;
+use App\Models\Loan;
 use App\Models\Overtime;
 use App\Models\Salary;
 use App\Models\SalaryInsuranceDetail;
@@ -36,13 +37,6 @@ class SalaryController extends BaseController
      */
     public function index(Request $request)
     {
-        // try {
-        //     $salary = (new Collection(SalaryResource::collection(Salary::all())))->paginate(self::NumPaginate);
-        //     return $this->sendResponse($salary, "salary retrieved successfully");
-        // } catch (\Throwable $th) {
-        //     return $this->sendError("error retrieving salary", $th->getMessage());
-        // }
-
         try {
             $type = $request->type ?? 'gross';
             $month = $request->month ?? date('m-Y');
@@ -85,8 +79,18 @@ class SalaryController extends BaseController
                 ];
             }
 
-            if ($type === 'deduction') {
-                $dataDeduction = $this->getDeduction($month, $SalaryGrossEmployees);
+            switch ($type) {
+                case 'deduction':
+                    $dataDeduction = $this->getDeduction($month);
+                    break;
+
+                case 'net':
+                    $dataNet = $this->getNetSalary($month);
+                    break;
+
+                default:
+                    $SalaryGrossEmployees = $this->getGrossSalary($month);
+                    break;
             }
 
             $data = [
@@ -94,7 +98,14 @@ class SalaryController extends BaseController
                 'salaryDate' => date('M Y', strtotime("01-" . $month . "-" . $year)),
                 'data' => '',
             ];
+
             switch ($type) {
+                case 'deduction':
+                    $data['data'] = $dataDeduction;
+                    break;
+                case 'net':
+                    $data['data'] = $dataNet;
+                    break;
                 default:
                     $data['data'] = $SalaryGrossEmployees;
                     break;
@@ -119,10 +130,46 @@ class SalaryController extends BaseController
         return $totalOvertime;
     }
 
-    public function getDeduction($month, $GrossEmployee)
+    public function getGrossSalary($month)
     {
         $employees = Employee::all();
-        $payroll_date = 25;
+
+        $firstDay = date('Y-m-01');
+        $lastDay = date('Y-m-t');
+        $SalaryGrossEmployees = [];
+        foreach ($employees as $key => $emp) {
+            if ($emp->basic_salary != null) {
+                $basicRole = $emp->role->basic_salary->fee ?? 0;
+                $basicSalary = $basicRole + $emp->basic_salary->fee;
+            } else {
+                $basicSalary = $emp->role->basic_salary->fee ?? 0;
+            }
+
+            $totalOvertime = $this->getTotalOvertime($emp->employeeId, $firstDay, $lastDay);
+            $overtimeFee = $totalOvertime * self::feeOneHour;
+            $bonus = 0;
+            $gross = $basicSalary + $overtimeFee + $bonus;
+            $SalaryGrossEmployees[$key] = [
+                'empId' => $emp->employeeId,
+                'empName' => $emp->firstName . ' ' . $emp->lastName,
+                'salaryDate' => $month,
+                'basicSalary' => $basicSalary,
+                'totalOvertime' => $totalOvertime,
+                'overtimeFee' => $overtimeFee,
+                'totalBonus' => $bonus,
+                'total' => $gross,
+            ];
+        }
+
+        return $SalaryGrossEmployees;
+    }
+
+    public function getDeduction($month)
+    {
+        $GrossEmployee = $this->getGrossSalary($month);
+        $employees = Employee::all();
+        $insurances = Insurance::all();
+        $payroll_date = 24;
         $monthPayroll = date('Y-m-d', strtotime($payroll_date . '-' . $month));
         $endDate = date('t', strtotime($payroll_date));
 
@@ -147,37 +194,99 @@ class SalaryController extends BaseController
             }
         }
 
-        dd($dateWorking, $dateOff);
 
-        dd($endDate, $firstDatePayroll, $monthPayroll, $startDate, $dateWorking);
-
-        // for ($i = 1; $i <= 30; $i++) {
-        //     $date = date('Y-m-d', strtotime($firstDatePayroll . " +$i day"));
-        //     $day = date('D', strtotime($date));
-        //     if (in_array($day, $daysWorking)) {
-        //         $dataAttendance[] = [
-        //             'date' => $date,
-        //             'attend' => []
-        //         ];
-        //     }
-        // }
-
-        // dd($monthPayroll, $firstDatePayroll, $dataAttendance);
 
         foreach ($employees as $key => $value) {
             $totalAttendance = 0;
+            $todalDeductionAttendance = 0;
             $totalLeave = 0;
             $totalLate = 0;
             $totalAbsent = 0;
             $totalLoan = 0;
-            $totalTax = 0;
+            $totalTax = Salary::TAX ?? 0;
             $totalInsurance = 0;
+            $percentAttendance = 0;
             $totalDeduction = 0;
 
-            // $value->totalAttendance = $dataAttendance;
+            $idxGross = array_keys(array_column($GrossEmployee, 'empId'), $value->employeeId);
+            $Gross = $GrossEmployee[$idxGross[0]];
+
+            foreach ($dateWorking as $date) {
+                $attendance = Attendance::where('employeeId', $value->employeeId)->whereDate('timeAttend', $date)->first();
+                if ($attendance) {
+                    $totalAttendance++;
+                    // if ($attendance->isLate) {
+                    //     $totalLate++;
+                    // }
+                } else {
+                    $totalAbsent++;
+                }
+            }
+
+            $todalDeductionAttendance = round($Gross['basicSalary'] - ((1 / count($dateWorking)) * $Gross['basicSalary']));
+
+            if (count($idxGross) > 0) {
+                foreach ($insurances as $item) {
+                    foreach ($item->insurance_items as $item_insurance) {
+                        if ($item_insurance->type == 'deduction') {
+                            $totalInsurance += $item_insurance->percent * $GrossEmployee[$idxGross[0]]['total'] / 100;
+                        }
+                    }
+                }
+            }
+
+            $dataLoan = Loan::where('empId', $value->employeeId)->where('status', 0)->get();
+
+            foreach ($dataLoan as $loanItem) {
+                // $remaining = $value->amount - $value->paid;
+                if (count($loanItem->instalments) > 0) {
+                } else {
+                    $totalLoan += round($loanItem->nominal * 5 / 100); //5 for percent loan 
+                }
+            }
+
+            $percentAttendance = round($totalAttendance / count($dateWorking) * 100);
+
+            $totalDeduction = $todalDeductionAttendance + $totalInsurance + $totalLoan + ($totalTax * $Gross['total'] / 100);
+
+            $dataDeduction[] = [
+                'empId' => $value->employeeId,
+                'empName' => $value->firstName . ' ' . $value->lastName,
+                'totalAttendance' => $totalAttendance,
+                'totalLeave' => $totalLeave,
+                'totalLate' => $totalLate,
+                'totalAbsent' => $totalAbsent,
+                'totalLoan' => $totalLoan,
+                'totalTax' => $totalTax,
+                'totalInsurance' => $totalInsurance,
+                'totalDeduction' => $totalDeduction,
+                'percentAttendance' => $percentAttendance,
+            ];
         }
 
-        dd($employees);
+        return $dataDeduction;
+    }
+
+    public function getNetSalary($month)
+    {
+        $GrossEmployee = $this->getGrossSalary($month);
+        $DeductionEmployee = $this->getDeduction($month);
+        $dataNetSalary = [];
+
+        foreach ($GrossEmployee as $key => $value) {
+            $idxDeduction = array_keys(array_column($DeductionEmployee, 'empId'), $value['empId']);
+            $Deduction = $DeductionEmployee[$idxDeduction[0]];
+
+            $dataNetSalary[] = [
+                'empId' => $value['empId'],
+                'empName' => $value['empName'],
+                'salart_date' => $value['salaryDate'],
+                'gross_salary' => $value['total'],
+                'salary_deduction' => $Deduction['totalDeduction'],
+                'net_salary' => $value['total'] - $Deduction['totalDeduction'],
+            ];
+        }
+        return $dataNetSalary;
     }
 
     public function getDates($startDate, $stopDate)
