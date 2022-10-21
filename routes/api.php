@@ -102,12 +102,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('allowance', AllowanceController::class);
     Route::get('leave-requests', [LeaveRequestController::class, 'index']);
 
-
     Route::get('/count', [MasterDataController::class, 'count']);
     Route::post('/my/attendance', [AttendanceController::class, 'myToday']);
     Route::get('/my/loan', [LoanController::class, 'myLoan']);
     Route::get('/my/leave-requests', [EmployeeController::class, 'myLeaveRequests']);
     Route::post('/my/add-leave-request', [EmployeeController::class, 'addLeaveRequest']);
+    Route::get('salary', [SalaryController::class, 'index']);
 });
-
-Route::get('salary', [SalaryController::class, 'index']);
