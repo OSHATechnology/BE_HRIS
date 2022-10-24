@@ -11,6 +11,7 @@ class Salary extends Model
     protected $fillable = [
         'salaryId',
         'empId',
+        'salaryDate',
         'basic',
         'totalOvertime',
         'overtimeFee',
