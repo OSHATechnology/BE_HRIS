@@ -104,12 +104,16 @@ class SalaryCron extends Command
                     $salary_allowances->save();
                 }
                 foreach ($Insurances as $val_insurance) {
-                    $insurance_details = new SalaryInsuranceDetail();
-                    $insurance_details->salaryId = $Salary->salaryId;
-                    $insurance_details->insItemId = $val_insurance->insuranceId;
-                    $insurance_details->nominal = $val_insurance->percent * $basicSalary / 100;
-                    $insurance_details->date = date('Y-m-d', strtotime($payroll_date . "-" . $payroll_month));
-                    $insurance_details->save();
+                    foreach ($val_insurance->insurance_items as $item) {
+                        if ($item->type === 'allowance') {
+                            $insurance_details = new SalaryInsuranceDetail();
+                            $insurance_details->salaryId = $Salary->salaryId;
+                            $insurance_details->insItemId = $item->insItemId;
+                            $insurance_details->nominal = $item->percent * $basicSalary / 100;
+                            $insurance_details->date = date('Y-m-d', strtotime($payroll_date . "-" . $payroll_month));
+                            $insurance_details->save();
+                        }
+                    }
                 }
             }
         }

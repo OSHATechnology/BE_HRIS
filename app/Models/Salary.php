@@ -40,4 +40,9 @@ class Salary extends Model
     {
         return $this->hasMany(SalaryAllowance::class, 'salaryId', 'salaryId');
     }
+
+    public function insuranceItemDetails()
+    {
+        return $this->hasMany(SalaryInsuranceDetail::class, 'salaryId', 'salaryId');
+    }
 }

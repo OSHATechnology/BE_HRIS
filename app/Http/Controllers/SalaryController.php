@@ -16,6 +16,7 @@ use App\Models\InsuranceItem;
 use App\Models\Loan;
 use App\Models\Overtime;
 use App\Models\Salary;
+use App\Support\Collection;
 use Illuminate\Http\Request;
 
 class SalaryController extends BaseController
@@ -448,8 +449,27 @@ class SalaryController extends BaseController
     public function show($id)
     {
         try {
-            $salary = Salary::findOrFail($id);
-            return $this->sendResponse(new SalaryResource($salary), "salary retrieved successfully");
+            $Salary = Salary::findOrFail($id);
+            $allowance_items = [];
+            foreach ($Salary->allowance_items as $value) {
+                $allowance_items[] = [
+                    'name' => $value->allowanceName,
+                    'fee' => $value->nominal,
+                ];
+            }
+
+            foreach ($Salary->insuranceItemDetails as $value) {
+                if ($value->insuranceItem->type == 'allowance') {
+                    $allowance_items[] = [
+                        'name' => $value->insuranceItem->name,
+                        'fee' => $value->nominal,
+                    ];
+                }
+            }
+
+            $Salary->allowance_item = $allowance_items;
+            // return $this->sendResponse(new SalaryResource($Salry), "salary retrieved successfully");
+            return $this->sendResponse($Salary, "salary retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving salary", $th->getMessage());
         }
@@ -458,8 +478,8 @@ class SalaryController extends BaseController
     public function showByEmployee($id)
     {
         try {
-            $salary = Salary::where('empId', $id)->paginate(self::NumPaginate);
-            return $this->sendResponse($salary, "salary retrieved successfully");
+            $Salaries = Salary::where('empId', $id)->get();
+            return $this->sendResponse(SalaryResource::collection($Salaries), "salary retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving salary", $th->getMessage());
         }
