@@ -42,7 +42,7 @@ class SalaryController extends BaseController
                 $month = date('m-Y');
             }
             $year = date('Y', strtotime("01-" . $month));
-            $payroll_date = 24;
+            $payroll_date = Salary::PAYROLLDATE;
             // $monthNow = date('Y-m-d');
 
             if (strtotime($payroll_date . "-" . $month) > strtotime($payroll_date . "-" . date('m-Y'))) {
@@ -138,20 +138,15 @@ class SalaryController extends BaseController
     public function getDeduction($month)
     {
         $GrossEmployee = $this->getGrossSalary($month);
-        $employees = Employee::all();
-        $insurances = Insurance::all();
-        $payroll_date = 24;
+        $payroll_date = Salary::PAYROLLDATE;
         $monthPayroll = date('Y-m-d', strtotime($payroll_date . '-' . $month));
-        $endDate = date('t', strtotime($payroll_date));
 
         $firstDatePayroll = date('Y-m-d', strtotime($monthPayroll . " -1 month"));
-        $startDate = date('d', strtotime($firstDatePayroll));
         $dataDeduction = [];
-        $dataAttendance = [];
         $daysWorking = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
         $dateWorking = [];
         $dateOff = [];
-        $dateHoliday = [];
+
 
         $dateArray = $this->getDates($firstDatePayroll, $monthPayroll);
 
@@ -165,7 +160,41 @@ class SalaryController extends BaseController
             }
         }
 
+        if ($month !== date('m-Y', strtotime(date('d-m-Y')))) {
+            foreach ($GrossEmployee as $key => $value) {
+                $totalAttendance = 0;
+                $totalLeave = 0;
+                $totalLate = 0;
+                $totalAbsent = 0;
+                foreach ($dateWorking as $date) {
+                    $attendance = Attendance::where('employeeId', $value["empId"])->whereDate('timeAttend', $date)->first();
+                    if ($attendance) {
+                        $totalAttendance++;
+                    } else {
+                        $totalAbsent++;
+                    }
+                }
 
+                $dataDeduction[] = [
+                    'empId' => $value["empId"],
+                    'empName' => $value["empName"] ?? '',
+                    'totalAttendance' => $value["totalAttendance"] ?? 0,
+                    'totalLeave' => $totalLeave,
+                    'totalLate' => $totalLate,
+                    'totalAbsent' => $totalAbsent,
+                    'totalLoan' => 0,
+                    'totalTax' => 0,
+                    'totalInsurance' => 0,
+                    'totalDeduction' => 0,
+                    'percentAttendance' => round($totalAttendance / count($dateWorking) * 100),
+                ];
+            }
+
+            return $dataDeduction;
+        }
+
+        $employees = Employee::all();
+        $insurances = Insurance::all();
 
         foreach ($employees as $key => $value) {
             $totalAttendance = 0;

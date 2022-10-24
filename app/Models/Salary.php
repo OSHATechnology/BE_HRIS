@@ -24,6 +24,7 @@ class Salary extends Model
     protected $primaryKey = 'salaryId';
 
     public const TAX = 5;
+    public const PAYROLLDATE = '24';
 
     public function emp()
     {
