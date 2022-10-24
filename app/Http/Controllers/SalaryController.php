@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\SalaryGrossResources;
 use App\Http\Resources\SalaryResource;
+use App\Models\Allowance;
 use App\Models\Attendance;
 use App\Models\BasicSalaryByEmployee;
 use App\Models\BasicSalaryByRole;
@@ -84,6 +85,35 @@ class SalaryController extends BaseController
         return $totalOvertime;
     }
 
+    public function getTotalAllowance($empId, $firstDay, $lastDay)
+    {
+        $totalFee = 0;
+        $Employee = Employee::find($empId);
+        if ($Employee->role != null) {
+            $allowances = $Employee->role->type_of_allowances;
+            foreach ($allowances as $key => $allowance) {
+                $totalFee += $allowance->nominal;
+            }
+        }
+
+        if ($Employee->basic_salary != null) {
+            $basicRole = $Employee->role->basic_salary->fee ?? 0;
+            $basicSalary = $basicRole + $Employee->basic_salary->fee;
+        } else {
+            $basicSalary = $Employee->role->basic_salary->fee ?? 0;
+        }
+
+        $Insurances = Insurance::all();
+        foreach ($Insurances as $value) {
+            foreach ($value->insurance_items as $item) {
+                if ($item->type === 'allowance') {
+                    $totalFee += $item->percent * $basicSalary / 100;
+                }
+            }
+        }
+        return $totalFee;
+    }
+
     public function getGrossSalary($month)
     {
         $SalaryGrossEmployees = [];
@@ -97,6 +127,7 @@ class SalaryController extends BaseController
                     'basicSalary' => $value->basic,
                     'totalOvertime' => $value->totalOvertime,
                     'overtimeFee' => $value->overtimeFee,
+                    'totalAllowance' => $value->totalAllowance,
                     'totalBonus' => $value->bonus,
                     'total' => $value->gross,
                 ];
@@ -118,8 +149,12 @@ class SalaryController extends BaseController
 
             $totalOvertime = $this->getTotalOvertime($emp->employeeId, $firstDay, $lastDay);
             $overtimeFee = $totalOvertime * self::feeOneHour;
+            $allowanceFee = $this->getTotalAllowance($emp->employeeId, $firstDay, $lastDay);
             $bonus = 0;
-            $gross = $basicSalary + $overtimeFee + $bonus;
+            // if ($totalOvertime > 1) {
+            //     $bonus += 100000;
+            // }
+            $gross = $basicSalary + $overtimeFee + $allowanceFee + $bonus;
             $SalaryGrossEmployees[$key] = [
                 'empId' => $emp->employeeId,
                 'empName' => $emp->firstName . ' ' . $emp->lastName,
@@ -127,6 +162,7 @@ class SalaryController extends BaseController
                 'basicSalary' => $basicSalary,
                 'totalOvertime' => $totalOvertime,
                 'overtimeFee' => $overtimeFee,
+                'totalAllowance' => $allowanceFee,
                 'totalBonus' => $bonus,
                 'total' => $gross,
             ];
@@ -198,7 +234,8 @@ class SalaryController extends BaseController
 
         foreach ($employees as $key => $value) {
             $totalAttendance = 0;
-            $todalDeductionAttendance = 0;
+            $totalDeductionAttendance = 0;
+            // $allowanceDeduction = 0;
             $totalLeave = 0;
             $totalLate = 0;
             $totalAbsent = 0;
@@ -210,6 +247,11 @@ class SalaryController extends BaseController
 
             $idxGross = array_keys(array_column($GrossEmployee, 'empId'), $value->employeeId);
             $Gross = $GrossEmployee[$idxGross[0]];
+
+            // $allowances = $value->role->type_of_allowances;
+            // foreach ($allowances as $key => $itemAllowance) {
+            //     $allowanceDeduction += $itemAllowance->nominal;
+            // }
 
             foreach ($dateWorking as $date) {
                 $attendance = Attendance::where('employeeId', $value->employeeId)->whereDate('timeAttend', $date)->first();
@@ -223,13 +265,14 @@ class SalaryController extends BaseController
                 }
             }
 
-            $todalDeductionAttendance = round($Gross['basicSalary'] - ((1 / count($dateWorking)) * $Gross['basicSalary']));
+            $totalDeductionAttendance = round($Gross['basicSalary'] - (($totalAttendance / count($dateWorking)) * $Gross['basicSalary']));
 
             if (count($idxGross) > 0) {
                 foreach ($insurances as $item) {
                     foreach ($item->insurance_items as $item_insurance) {
                         if ($item_insurance->type == 'deduction') {
-                            $totalInsurance += $item_insurance->percent * $GrossEmployee[$idxGross[0]]['total'] / 100;
+                            // $totalInsurance += $item_insurance->percent * $GrossEmployee[$idxGross[0]]['total'] / 100;
+                            $totalInsurance += $item_insurance->percent * $Gross['basicSalary'] / 100;
                         }
                     }
                 }
@@ -247,7 +290,7 @@ class SalaryController extends BaseController
 
             $percentAttendance = round($totalAttendance / count($dateWorking) * 100);
 
-            $totalDeduction = $todalDeductionAttendance + $totalInsurance + $totalLoan + ($totalTax * $Gross['total'] / 100);
+            $totalDeduction = $totalDeductionAttendance +  $totalInsurance + $totalLoan + ($totalTax * $Gross['total'] / 100);
 
             $dataDeduction[] = [
                 'empId' => $value->employeeId,

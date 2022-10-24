@@ -35,4 +35,14 @@ class Salary extends Model
     {
         return $this->belongsToMany(InsuranceItem::class, 'salary_insurance_details', 'salaryId', 'insItemId');
     }
+
+    public function allowance_items()
+    {
+        return $this->hasMany(SalaryAllowance::class, 'salaryId', 'salaryId');
+    }
+
+    public function totalAllowanceItem()
+    {
+        return $this->allowance_items()->sum('nominal');
+    }
 }
