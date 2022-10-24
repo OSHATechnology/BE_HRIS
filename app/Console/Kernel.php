@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         // $schedule->command('demo:cron')->everyMinute()->sendOutputTo(storage_path('logs/cron.log'));
-        $schedule->command('salary:cron')->monthlyOn(1, '00:01');
+        $schedule->command('salary:cron')->everyMinute()->sendOutputTo(storage_path('logs/cron.log'));
     }
 
     /**

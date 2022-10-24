@@ -11,6 +11,7 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\API\AuthenticatedController;
 use App\Http\Controllers\API\PasswordResetLinkController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\BasicSalaryByEmployeeController;
 use App\Http\Controllers\BasicSalaryByRoleController;
 use App\Http\Controllers\EmployeeFamilyController;
@@ -53,6 +54,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::post('/auth/login', [AuthenticatedController::class, 'store']);
 Route::post('/auth/logout', [AuthenticatedController::class, 'destroy'])->middleware('auth:sanctum');
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->middleware('guest');
+Route::post('/reset-password', [NewPasswordController::class, 'store'])->middleware('guest');
 Route::post('/logout', [AuthenticatedController::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -88,6 +90,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('basic_salary_by_employee', BasicSalaryByEmployeeController::class);
     Route::get('salary/auto/{id}', [SalaryController::class, 'automatic_data']);
     // Route::apiResource('salary', SalaryController::class);
+    Route::get('salary/employee/{id}', [SalaryController::class, 'showByEmployee']);
     Route::get('salary_cut/att_cut/{id}', [SalaryCutDetailController::class, 'attendanceCutFee']);
     Route::apiResource('salary_cut', SalaryCutDetailController::class);
     Route::apiResource('employee_family', EmployeeFamilyController::class);

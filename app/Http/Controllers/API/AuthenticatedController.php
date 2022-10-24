@@ -24,10 +24,11 @@ class AuthenticatedController extends BaseController
     public function store(Request $request)
     {
         try {
-            $user = Employee::where('email', $request->email)->first();
+            $user = Employee::where('email', $request->email)->orWhere('employeeId', $request->email)->first();
             if (!$user) {
                 return $this->sendError('username', $this->username() . ' not found', 401);
             }
+            $request->merge([$this->username() => $user->email]);
             if (!Auth::attempt($request->only($this->username(), 'password'), $request->remember_me)) {
                 return $this->sendError('password', 'Wrong Password', 401);
             }

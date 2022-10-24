@@ -51,4 +51,9 @@ class Attendance extends Model
         $data->typeInOut = $typeInOut;
         return $data->save();
     }
+
+    public function scopeRangeDates($query, $start, $end, $order = 'asc')
+    {
+        return $query->whereDate('timeAttend', '>=', $start)->whereDate('timeAttend', '<=', $end)->orderBy('timeAttend', $order);
+    }
 }

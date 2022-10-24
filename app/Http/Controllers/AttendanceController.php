@@ -148,7 +148,7 @@ class AttendanceController extends BaseController
     {
         try {
             $now = date('Y-m-d');
-            $attendance = (new Collection(AttendanceResource::collection(Attendance::where('employeeId', $id)->where('submitedAt', 'like', '%' . $now . '%')->get())))->paginate(self::NumPaginate);
+            $attendance = (new Collection(AttendanceResource::collection(Attendance::where('employeeId', $id)->where('timeAttend', 'like', '%' . $now . '%')->get())))->paginate(self::NumPaginate);
             return $this->sendResponse($attendance,  "Attendance retrievied successfully");
         } catch (\Throwable $th) {
             return $this->senderror("Error retrieving attendance", $th->getMessage());
@@ -158,15 +158,17 @@ class AttendanceController extends BaseController
     public function search(Request $request)
     {
         try {
-            if ($request->filled('search')) {
-                $query = Attendance::join('employees', 'attendances.employeeId', '=', 'employees.employeeId')
-                    ->where('employees.firstName', 'like', '%' . $request->search . '%')
-                    ->get();
-                $users =   (new Collection(AttendanceResource::collection($query)))->paginate(self::NumPaginate);
-            } else {
-                $users = (new Collection(AttendanceResource::collection(Attendance::all())))->paginate(self::NumPaginate);
+            $attendance = new Attendance();
+            if ($request->has('search')) {
+                $attendance = $attendance->join('employees', 'attendances.employeeId', '=', 'employees.employeeId')
+                    ->where('employees.firstName', 'like', '%' . $request->search . '%');
             }
-            return $this->sendResponse($users, "employee search successfully");
+            if ($request->has('start') && $request->has('end')) {
+                $attendance = $attendance->RangeDates($request->start, $request->end);
+            }
+            $data = (new Collection(AttendanceResource::collection($attendance->get())))->paginate(self::NumPaginate)->withQueryString();
+
+            return $this->sendResponse($data, "employee search successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error search employee failed", $th->getMessage());
         }

@@ -24,6 +24,7 @@ class Salary extends Model
     protected $primaryKey = 'salaryId';
 
     public const TAX = 5;
+    public const PAYROLLDATE = '24';
 
     public function emp()
     {
@@ -33,5 +34,10 @@ class Salary extends Model
     public function insuranceItem()
     {
         return $this->belongsToMany(InsuranceItem::class, 'salary_insurance_details', 'salaryId', 'insItemId');
+    }
+
+    public function allowance_items()
+    {
+        return $this->hasMany(SalaryAllowance::class, 'salaryId', 'salaryId');
     }
 }
