@@ -405,6 +405,16 @@ class SalaryController extends BaseController
         }
     }
 
+    public function showByEmployee($id)
+    {
+        try {
+            $salary = Salary::where('empId', $id)->get();
+            return $this->sendResponse(new SalaryResource($salary), "salary retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendResponse("error retrieving salary", $th->getMessage());
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *

@@ -90,6 +90,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('basic_salary_by_employee', BasicSalaryByEmployeeController::class);
     Route::get('salary/auto/{id}', [SalaryController::class, 'automatic_data']);
     // Route::apiResource('salary', SalaryController::class);
+    Route::get('salary/employee/{id}', [SalaryController::class, 'showByEmployee']);
     Route::get('salary_cut/att_cut/{id}', [SalaryCutDetailController::class, 'attendanceCutFee']);
     Route::apiResource('salary_cut', SalaryCutDetailController::class);
     Route::apiResource('employee_family', EmployeeFamilyController::class);
