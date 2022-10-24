@@ -110,5 +110,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/my/leave-requests', [EmployeeController::class, 'myLeaveRequests']);
     Route::post('/my/add-leave-request', [EmployeeController::class, 'addLeaveRequest']);
     Route::get('salary', [SalaryController::class, 'index']);
+    Route::apiResource('salary', SalaryController::class)->only(['show']);
 });
-Route::apiResource('salary', SalaryController::class)->only(['show']);

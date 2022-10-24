@@ -468,8 +468,8 @@ class SalaryController extends BaseController
             }
 
             $Salary->allowance_item = $allowance_items;
-            // return $this->sendResponse(new SalaryResource($Salry), "salary retrieved successfully");
-            return $this->sendResponse($Salary, "salary retrieved successfully");
+            return $this->sendResponse(new SalaryResource($Salary), "salary retrieved successfully");
+            // return $this->sendResponse($Salary, "salary retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving salary", $th->getMessage());
         }

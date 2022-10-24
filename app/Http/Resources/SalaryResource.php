@@ -20,9 +20,10 @@ class SalaryResource extends JsonResource
                 'id' => $this->emp->employeeId,
                 'name' => $this->emp->firstName . " " . $this->emp->lastName,
             ] : "",
-            'basicSalary' => $this->basic,
-            'totalOvertime' => $this->totalOvertime,
-            'overtimeFee' => $this->overtimeFee,
+            'basic_salary' => $this->basic,
+            'total_overtime' => $this->totalOvertime,
+            'overtime_fee' => $this->overtimeFee,
+            'allowance_item' => $this->allowance_item,
             'bonus' => $this->bonus,
             'gross' => $this->gross,
         ];
