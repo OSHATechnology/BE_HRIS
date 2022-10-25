@@ -45,4 +45,14 @@ class Instalment extends Model
             return null;
         }
     }
+
+    public static function getLastInstalment($id)
+    {
+        $lastInstalment = Instalment::where("loanId", $id)->orderBy('created_at', 'desc')->first();
+        if ($lastInstalment) {
+            return $lastInstalment->nominal;
+        } else {
+            return null;
+        }
+    }
 }

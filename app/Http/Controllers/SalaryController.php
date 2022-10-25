@@ -11,11 +11,13 @@ use App\Models\BasicSalaryByEmployee;
 use App\Models\BasicSalaryByRole;
 use App\Models\Employee;
 use App\Models\EmployeeFamily;
+use App\Models\Instalment;
 use App\Models\Insurance;
 use App\Models\InsuranceItem;
 use App\Models\InsuranceItemRole;
 use App\Models\Loan;
 use App\Models\Overtime;
+use App\Models\Role;
 use App\Models\Salary;
 use App\Support\Collection;
 use Illuminate\Http\Request;
@@ -448,14 +450,21 @@ class SalaryController extends BaseController
     {
         try {
             $Salary = Salary::findOrFail($id);
+            $employee = Employee::findOrFail($Salary->empId);
+            $role = Role::findOrFail($employee->roleId);
+            $Salary->role = $role->nameRole;
             $allowance_items = [];
+            $deduction_items = [];
+            $total_deduction = 0;
+
             foreach ($Salary->allowance_items as $value) {
                 $allowance_items[] = [
                     'name' => $value->allowanceName,
                     'fee' => $value->nominal,
                 ];
             }
-
+            
+            
             foreach ($Salary->insuranceItemDetails as $value) {
                 if ($value->insuranceItem->type == 'allowance') {
                     $allowance_items[] = [
@@ -466,6 +475,34 @@ class SalaryController extends BaseController
             }
 
             $Salary->allowance_item = $allowance_items;
+            
+            foreach ($Salary->insuranceItemDetails as $value) {
+                if ($value->insuranceItem->type == 'deduction') {
+                    $total_deduction = $total_deduction + $value->nominal; 
+                    $deduction_items[] = [
+                        'name' => $value->insuranceItem->name,
+                        'fee' => $value->nominal,
+                    ];
+                }
+            }
+
+            $Salary->deduction_item = $deduction_items;
+
+            $lastLoan = Loan::getLastLoanByEmployee($employee->employeeId);
+            if ($lastLoan == null) {
+                $lastInstalment = 0;
+            } else if ($lastLoan->status === 0)  {
+                $lastInstalment = Instalment::getLastInstalment($lastLoan->loanId);
+            } 
+            
+            $tax = ($Salary->basic * Salary::TAX) / 100;
+            $total_deduction = $total_deduction + $lastInstalment + $tax;
+            
+            $Salary->instalment = $lastInstalment;
+            $Salary->tax = $tax;
+            $Salary->total_deduction = $total_deduction;
+            $Salary->net = $Salary->gross - $total_deduction;
+
             return $this->sendResponse(new SalaryResource($Salary), "salary retrieved successfully");
             // return $this->sendResponse($Salary, "salary retrieved successfully");
         } catch (\Throwable $th) {
