@@ -29,6 +29,11 @@ class Role extends Model
         return $this->belongsToMany(TypeOfAllowance::class, 'allowances', 'roleId', 'typeId');
     }
 
+    public function insurance_items()
+    {
+        return $this->belongsToMany(InsuranceItem::class, 'insurance_item_roles', 'roleId', 'insItemId');
+    }
+
     public static function getIdsByName($name)
     {
         $role = self::where('nameRole', $name)->first();

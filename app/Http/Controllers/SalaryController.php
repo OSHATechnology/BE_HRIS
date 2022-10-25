@@ -13,6 +13,7 @@ use App\Models\Employee;
 use App\Models\EmployeeFamily;
 use App\Models\Insurance;
 use App\Models\InsuranceItem;
+use App\Models\InsuranceItemRole;
 use App\Models\Loan;
 use App\Models\Overtime;
 use App\Models\Salary;
@@ -104,12 +105,9 @@ class SalaryController extends BaseController
             $basicSalary = $Employee->role->basic_salary->fee ?? 0;
         }
 
-        $Insurances = Insurance::all();
-        foreach ($Insurances as $value) {
-            foreach ($value->insurance_items as $item) {
-                if ($item->type === 'allowance') {
-                    $totalFee += $item->percent * $basicSalary / 100;
-                }
+        foreach ($Employee->role->insurance_items as $value) {
+            if ($value->type == 'allowance') {
+                $totalFee += $value->percent * $basicSalary / 100;
             }
         }
         return $totalFee;
