@@ -476,7 +476,7 @@ class SalaryController extends BaseController
     public function showByEmployee($id)
     {
         try {
-            $Salaries = Salary::where('empId', $id)->get();
+            $Salaries = Salary::where('empId', $id)->orderBy('salaryDate', 'desc')->get();
             return $this->sendResponse(SalaryResource::collection($Salaries), "salary retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving salary", $th->getMessage());
