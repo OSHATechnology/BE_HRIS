@@ -14,6 +14,7 @@ use App\Models\EmployeeFamily;
 use App\Models\Instalment;
 use App\Models\Insurance;
 use App\Models\InsuranceItem;
+use App\Models\InsuranceItemRole;
 use App\Models\Loan;
 use App\Models\Overtime;
 use App\Models\Role;
@@ -106,12 +107,9 @@ class SalaryController extends BaseController
             $basicSalary = $Employee->role->basic_salary->fee ?? 0;
         }
 
-        $Insurances = Insurance::all();
-        foreach ($Insurances as $value) {
-            foreach ($value->insurance_items as $item) {
-                if ($item->type === 'allowance') {
-                    $totalFee += $item->percent * $basicSalary / 100;
-                }
+        foreach ($Employee->role->insurance_items as $value) {
+            if ($value->type == 'allowance') {
+                $totalFee += $value->percent * $basicSalary / 100;
             }
         }
         return $totalFee;
@@ -459,7 +457,6 @@ class SalaryController extends BaseController
             $deduction_items = [];
             $total_allowance = 0;
             $total_deduction = 0;
-            $take_home_pay = 0;
 
             foreach ($Salary->allowance_items as $value) {
                 $total_allowance = $total_allowance + $value->nominal;
@@ -508,7 +505,7 @@ class SalaryController extends BaseController
             $Salary->instalment = $lastInstalment;
             $Salary->tax = $tax;
             $Salary->total_deduction = $total_deduction;
-            $Salary->take_home_pay = $Salary->gross - $total_deduction;
+            $Salary->net = $Salary->gross - $total_deduction;
 
             return $this->sendResponse(new SalaryResource($Salary), "salary retrieved successfully");
             // return $this->sendResponse($Salary, "salary retrieved successfully");
