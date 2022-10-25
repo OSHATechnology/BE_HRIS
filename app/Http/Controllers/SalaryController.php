@@ -455,11 +455,9 @@ class SalaryController extends BaseController
             $Salary->role = $role->nameRole;
             $allowance_items = [];
             $deduction_items = [];
-            $total_allowance = 0;
             $total_deduction = 0;
 
             foreach ($Salary->allowance_items as $value) {
-                $total_allowance = $total_allowance + $value->nominal;
                 $allowance_items[] = [
                     'name' => $value->allowanceName,
                     'fee' => $value->nominal,
@@ -469,7 +467,6 @@ class SalaryController extends BaseController
             
             foreach ($Salary->insuranceItemDetails as $value) {
                 if ($value->insuranceItem->type == 'allowance') {
-                    $total_allowance = $total_allowance + $value->nominal;
                     $allowance_items[] = [
                         'name' => $value->insuranceItem->name,
                         'fee' => $value->nominal,
@@ -478,7 +475,6 @@ class SalaryController extends BaseController
             }
 
             $Salary->allowance_item = $allowance_items;
-            $Salary->gross = $Salary->gross + $total_allowance;
             
             foreach ($Salary->insuranceItemDetails as $value) {
                 if ($value->insuranceItem->type == 'deduction') {
