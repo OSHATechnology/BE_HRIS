@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('fee');
             $table->timestamps();
 
-            $table->foreign('roleId')->references('roleId')->on('roles');
+            $table->foreign('roleId')->references('roleId')->on('roles')->cascadeOnDelete();
         });
     }
 
