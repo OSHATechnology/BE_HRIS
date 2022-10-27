@@ -21,12 +21,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('photo');
-            $table->enum('gender', ['man','woman']);
+            $table->enum('gender', ['man', 'woman']);
             $table->date('birthDate');
             $table->longText('address');
             $table->string('city');
             $table->string('nation');
-            $table->unsignedBigInteger('roleId');
+            $table->unsignedBigInteger('roleId')->nullable();
             $table->boolean('isActive');
             $table->timestamp('emailVerifiedAt')->nullable();
             $table->rememberToken();
@@ -36,7 +36,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('roleId')->references('roleId')->on('roles');
+            $table->foreign('roleId')->references('roleId')->on('roles')->nullOnDelete();
             $table->foreign('statusHireId')->references('statusHireId')->on('status_hires');
         });
     }
