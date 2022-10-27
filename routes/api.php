@@ -60,6 +60,7 @@ Route::post('/logout', [AuthenticatedController::class, 'destroy'])->middleware(
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('roles', RoleController::class);
     Route::post('roles-permissions/detach', [RolePermissionController::class, 'detachPermissionFromRole']);
+    Route::delete('roles-permissions/detachAll', [RolePermissionController::class, 'detachAllPermission']);
     Route::apiResource('role-permissions', RolePermissionController::class)->only(['index', 'store']);
     Route::apiResource('permissions', PermissionController::class);
     Route::put('furlough/attendance_accepted/{id}', [FurloughController::class, 'attendance_accepted']);
@@ -109,6 +110,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/my/loan', [LoanController::class, 'myLoan']);
     Route::get('/my/leave-requests', [EmployeeController::class, 'myLeaveRequests']);
     Route::post('/my/add-leave-request', [EmployeeController::class, 'addLeaveRequest']);
-    Route::get('salary', [SalaryController::class, 'index']);
     Route::apiResource('salary', SalaryController::class)->only(['show']);
 });
+Route::get('salary', [SalaryController::class, 'index']);
