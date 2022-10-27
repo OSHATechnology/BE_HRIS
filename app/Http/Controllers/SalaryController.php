@@ -21,6 +21,7 @@ use App\Models\Role;
 use App\Models\Salary;
 use App\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SalaryController extends BaseController
 {
@@ -494,9 +495,47 @@ class SalaryController extends BaseController
             } else if ($lastLoan->status === 0)  {
                 $lastInstalment = Instalment::getLastInstalment($lastLoan->loanId);
             } 
+
+            $daysWorking = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+            $dateWorking = [];
+            $dateOff = [];
+            
+            $startDateAttendance = date('Y-m-d', strtotime($Salary->salaryDate . '- 1 month'));
+            $endDateAttendance = date('Y-m-d', strtotime($Salary->salaryDate . '- 1 day'));
+            $attendanceArray = Attendance::where('employeeId', $employee->employeeId)
+                                    ->whereBetween('submitedAt', [$startDateAttendance, $endDateAttendance])
+                                    ->Where(function($query) {
+                                        $query->where('attendanceStatusId', 1)
+                                              ->orWhere('attendanceStatusId', 2);
+                                    })
+                                    ->get();
+            $dateArray = $this->getDates($startDateAttendance, $endDateAttendance);
+            for ($i = 0; $i < count($dateArray); $i++) {
+                $date = $dateArray[$i];
+                $day = date('D', strtotime($date));
+                if (in_array($day, $daysWorking)) {
+                    $dateWorking[] = $date;
+                } else {
+                    $dateOff[] = $date;
+                }
+            }
+            
+            $totalAttendance = 0;
+            for ($i = 0; $i < count($attendanceArray); $i++) {
+                $dataAttendance = $attendanceArray[$i];
+                $dateCheck = date('Y-m-d', strtotime($dataAttendance->submitedAt));
+                $day = date('Y-m-d', strtotime($dateCheck));
+                if (in_array($day, $dateWorking)) {
+                    $totalAttendance = $totalAttendance + 1;
+                }
+            }
+            
+            $totalDeductionAttendance = round($Salary->gross - (($totalAttendance / count($dateWorking)) * $Salary->basic));
+            
+            $Salary->totalDeductionAttendance = $totalDeductionAttendance;
             
             $tax = ($Salary->basic * Salary::TAX) / 100;
-            $total_deduction = $total_deduction + $lastInstalment + $tax;
+            $total_deduction = $totalDeductionAttendance + $total_deduction + $lastInstalment + $tax;
             
             $Salary->instalment = $lastInstalment;
             $Salary->tax = $tax;
