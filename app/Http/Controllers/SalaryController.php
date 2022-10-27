@@ -42,16 +42,19 @@ class SalaryController extends BaseController
     {
         try {
             $type = $request->type ?? 'gross';
+            $payroll_date = Salary::PAYROLLDATE;
             if ($request->has('month')) {
                 $month = date('m-Y', strtotime($request->month));
             } else {
-                $month = date('m-Y');
+                if (strtotime(date('Y-m-d')) > strtotime(date('Y-m-' . $payroll_date))) {
+                    $month = date('m-Y', strtotime(date('Y-m-d') . ' +1 month'));
+                } else {
+                    $month = date('m-Y');
+                }
             }
             $year = date('Y', strtotime("01-" . $month));
-            $payroll_date = Salary::PAYROLLDATE;
-            // $monthNow = date('Y-m-d');
 
-            if (strtotime($payroll_date . "-" . $month) > strtotime($payroll_date . "-" . date('m-Y'))) {
+            if (strtotime($payroll_date . "-" . $month) > strtotime($payroll_date . "-" . date('m-Y') . ' +1 month')) {
                 return $this->sendError('Month is not valid');
             }
 
@@ -119,8 +122,8 @@ class SalaryController extends BaseController
     public function getGrossSalary($month)
     {
         $SalaryGrossEmployees = [];
+        $payroll_date = Salary::PAYROLLDATE;
         if ($month !== date('m-Y', strtotime(date('d-m-Y')))) {
-            $payroll_date = Salary::PAYROLLDATE;
             $Salaries = Salary::whereMonth('salaryDate', date('m', strtotime($payroll_date . "-" . $month)))->whereYear('salaryDate', date('Y', strtotime($payroll_date . "-" . $month)))->orderBy('empId', 'asc')->get();
             foreach ($Salaries as $key => $value) {
                 $listAllowance = $value->allowance_items;
@@ -464,8 +467,8 @@ class SalaryController extends BaseController
                     'fee' => $value->nominal,
                 ];
             }
-            
-            
+
+
             foreach ($Salary->insuranceItemDetails as $value) {
                 if ($value->insuranceItem->type == 'allowance') {
                     $allowance_items[] = [
@@ -476,10 +479,10 @@ class SalaryController extends BaseController
             }
 
             $Salary->allowance_item = $allowance_items;
-            
+
             foreach ($Salary->insuranceItemDetails as $value) {
                 if ($value->insuranceItem->type == 'deduction') {
-                    $total_deduction = $total_deduction + $value->nominal; 
+                    $total_deduction = $total_deduction + $value->nominal;
                     $deduction_items[] = [
                         'name' => $value->insuranceItem->name,
                         'fee' => $value->nominal,
@@ -492,7 +495,7 @@ class SalaryController extends BaseController
             $lastLoan = Loan::getLastLoanByEmployee($employee->employeeId);
             if ($lastLoan == null) {
                 $lastInstalment = 0;
-            } else if ($lastLoan->status === 0)  {
+            } else if ($lastLoan->status === 0) {
                 $lastInstalment = Instalment::getLastInstalment($lastLoan->loanId);
             } 
 
@@ -552,7 +555,7 @@ class SalaryController extends BaseController
     public function showByEmployee($id)
     {
         try {
-            $Salaries = Salary::where('empId', $id)->get();
+            $Salaries = Salary::where('empId', $id)->orderBy('salaryDate', 'desc')->get();
             return $this->sendResponse(SalaryResource::collection($Salaries), "salary retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving salary", $th->getMessage());

@@ -69,4 +69,15 @@ class RolePermissionController extends BaseController
             return $this->sendError($e->getMessage(), []);
         }
     }
+
+    public function detachAllPermission(Request $request)
+    {
+        try {
+            $role = Role::findOrFail($request->roleId);
+            $role->permissions()->detach();
+            return $this->sendResponse($role, 'RolePermission detached successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError($e->getMessage(), [$request->roleId]);
+        }
+    }
 }
