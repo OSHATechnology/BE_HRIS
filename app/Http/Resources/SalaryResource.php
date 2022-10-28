@@ -28,6 +28,7 @@ class SalaryResource extends JsonResource
             'allowance_item' => $this->allowance_item,
             'bonus' => $this->bonus,
             'gross' => $this->gross,
+            'attendance' => $this->totalDeductionAttendance ?? 0,
             'loan' => $this->instalment ?? 0,
             'tax' => $this->tax ?? 0,
             'deduction_item' => $this->deduction_item ?? "",
