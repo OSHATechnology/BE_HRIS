@@ -38,4 +38,9 @@ class InsuranceItem extends Model
             'name' => $this->name
         ];
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'insurance_item_roles', 'insItemId', 'roleId');
+    }
 }

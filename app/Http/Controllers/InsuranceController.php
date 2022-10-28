@@ -70,11 +70,11 @@ class InsuranceController extends BaseController
             $insurance = Insurance::findOrFail($id);
             if ($request->search != null) {
                 $search = $request->search;
-                $insItem = InsuranceItem::where('insuranceId', $id)
-                ->where('name', 'like', '%'. $search . '%')
-                ->paginate(self::NumPaginate);
+                $insItem = InsuranceItem::with('roles')->where('insuranceId', $id)
+                    ->where('name', 'like', '%' . $search . '%')
+                    ->paginate(self::NumPaginate);
             } else {
-                $insItem = InsuranceItem::where('insuranceId', $id)->paginate(self::NumPaginate);
+                $insItem = InsuranceItem::with('roles')->where('insuranceId', $id)->paginate(self::NumPaginate);
             }
             $result = [
                 'id' => $insurance->insuranceId,

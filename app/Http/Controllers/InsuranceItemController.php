@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\InsuranceItemResource;
 use App\Http\Resources\InsuranceResource;
-use App\Models\Insurance;
 use App\Models\InsuranceItem;
 use App\Support\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class InsuranceItemController extends BaseController
 {
@@ -128,9 +126,9 @@ class InsuranceItemController extends BaseController
             } else {
                 $insItem = (new Collection(InsuranceItemResource::collection(InsuranceItem::all())))->paginate(self::NumPaginate);
             }
-            return $this->sendResponse($insItem, "employee search successfully");
+            return $this->sendResponse($insItem, "Insurance search successfully");
         } catch (\Throwable $th) {
-            return $this->sendError("Error search employee failed", $th->getMessage());
+            return $this->sendError("Error search Insurance failed", $th->getMessage());
         }
     }
 }

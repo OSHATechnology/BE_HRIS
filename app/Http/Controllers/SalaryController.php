@@ -80,7 +80,7 @@ class SalaryController extends BaseController
         }
     }
 
-    public function getTotalOvertime($empId, $firstDay, $lastDay)
+    public function getTotalOvertime($empId)
     {
         $totalOvertime = 0;
         $overtimes = Overtime::where('employeeId', $empId)->where('isConfirmed', 1)->get();
@@ -92,7 +92,7 @@ class SalaryController extends BaseController
         return $totalOvertime;
     }
 
-    public function getTotalAllowance($empId, $firstDay, $lastDay)
+    public function getTotalAllowance($empId)
     {
         $totalFee = 0;
         $Employee = Employee::find($empId);
@@ -110,9 +110,10 @@ class SalaryController extends BaseController
             $basicSalary = $Employee->role->basic_salary->fee ?? 0;
         }
 
-        foreach ($Employee->role->insurance_items as $value) {
-            if ($value->type == 'allowance') {
-                $totalFee += $value->percent * $basicSalary / 100;
+        $Insurances = $Employee->role->insurance_items;
+        foreach ($Insurances as $val_ins_item) {
+            if ($val_ins_item->type == 'allowance') {
+                $totalFee += $val_ins_item->percent * $basicSalary / 100;
             }
         }
         return $totalFee;

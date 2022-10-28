@@ -21,6 +21,7 @@ use App\Http\Controllers\FurloughTypeController;
 use App\Http\Controllers\InstalmentController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\InsuranceItemController;
+use App\Http\Controllers\InsuranceItemRoleController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MasterDataController;
@@ -96,6 +97,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('employee_family', EmployeeFamilyController::class);
     Route::apiResource('insurance', InsuranceController::class);
     Route::apiResource('insurance_item', InsuranceItemController::class);
+    Route::apiResource('insurance_item_role', InsuranceItemRoleController::class)->only(['store']);
     Route::apiResource('salary_insurance_detail', SalaryInsuranceDetailController::class);
     Route::apiResource('loan', LoanController::class);
     Route::get('instalment_by_loan/{id}', [InstalmentController::class, 'showByLoan']);
@@ -110,6 +112,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/my/loan', [LoanController::class, 'myLoan']);
     Route::get('/my/leave-requests', [EmployeeController::class, 'myLeaveRequests']);
     Route::post('/my/add-leave-request', [EmployeeController::class, 'addLeaveRequest']);
+    Route::get('salary', [SalaryController::class, 'index']);
     Route::apiResource('salary', SalaryController::class)->only(['show']);
 });
-Route::get('salary', [SalaryController::class, 'index']);

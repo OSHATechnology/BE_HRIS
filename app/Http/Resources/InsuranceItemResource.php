@@ -24,6 +24,7 @@ class InsuranceItemResource extends JsonResource
             'name' => $this->name,
             'type' => $this->type,
             'percent' => $this->percent,
+            'roles' => $this->roles,
         ];
     }
 }
