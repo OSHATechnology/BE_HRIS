@@ -507,10 +507,12 @@ class SalaryController extends BaseController
             $startDateAttendance = date('Y-m-d', strtotime($Salary->salaryDate . '- 1 month'));
             $endDateAttendance = date('Y-m-d', strtotime($Salary->salaryDate . '- 1 day'));
             $attendanceArray = Attendance::where('employeeId', $employee->employeeId)
-                                    ->whereBetween('submitedAt', [$startDateAttendance, $endDateAttendance])
+                                    ->whereBetween('timeAttend', [$startDateAttendance, $endDateAttendance])
                                     ->Where(function($query) {
                                         $query->where('attendanceStatusId', 1)
                                               ->orWhere('attendanceStatusId', 2);
+                                    })->Where(function($query) {
+                                        $query->where('typeInOut', 'in');
                                     })
                                     ->get();
             $dateArray = $this->getDates($startDateAttendance, $endDateAttendance);
@@ -525,8 +527,8 @@ class SalaryController extends BaseController
             }
             
             $totalAttendance = 0;
-            for ($i = 0; $i < count($attendanceArray); $i++) {
-                $dataAttendance = $attendanceArray[$i];
+            for ($j = 0; $j < count($attendanceArray); $j++) {
+                $dataAttendance = $attendanceArray[$j];
                 $dateCheck = date('Y-m-d', strtotime($dataAttendance->submitedAt));
                 $day = date('Y-m-d', strtotime($dateCheck));
                 if (in_array($day, $dateWorking)) {
@@ -610,10 +612,12 @@ class SalaryController extends BaseController
                 $startDateAttendance = date('Y-m-d', strtotime($Salaries[$i]->salaryDate . '- 1 month'));
                 $endDateAttendance = date('Y-m-d', strtotime($Salaries[$i]->salaryDate . '- 1 day'));
                 $attendanceArray = Attendance::where('employeeId', $id)
-                                        ->whereBetween('submitedAt', [$startDateAttendance, $endDateAttendance])
+                                        ->whereBetween('timeAttend', [$startDateAttendance, $endDateAttendance])
                                         ->Where(function($query) {
                                             $query->where('attendanceStatusId', 1)
                                                 ->orWhere('attendanceStatusId', 2);
+                                        })->Where(function($query) {
+                                            $query->where('typeInOut', 'in');
                                         })
                                         ->get();
                 $dateArray = $this->getDates($startDateAttendance, $endDateAttendance);
