@@ -556,6 +556,97 @@ class SalaryController extends BaseController
     {
         try {
             $Salaries = Salary::where('empId', $id)->orderBy('salaryDate', 'desc')->get();
+            for ($i=0; $i < count($Salaries); $i++) {
+                $employee = Employee::findOrFail($id);
+                $role = Role::findOrFail($employee->roleId);
+                $Salaries[$i]->role = $role->nameRole;
+                $allowance_items = [];
+                $deduction_items = [];
+                $total_deduction = 0;
+
+                foreach ($Salaries[$i]->allowance_items as $value) {
+                    $allowance_items[] = [
+                        'name' => $value->allowanceName,
+                        'fee' => $value->nominal,
+                    ];
+                }
+
+
+                foreach ($Salaries[$i]->insuranceItemDetails as $value) {
+                    if ($value->insuranceItem->type == 'allowance') {
+                        $allowance_items[] = [
+                            'name' => $value->insuranceItem->name,
+                            'fee' => $value->nominal,
+                        ];
+                    }
+                }
+
+                $Salaries[$i]->allowance_item = $allowance_items;
+
+                foreach ($Salaries[$i]->insuranceItemDetails as $value) {
+                    if ($value->insuranceItem->type == 'deduction') {
+                        $total_deduction = $total_deduction + $value->nominal;
+                        $deduction_items[] = [
+                            'name' => $value->insuranceItem->name,
+                            'fee' => $value->nominal,
+                        ];
+                    }
+                }
+
+                $Salaries[$i]->deduction_item = $deduction_items;
+
+                $lastLoan = Loan::getLastLoanByEmployee($employee->employeeId);
+                if ($lastLoan == null) {
+                    $lastInstalment = 0;
+                } else if ($lastLoan->status === 0) {
+                    $lastInstalment = Instalment::getLastInstalment($lastLoan->loanId);
+                } 
+
+                $daysWorking = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+                $dateWorking = [];
+                $dateOff = [];
+                
+                $startDateAttendance = date('Y-m-d', strtotime($Salaries[$i]->salaryDate . '- 1 month'));
+                $endDateAttendance = date('Y-m-d', strtotime($Salaries[$i]->salaryDate . '- 1 day'));
+                $attendanceArray = Attendance::where('employeeId', $id)
+                                        ->whereBetween('submitedAt', [$startDateAttendance, $endDateAttendance])
+                                        ->Where(function($query) {
+                                            $query->where('attendanceStatusId', 1)
+                                                ->orWhere('attendanceStatusId', 2);
+                                        })
+                                        ->get();
+                $dateArray = $this->getDates($startDateAttendance, $endDateAttendance);
+                for ($k = 0; $k < count($dateArray); $k++) {
+                    $date = $dateArray[$k];
+                    $day = date('D', strtotime($date));
+                    if (in_array($day, $daysWorking)) {
+                        $dateWorking[] = $date;
+                    } else {
+                        $dateOff[] = $date;
+                    }
+                }
+                
+                $totalAttendance = 0;
+                for ($j = 0; $j < count($attendanceArray); $j++) {
+                    $dataAttendance = $attendanceArray[$j];
+                    $dateCheck = date('Y-m-d', strtotime($dataAttendance->submitedAt));
+                    $day = date('Y-m-d', strtotime($dateCheck));
+                    if (in_array($day, $dateWorking)) {
+                        $totalAttendance = $totalAttendance + 1;
+                    }
+                }
+                
+                $totalDeductionAttendance = round($Salaries[$i]->gross - (($totalAttendance / count($dateWorking)) * $Salaries[$i]->basic));
+                $Salaries[$i]->totalDeductionAttendance = $totalDeductionAttendance;
+                
+                $tax = ($Salaries[$i]->basic * Salary::TAX) / 100;
+                $total_deduction = $totalDeductionAttendance + $total_deduction + $lastInstalment + $tax;
+                
+                $Salaries[$i]->instalment = $lastInstalment;
+                $Salaries[$i]->tax = $tax;
+                $Salaries[$i]->total_deduction = $total_deduction;
+                $Salaries[$i]->net = $Salaries[$i]->gross - $total_deduction;
+            }
             return $this->sendResponse(SalaryResource::collection($Salaries), "salary retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving salary", $th->getMessage());
