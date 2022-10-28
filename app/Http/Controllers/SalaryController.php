@@ -517,10 +517,12 @@ class SalaryController extends BaseController
             $startDateAttendance = date('Y-m-d', strtotime($Salary->salaryDate . '- 1 month'));
             $endDateAttendance = date('Y-m-d', strtotime($Salary->salaryDate . '- 1 day'));
             $attendanceArray = Attendance::where('employeeId', $employee->employeeId)
-                ->whereBetween('submitedAt', [$startDateAttendance, $endDateAttendance])
+                ->whereBetween('timeAttend', [$startDateAttendance, $endDateAttendance])
                 ->Where(function ($query) {
                     $query->where('attendanceStatusId', 1)
                         ->orWhere('attendanceStatusId', 2);
+                })->Where(function ($query) {
+                    $query->where('typeInOut', 'in');
                 })
                 ->get();
             $dateArray = $this->getDates($startDateAttendance, $endDateAttendance);
@@ -535,17 +537,17 @@ class SalaryController extends BaseController
             }
 
             $totalAttendance = 0;
-            for ($i = 0; $i < count($attendanceArray); $i++) {
-                $dataAttendance = $attendanceArray[$i];
-                $dateCheck = date('Y-m-d', strtotime($dataAttendance->submitedAt));
+            for ($j = 0; $j < count($attendanceArray); $j++) {
+                $dataAttendance = $attendanceArray[$j];
+                $dateCheck = date('Y-m-d', strtotime($dataAttendance->timeAttend));
                 $day = date('Y-m-d', strtotime($dateCheck));
                 if (in_array($day, $dateWorking)) {
                     $totalAttendance = $totalAttendance + 1;
                 }
             }
 
-            $totalDeductionAttendance = round($Salary->gross - (($totalAttendance / count($dateWorking)) * $Salary->basic));
 
+            $totalDeductionAttendance = round($Salary->gross - (($totalAttendance / count($dateWorking)) * $Salary->gross));
             $Salary->totalDeductionAttendance = $totalDeductionAttendance;
 
             $tax = ($Salary->basic * Salary::TAX) / 100;
@@ -624,6 +626,8 @@ class SalaryController extends BaseController
                     ->Where(function ($query) {
                         $query->where('attendanceStatusId', 1)
                             ->orWhere('attendanceStatusId', 2);
+                    })->Where(function ($query) {
+                        $query->where('typeInOut', 'in');
                     })
                     ->get();
                 $dateArray = $this->getDates($startDateAttendance, $endDateAttendance);
@@ -647,7 +651,7 @@ class SalaryController extends BaseController
                     }
                 }
 
-                $totalDeductionAttendance = round($Salaries[$i]->gross - (($totalAttendance / count($dateWorking)) * $Salaries[$i]->basic));
+                $totalDeductionAttendance = round($Salaries[$i]->gross - (($totalAttendance / count($dateWorking)) * $Salaries[$i]->gross));
                 $Salaries[$i]->totalDeductionAttendance = $totalDeductionAttendance;
 
                 $tax = ($Salaries[$i]->basic * Salary::TAX) / 100;

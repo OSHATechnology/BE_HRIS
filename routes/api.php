@@ -90,8 +90,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('partners', PartnerController::class)->except(['create', 'edit']);
     Route::apiResource('basic_salary_by_role', BasicSalaryByRoleController::class);
     Route::apiResource('basic_salary_by_employee', BasicSalaryByEmployeeController::class);
-    Route::get('salary/auto/{id}', [SalaryController::class, 'automatic_data']);
     Route::get('salary/employee/{id}', [SalaryController::class, 'showByEmployee']);
+    Route::get('salary/auto/{id}', [SalaryController::class, 'automatic_data']);
     Route::get('salary_cut/att_cut/{id}', [SalaryCutDetailController::class, 'attendanceCutFee']);
     Route::apiResource('salary_cut', SalaryCutDetailController::class);
     Route::apiResource('employee_family', EmployeeFamilyController::class);
@@ -106,7 +106,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('type_of_allowance', TypeOfAllowanceController::class);
     Route::apiResource('allowance', AllowanceController::class);
     Route::get('leave-requests', [LeaveRequestController::class, 'index']);
-
     Route::get('/count', [MasterDataController::class, 'count']);
     Route::post('/my/attendance', [AttendanceController::class, 'myToday']);
     Route::get('/my/loan', [LoanController::class, 'myLoan']);
