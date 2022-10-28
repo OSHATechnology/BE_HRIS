@@ -19,6 +19,7 @@ use App\Models\Loan;
 use App\Models\Overtime;
 use App\Models\Role;
 use App\Models\Salary;
+use App\Models\SalaryCutDetail;
 use App\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -155,6 +156,7 @@ class SalaryController extends BaseController
                     'totalAllowance' => $totalAllowance,
                     'totalBonus' => $value->bonus,
                     'total' => $value->gross,
+                    'salaryId' => $value->salaryId,
                 ];
             }
 
@@ -219,13 +221,27 @@ class SalaryController extends BaseController
                 $dateOff[] = $date;
             }
         }
+        $dataFromDB = false;
+
+        if ($month == date('m-Y')) {
+            if (strtotime(date('Y-m-d')) >= strtotime(date('Y-m-' . $payroll_date))) {
+                $dataFromDB = true;
+            }
+        }
 
         if ($month !== date('m-Y', strtotime(date('d-m-Y')))) {
+            $dataFromDB = true;
+        }
+
+        if ($dataFromDB) {
             foreach ($GrossEmployee as $key => $value) {
+                $SalaryCutDetails = SalaryCutDetail::where('salaryId', $value['salaryId'])->first();
+                // dd($SalaryCutDetails, $value);
                 $totalAttendance = 0;
                 $totalLeave = 0;
                 $totalLate = 0;
                 $totalAbsent = 0;
+                $totalInsurance = 0;
                 foreach ($dateWorking as $date) {
                     $attendance = Attendance::where('employeeId', $value["empId"])->whereDate('timeAttend', $date)->first();
                     if ($attendance) {
@@ -243,9 +259,9 @@ class SalaryController extends BaseController
                     'totalLate' => $totalLate,
                     'totalAbsent' => $totalAbsent,
                     'totalLoan' => 0,
-                    'totalTax' => 0,
-                    'totalInsurance' => 0,
-                    'totalDeduction' => 0,
+                    'totalTax' => Salary::TAX,
+                    'totalInsurance' => $totalInsurance,
+                    'totalDeduction' => $SalaryCutDetails->total,
                     'percentAttendance' => round($totalAttendance / count($dateWorking) * 100),
                 ];
             }
