@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             InsuranceItemSeeder::class,
             TypeOfAllowanceSeeder::class,
             AllowanceSeeder::class,
-            SalarySeeder::class,
+            // SalarySeeder::class,
         ]);
     }
 }
