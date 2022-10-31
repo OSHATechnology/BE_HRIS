@@ -97,6 +97,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('employee_family', EmployeeFamilyController::class);
     Route::apiResource('insurance', InsuranceController::class);
     Route::apiResource('insurance_item', InsuranceItemController::class);
+    Route::delete('insurance_item_role/detachAll', [InsuranceItemRoleController::class, 'detachAllRoles']);
     Route::apiResource('insurance_item_role', InsuranceItemRoleController::class)->only(['store']);
     Route::apiResource('salary_insurance_detail', SalaryInsuranceDetailController::class);
     Route::apiResource('loan', LoanController::class);

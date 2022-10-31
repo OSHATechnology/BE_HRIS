@@ -33,7 +33,6 @@ class PasswordResetLinkController extends BaseController
         if ($status != Password::RESET_LINK_SENT) {
             $this->sendError('Failed to send reset link', [__($status)], 500);
         }
-        dd(__($status));
         return $this->sendResponse('Password reset link sent on your email.', __($status), 200);
     }
 }

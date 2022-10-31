@@ -20,4 +20,15 @@ class InsuranceItemRoleController extends BaseController
             return $this->sendError($e->getMessage(), []);
         }
     }
+
+    public function detachAllRoles(Request $request)
+    {
+        try {
+            $InsuranceItem = InsuranceItem::findOrFail($request->insuranceItemId);
+            $InsuranceItem->roles()->detach();
+            return $this->sendResponse($InsuranceItem, 'InsuranceItem detached successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError($e->getMessage(), [$request->roleId]);
+        }
+    }
 }
