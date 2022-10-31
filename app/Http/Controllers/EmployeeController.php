@@ -232,9 +232,11 @@ class EmployeeController extends BaseController
             $employee = Employee::findOrFail($id);
             if ($employee->basic_salary) {
                 $basicSalary = $employee->basic_salary;
-                $basicSalary->total = $basicSalary->fee + $employee->role->basic_salary->fee;
+                $basicSalary->basic = $employee->role->basic_salary->fee ?? 0;
+                $basicSalary->total = $basicSalary->fee + ($employee->role->basic_salary->fee ?? 0);
             } else {
                 $basicSalary = $employee->role->basic_salary;
+                $basicSalary->basic = $basicSalary->fee;
                 $basicSalary->total = $basicSalary->fee;
             }
             return $this->sendResponse($basicSalary, 'Employee basic salary retrieved successfully');
