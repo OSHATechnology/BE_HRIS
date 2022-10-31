@@ -115,3 +115,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('salary', [SalaryController::class, 'index']);
     Route::apiResource('salary', SalaryController::class)->only(['show']);
 });
+
+Route::get('employee/{id}/basic_salary', [EmployeeController::class, 'basic_salary']);

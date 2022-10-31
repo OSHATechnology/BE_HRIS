@@ -26,7 +26,7 @@ class BasicSalaryByEmployeeController extends BaseController
     public function index()
     {
         try {
-            if(request()->has('search')){
+            if (request()->has('search')) {
                 return $this->search(request());
             }
             $salaryByEmp = (new Collection(BasicSalaryByEmployeeResource::collection(BasicSalaryByEmployee::all())))->paginate(self::NumPaginate);
@@ -35,7 +35,7 @@ class BasicSalaryByEmployeeController extends BaseController
             return $this->sendError("Error retrieving Basic salary by employee", $th->getMessage());
         }
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -56,7 +56,7 @@ class BasicSalaryByEmployeeController extends BaseController
             return $this->sendError("Error creating Basic salary by employee", $th->getMessage());
         }
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -71,7 +71,6 @@ class BasicSalaryByEmployeeController extends BaseController
         } catch (\Throwable $th) {
             return $this->sendError("Error retrieving Basic salary by employee", $th->getMessage());
         }
-
     }
 
     /**
@@ -116,13 +115,12 @@ class BasicSalaryByEmployeeController extends BaseController
     public function search(Request $request)
     {
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $query = BasicSalaryByEmployee::join('employees', 'basic_salary_by_employees.empId', '=', 'employees.employeeId')
-                                    ->where('employees.firstName', 'like', '%'.$request->search.'%')
-                                    ->get();
+                    ->where('employees.firstName', 'like', '%' . $request->search . '%')
+                    ->get();
                 $users =   (new Collection(BasicSalaryByEmployeeResource::collection($query)))->paginate(self::NumPaginate);
-                
-            }else{
+            } else {
                 $users = (new Collection(BasicSalaryByEmployeeResource::collection(BasicSalaryByEmployee::all())))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($users, "employee search successfully");

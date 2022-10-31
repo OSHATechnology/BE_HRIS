@@ -220,6 +220,30 @@ class EmployeeController extends BaseController
     }
 
     /**
+     * Update password the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Employee  $employee
+     * @return \Illuminate\Http\Response
+     */
+    public function basic_salary($id)
+    {
+        try {
+            $employee = Employee::findOrFail($id);
+            if ($employee->basic_salary) {
+                $basicSalary = $employee->basic_salary;
+                $basicSalary->total = $basicSalary->fee + $employee->role->basic_salary->fee;
+            } else {
+                $basicSalary = $employee->role->basic_salary;
+                $basicSalary->total = $basicSalary->fee;
+            }
+            return $this->sendResponse($basicSalary, 'Employee basic salary retrieved successfully');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error show basic salary', $th->getMessage());
+        }
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Employee  $employee
