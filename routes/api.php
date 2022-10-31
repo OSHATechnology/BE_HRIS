@@ -73,6 +73,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('employee/trash', [EmployeeController::class, 'trash']);
     Route::get('employee/restore/{id}', [EmployeeController::class, 'restore']);
     Route::post('employee/{id}', [EmployeeController::class, 'update']);
+    Route::get('employee/{id}/basic_salary', [EmployeeController::class, 'basic_salary']);
     Route::apiResource('employee', EmployeeController::class);
     Route::apiResource('notification', NotificationController::class);
     Route::apiResource('status_hire', StatusHireController::class);
@@ -115,5 +116,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('salary', [SalaryController::class, 'index']);
     Route::apiResource('salary', SalaryController::class)->only(['show']);
 });
-
-Route::get('employee/{id}/basic_salary', [EmployeeController::class, 'basic_salary']);
