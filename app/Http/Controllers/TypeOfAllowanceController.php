@@ -27,7 +27,11 @@ class TypeOfAllowanceController extends BaseController
             if (request()->has('search')) {
                 return $this->search(request());
             }
-            $type = (new Collection(TypeOfAllowanceResource::collection(TypeOfAllowance::all())))->paginate(self::NumPaginate);
+            if (request()->has('showAll')) {
+                $type = TypeOfAllowanceResource::collection(TypeOfAllowance::all());
+            } else {
+                $type = (new Collection(TypeOfAllowanceResource::collection(TypeOfAllowance::all())))->paginate(self::NumPaginate);
+            }
             return $this->sendResponse($type, "type of allowance retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("error retrieving type of allowance");

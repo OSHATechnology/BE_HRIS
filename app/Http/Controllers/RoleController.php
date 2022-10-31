@@ -34,11 +34,14 @@ class RoleController extends BaseController
             $this->authorize('viewAny', Role::class);
 
             //search
-            if(request()->has('search')){
+            if (request()->has('search')) {
                 return $this->search(request());
             }
-
-            $roles = (new Collection(Role::all()))->paginate(self::NumPaginate);
+            if (request()->has('showAll')) {
+                $roles = Role::all();
+            } else {
+                $roles = (new Collection(Role::all()))->paginate(self::NumPaginate);
+            }
             return $this->sendResponse($roles, 'Roles retrieved successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving roles', $th->getMessage());
@@ -140,9 +143,9 @@ class RoleController extends BaseController
     public function search(Request $request)
     {
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $partner =   (new Collection(Role::search($request->search)->get()))->paginate(self::NumPaginate);
-            }else{
+            } else {
                 $partner = (new Collection(Role::all()))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($partner, "employee search successfully");

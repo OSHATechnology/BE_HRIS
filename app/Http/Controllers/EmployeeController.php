@@ -4,16 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\EmployeeResource;
-use App\Http\Resources\FurloughResource;
-use App\Http\Resources\OvertimeResource;
-use App\Http\Resources\WorkPermitResource;
 use App\Imports\EmployeesImport;
 use App\Models\Employee;
 use App\Models\Furlough;
 use App\Models\Overtime;
 use App\Models\WorkPermit;
 use App\Support\Collection;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -58,8 +54,12 @@ class EmployeeController extends BaseController
                 $numPaginate = self::numPaginate;
             }
 
-            $employees = (new Collection(EmployeeResource::collection(Employee::all())))->paginate($numPaginate);
-            // $employees = Employee::paginate(1);
+            if (request()->has('showAll')) {
+                $employees = EmployeeResource::collection(Employee::all());
+            } else {
+                $employees = (new Collection(EmployeeResource::collection(Employee::all())))->paginate($numPaginate);
+            }
+
             return $this->sendResponse($employees, "employee retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("employee retrieving successfully", $th->getMessage());
@@ -298,6 +298,8 @@ class EmployeeController extends BaseController
             } else {
                 $users = (new Collection(EmployeeResource::collection(Employee::all())))->paginate($numPaginate);
             }
+            $users->appends(['search' => $request->search]);
+            // $users->appends($request->all());
             return $this->sendResponse($users, "employee search successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error search employee failed", $th->getMessage());
