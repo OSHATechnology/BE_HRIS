@@ -15,6 +15,11 @@ class AllowanceController extends BaseController
         "typeId" => "required|integer",
     ];
 
+    const MessageError = [
+        'roleId.required' => 'role tidak boleh kosong',
+        'typeId.required' => 'type tidak boleh kosong',
+    ];
+
     const NumPaginate = 10;
     /**
      * Display a listing of the resource.
@@ -43,7 +48,7 @@ class AllowanceController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $allowance = new Allowance;
             $allowance->roleId = $request->roleId;
             $allowance->typeId = $request->typeId;
@@ -80,7 +85,7 @@ class AllowanceController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $allowance = Allowance::findOrFail($id);
             $allowance->roleId = $request->roleId;
             $allowance->typeId = $request->typeId;
