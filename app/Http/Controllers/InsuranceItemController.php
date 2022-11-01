@@ -18,6 +18,12 @@ class InsuranceItemController extends BaseController
         'percent' => 'required',
     ];
 
+    const MessageError = [
+        'insuranceId.required' => 'Insurance tidak boleh kosong',
+        'name.required' => 'Nama tidak boleh kosong',
+        'percent.required' => 'Percent role tidak boleh kosong',
+    ];
+
     const NumPaginate = 10;
     /**
      * Display a listing of the resource.
@@ -46,7 +52,7 @@ class InsuranceItemController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $insItem = new InsuranceItem;
             $insItem->insuranceId = $request->insuranceId;
             $insItem->name = $request->name;
@@ -89,7 +95,8 @@ class InsuranceItemController extends BaseController
                 'name' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
                 'percent' => 'required',
-            ]);
+            ],
+            self::MessageError);
             $insItem = InsuranceItem::findOrFail($id);
             $insItem->name = $request->name;
             $insItem->type = $request->type;
