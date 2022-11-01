@@ -20,7 +20,7 @@ class FurloughTypeController extends BaseController
         'name.required' => 'Nama furlough type tidak boleh kosong',
         'name.min' => 'Nama furlough type minimal 4 karakter',
         'name.max' => 'Nama furlough type tidak boleh lebih dari 30 karakter',
-        'type.required' => 'Anda harus memilih type terlebih dahulu',
+        'type.required' => 'Anda harus mengisi type terlebih dahulu',
         'max.required' => 'Duration furlough type tidak boleh kosong',
         'max.digits_between' => 'Duration furlough type minimal 1 angka dan maksimal 12 angka',
     ];  
