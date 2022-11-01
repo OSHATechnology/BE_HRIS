@@ -12,10 +12,20 @@ class LoanController extends BaseController
 {
     const VALIDATION_RULES = [
         'empId' => 'required|integer',
-        'name' => 'required|string|max:255',
-        'nominal' => 'required|integer',
+        'name' => 'required|string|min:4|max:30',
+        'nominal' => 'required|integer|digits_between:5,7',
         'loanDate' => 'required|date',
         'status' => 'required|boolean',
+    ];
+
+    const MessageError = [
+        'empId.required' => 'Anda harus memilih nama karyawan terlebih dahulu',
+        'name.required' => 'Nama loan tidak boleh kosong',
+        'name.min' => 'Nama loan minimal 4 karakter',
+        'name.max' => 'Nama loan maksimal 20 karakter',
+        'nominal.required' => 'Nominal tidak boleh kosong',
+        'nominal.digits_between' => 'Nominal loan minimal 5 digit dan maksimal 7 digit',
+        'loanDate.required' => 'loan date harus diisi terlebih dahulu',
     ];
 
     const NumPaginate = 10;
@@ -46,7 +56,7 @@ class LoanController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
 
             $statusLastLoan = Loan::getLastLoan($request->empId);
             if ($statusLastLoan === null) {
@@ -93,7 +103,7 @@ class LoanController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $loan = Loan::findOrFail($id);
             $loan->empId = $request->empId;
             $loan->name = $request->name;
