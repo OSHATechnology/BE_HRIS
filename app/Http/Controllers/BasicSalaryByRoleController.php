@@ -12,7 +12,12 @@ class BasicSalaryByRoleController extends BaseController
 {
     const VALIDATE_RULES = [
         'roleId' => 'required|integer',
-        'fee' => 'required|integer',
+        'fee' => 'required|integer|digits_between:6,10',
+    ];
+
+    const MessageError = [
+        'fee.required' => 'Gaji berdasarkan role tidak boleh kosong',
+        'fee.digits_between' => 'Gaji minimal 6 digit dan maksimal gaji 10 digit'
     ];
 
     const NumPaginate = 10;
@@ -43,7 +48,7 @@ class BasicSalaryByRoleController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATE_RULES);
+            $this->validate($request, self::VALIDATE_RULES, self::MessageError);
             $salaryRole = new BasicSalaryByRole;
             $salaryRole->roleId = $request->roleId;
             $salaryRole->fee = $request->fee;
@@ -80,7 +85,7 @@ class BasicSalaryByRoleController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $this->validate($request, self::VALIDATE_RULES);
+            $this->validate($request, self::VALIDATE_RULES, self::MessageError);
             $salaryRole = BasicSalaryByRole::findOrFail($id);
             $salaryRole->roleId = $request->roleId;
             $salaryRole->fee = $request->fee;

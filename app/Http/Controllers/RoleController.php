@@ -16,8 +16,17 @@ class RoleController extends BaseController
      * @return array
      */
     const VALIDATION_RULES = [
-        'nameRole' => 'required|string|max:255',
-        'description' => 'required|string|max:255',
+        'nameRole' => 'required|string|min:2|max:30',
+        'description' => 'required|string|min:10|max:255',
+    ];
+
+    const MessageError = [
+        'nameRole.required' => 'Nama role tidak boleh kosong',
+        'nameRole.min' => 'Nama role minimal 2 karakter',
+        'nameRole.max' => 'Nama role tidak boleh lebih dari 30 karakter',
+        'description.required' => 'Deskripsi role tidak boleh kosong',
+        'description.min' => 'Deskripsi role minimal 10 karakter',
+        'description.max' => 'Deskripsi role tidak boleh lebih dari 255 karakter',
     ];
 
     const NumPaginate = 10;
@@ -62,7 +71,7 @@ class RoleController extends BaseController
             $this->authorize('create', Role::class);
 
             //validation
-            $request->validate(self::VALIDATION_RULES);
+            $request->validate(self::VALIDATION_RULES, self::MessageError);
 
             //store role
             $role = Role::create($request->all());
@@ -105,7 +114,7 @@ class RoleController extends BaseController
             $this->authorize('update', Role::class);
 
             //validation
-            $request->validate(self::VALIDATION_RULES);
+            $request->validate(self::VALIDATION_RULES, self::MessageError);
 
             // action
             $Role = Role::findOrFail($roleId);
