@@ -11,10 +11,19 @@ use Illuminate\Http\Request;
 class FurloughTypeController extends BaseController
 {
     const VALIDATION_RULES = [
-        'name' => 'required|string|max:255',
-        'type' => 'required|string|max:255',
-        'max' => 'required|integer',
+        'name' => 'required|string|min:4|max:30',
+        'type' => 'required',
+        'max' => 'required|integer|digits_between:1,12',
     ];
+
+    const MessageError = [
+        'name.required' => 'Nama furlough type tidak boleh kosong',
+        'name.min' => 'Nama furlough type minimal 4 karakter',
+        'name.max' => 'Nama furlough type tidak boleh lebih dari 30 karakter',
+        'type.required' => 'Anda harus memilih type terlebih dahulu',
+        'max.required' => 'Duration furlough type tidak boleh kosong',
+        'max.digits_between' => 'Duration furlough type minimal 1 angka dan maksimal 12 angka',
+    ];  
 
     const NumPaginate = 10;
 
@@ -56,7 +65,7 @@ class FurloughTypeController extends BaseController
     public function store(Request $request)
     {
         try {
-            $request->validate(self::VALIDATION_RULES);
+            $request->validate(self::VALIDATION_RULES, self::MessageError);
 
             $type = new FurloughType;
             $type->name = $request->name;
@@ -95,7 +104,7 @@ class FurloughTypeController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $request->validate(self::VALIDATION_RULES);
+            $request->validate(self::VALIDATION_RULES, self::MessageError);
             $type = FurloughType::findOrFail($id);
             $type->name = $request->name;
             $type->type = $request->type;
