@@ -19,7 +19,7 @@ class LoanController extends BaseController
     ];
 
     const MessageError = [
-        'empId.required' => 'Anda harus memilih nama karyawan terlebih dahulu',
+        'empId.required' => 'Anda harus mengisi karyawan terlebih dahulu',
         'name.required' => 'Nama loan tidak boleh kosong',
         'name.min' => 'Nama loan minimal 4 karakter',
         'name.max' => 'Nama loan maksimal 20 karakter',
