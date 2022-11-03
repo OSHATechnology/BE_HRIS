@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\Furlough;
 use App\Models\Overtime;
 use App\Models\WorkPermit;
+use App\Models\WorkPermitFile;
 use App\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

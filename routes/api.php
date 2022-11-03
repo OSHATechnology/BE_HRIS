@@ -34,6 +34,7 @@ use App\Http\Controllers\SalaryInsuranceDetailController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TypeOfAllowanceController;
 use App\Http\Controllers\WorkPermitController;
+use App\Http\Controllers\WorkPermitFileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -114,5 +115,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/my/leave-requests', [EmployeeController::class, 'myLeaveRequests']);
     Route::post('/my/add-leave-request', [EmployeeController::class, 'addLeaveRequest']);
     Route::get('salary', [SalaryController::class, 'index']);
+    Route::get('generate-salary', [SalaryController::class, 'generateSalary']);
     Route::apiResource('salary', SalaryController::class)->only(['show']);
+
+    Route::post('upload-files-work-permit/{id}', [WorkPermitFileController::class, 'uploadFiles']);
 });

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Team;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -18,12 +19,12 @@ class TeamSeeder extends Seeder
         $team = [
             [
                 'teamId' => 1,
-                'name' => 'Developer', 
-                'leadBy' => 1, 
+                'name' => 'Developer',
+                'leadBy' => 1,
                 'createdBy' => 1,
                 'created_at' => now(),
                 'updated_at' => now()
-                
+
             ],
         ];
 
