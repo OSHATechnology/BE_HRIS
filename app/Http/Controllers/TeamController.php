@@ -11,9 +11,17 @@ use Illuminate\Http\Request;
 class TeamController extends BaseController
 {
     const VALIDATION_RULES = [
-        'name' => 'required|string|max:255',
+        'name' => 'required|string|min:2|max:30',
         'leadBy' => 'required|integer',
         'createdBy' => 'required|integer',
+    ];
+
+    const MessageError = [
+        'name.required' => 'Nama team tidak boleh kosong',
+        'name.min' => 'Nama tim minimal 2 karakter',
+        'name.max' => 'Nama tim maksimal 30 karakter',
+        'leadBy.required' => 'Leader tim harus diisi terlebih dahulu',
+        'createdBy.required' => 'Team Maker harus diisi terlebih dahulu'
     ];
 
     const NumPaginate = 10;
@@ -48,7 +56,7 @@ class TeamController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $team = new Team;
             $team->name = $request->name;
             $team->leadBy = $request->leadBy;
@@ -86,7 +94,7 @@ class TeamController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $team = Team::findOrFail($id);
             $team->name = $request->name;
             $team->leadBy = $request->leadBy;

@@ -293,6 +293,9 @@ class EmployeeController extends BaseController
         try {
             $request->validate([
                 'file' => 'required|mimes:xls,xlsx'
+            ],[
+                'file.required' => 'file tidak boleh kosong',
+                'file.mimes' => 'format yang digunakan adalah xls, xlsx'
             ]);
             $file = $request->file('file');
             $importFile = new EmployeesImport();

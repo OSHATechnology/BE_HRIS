@@ -13,9 +13,21 @@ use Illuminate\Support\Facades\DB;
 class InsuranceController extends BaseController
 {
     const VALIDATION_RULES = [
-        'name' => 'required|string|max:255',
-        'companyName' => 'string|max:255',
-        'address' => 'string|max:255',
+        'name' => 'required|string|min:4|max:30',
+        'companyName' => 'required|string|min:4|max:30',
+        'address' => 'required|string|min:6|max:50',
+    ];
+
+    const MessageError = [
+        'name.required' => 'Nama tidak boleh kosong',
+        'name.min' => 'Nama minimal 4 karakter',
+        'name.max' => 'Nama maksimal 30 karakter',
+        'companyName.required' => 'Company name tidak boleh kosong',
+        'companyName.min' => 'Company name minimal 4 karakter',
+        'companyName.max' => 'Company name maksimal 30 karakter',
+        'address.required' => 'Address tidak boleh kosong',
+        'address.min' => 'Address minimal 6 karakter',
+        'address.max' => 'Address maksimal 50 karakter',
     ];
 
     const NumPaginate = 10;
@@ -46,7 +58,7 @@ class InsuranceController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $insurance = new Insurance;
             $insurance->name = $request->name;
             $insurance->companyName = $request->companyName;
@@ -99,7 +111,7 @@ class InsuranceController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $insurance = Insurance::findOrFail($id);
             $insurance->name = $request->name;
             $insurance->companyName = $request->companyName;

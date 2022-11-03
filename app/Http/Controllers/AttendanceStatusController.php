@@ -10,7 +10,13 @@ use Illuminate\Http\Request;
 class AttendanceStatusController extends BaseController
 {
     const VALIDATION_RULES = [
-        'status' => 'required|string|max:255',
+        'status' => 'required|string|min:4|max:30',
+    ];
+
+    const MessageError = [
+        'status.required' => 'Nama status attendance tidak boleh kosong',
+        'status.min' => 'Nama status attendance minimal 4 karakter',
+        'status.max' => 'Nama status attendance tidak boleh lebih dari 30 karakter',
     ];
 
     const NumPaginate = 10;
@@ -45,7 +51,7 @@ class AttendanceStatusController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $attendanceStatus = new AttendanceStatus();
             $attendanceStatus->status = $request->status;
             $attendanceStatus->save();
@@ -98,7 +104,7 @@ class AttendanceStatusController extends BaseController
     public function update($id, Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $attendanceStatus = AttendanceStatus::findOrFail($id);
             $attendanceStatus->status = $request->status;
             $attendanceStatus->save();

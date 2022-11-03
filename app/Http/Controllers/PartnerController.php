@@ -13,13 +13,33 @@ class PartnerController extends BaseController
 {
 
     const VALIDATION_RULES = [
-        'name' => 'required|string|max:255',
-        'description' => 'required|string|max:255',
-        'resposibleBy' => 'required|string|max:255',
-        'phone' => 'required|max:50',
-        'address' => 'required|string|max:255',
+        'name' => 'required|string|min:4|max:30',
+        'description' => 'required|string|min:10|max:255',
+        'resposibleBy' => 'required|string|min:4|max:30',
+        'phone' => 'required|min:10|max:13',
+        'address' => 'required|string|min:6|max:50',
         'assignedBy' => 'required',
         'joinedAt' => 'required'
+    ];
+
+    const MessageError = [
+        'name.required' => 'Nama perusahaan tidak boleh kosong',
+        'name.min' => 'Nama perusahaan minimal 4 karakter',
+        'name.max' => 'Nama perusahaan maksimal 30 karakter',
+        'description.required' => 'Deskripsi perusahaan tidak boleh kosong',
+        'description.min' => 'Deskripsi perusahaan minimal 10 karakter',
+        'description.max' => 'Deskripsi perusahaan maksimal 255 karakter',
+        'resposibleBy.required' => 'resposibleBy tidak boleh kosong',
+        'resposibleBy.min' => 'resposibleBy minimal 4 karakter',
+        'resposibleBy.max' => 'resposibleBy maksimal 30 karakter',
+        'phone.required' => 'Nomor telepon tidak boleh kosong',
+        'phone.min' => 'Nomor telepon minimal 10 karakter',
+        'phone.max' => 'Nomor telepon maksimal 13 karakter',
+        'address.required' => 'Alamat tidak boleh kosong',
+        'address.min' => 'Alamat minimal 6 karakter',
+        'address.max' => 'Alamat maksimal 50 karakter',
+        'assignedBy.required' => 'assignedBy tidak boleh kosong',
+        'joinedAt.required' => 'joinedAt tidak boleh kosong',
     ];
 
     const NumPaginate = 10;
@@ -56,7 +76,7 @@ class PartnerController extends BaseController
         try {
             $this->authorize('create', Partner::class);
 
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             if ($request->hasFile('photo')) {
                 $logo = $request->file('photo');
                 $logoName = $request->name . '-' . time() . '.' . $logo->getClientOriginalExtension();
@@ -114,7 +134,7 @@ class PartnerController extends BaseController
             //gate
             $this->authorize('update', Partner::class);
 
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $Partner = Partner::findOrFail($partnerId);
             if ($request->hasFile('photo')) {
                 $logo = $request->file('photo');

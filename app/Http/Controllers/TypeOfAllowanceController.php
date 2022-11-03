@@ -11,8 +11,16 @@ use Illuminate\Http\Request;
 class TypeOfAllowanceController extends BaseController
 {
     const VALIDATION_RULES = [
-        "name" => "required|string|max:255",
-        "nominal" => "required|integer",
+        "name" => "required|string|min:4|max:30",
+        "nominal" => "required|integer|digits_between:5,7",
+    ];
+
+    const MessageError = [
+        'name.required' => 'Nama tidak boleh kosong',
+        'name.min' => 'Nama minimal 4 karakter',
+        'name.max' => 'Nama maksimal 30 karakter',
+        'nominal.required' => 'Nominal tidak boleh kosong',
+        'nominal.digits_between' => 'nominal minimal 5 digit dan maksimal gaji 7 digit'
     ];
 
     const NumPaginate = 10;
@@ -47,7 +55,7 @@ class TypeOfAllowanceController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $type = new TypeOfAllowance;
             $type->name = $request->name;
             $type->nominal = $request->nominal;
@@ -84,7 +92,7 @@ class TypeOfAllowanceController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $type = TypeOfAllowance::findOrFail($id);
             $type->name = $request->name;
             $type->nominal = $request->nominal;

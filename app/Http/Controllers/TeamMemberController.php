@@ -17,6 +17,11 @@ class TeamMemberController extends BaseController
         'joinedAt' => 'date'
     ];
 
+    const MessageError = [
+        'empId.required' => 'Employee name harus diisi terlebih dahulu',
+        'joinedAt.required' => 'Join at harus diisi terlebih dahulu'
+    ];
+
     const NumPaginate = 10;
 
     /**
@@ -51,7 +56,7 @@ class TeamMemberController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $member = new TeamMember();
             $member->teamId = $request->teamId;
             $member->empId = $request->empId;
@@ -91,7 +96,7 @@ class TeamMemberController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $member = TeamMember::findOrFail($id);
             $member->teamId = $request->teamId;
             $member->empId = $request->empId;

@@ -17,6 +17,10 @@ class BasicSalaryByEmployeeController extends BaseController
         'fee' => 'required|integer',
     ];
 
+    const MessageError = [
+        'fee.required' => 'Gaji tidak boleh kosong',
+    ];
+
     const NumPaginate = 10;
     /**
      * Display a listing of the resource.
@@ -45,7 +49,7 @@ class BasicSalaryByEmployeeController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $salaryByEmp = new BasicSalaryByEmployee;
             $salaryByEmp->empId = $request->empId;
             $salaryByEmp->basicSalaryByRoleId = $request->basicSalaryByRoleId;
@@ -83,7 +87,7 @@ class BasicSalaryByEmployeeController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $salaryByEmp = BasicSalaryByEmployee::findOrFail($id);
             $salaryByEmp->empId = $request->empId;
             $salaryByEmp->basicSalaryByRoleId = $request->basicSalaryByRoleId;
