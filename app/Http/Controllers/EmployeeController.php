@@ -254,9 +254,19 @@ class EmployeeController extends BaseController
     {
         try {
             $request->validate([
-                'oldPassword' => 'required|string|max:255',
-                'newPassword' => 'required|string|max:255',
-                'confirmPassword' => 'required|string|max:255',
+                'oldPassword' => 'required|string|min:6|max:24',
+                'newPassword' => 'required|string|min:6|max:24',
+                'confirmPassword' => 'required|string|min:6|max:24',
+            ],[
+                'oldPassword.required' => 'password lama tidak boleh kosong',
+                'oldPassword.min' => 'password lama minimal 6 karakter',
+                'oldPassword.max' => 'password lama minimal 24 karakter',
+                'newPassword.required' => 'password baru tidak boleh kosong',
+                'newPassword.min' => 'password baru minimal 6 karakter',
+                'newPassword.max' => 'password baru minimal 24 karakter',
+                'confirmPassword.required' => 'konfirmasi password tidak boleh kosong',
+                'confirmPassword.min' => 'konfirmasi password minimal 6 karakter',
+                'confirmPassword.max' => 'konfirmasi password minimal 24 karakter',
             ]);
             $employee = Employee::findOrFail($id);
             if (Hash::check($request->oldPassword, $employee->password)) {
