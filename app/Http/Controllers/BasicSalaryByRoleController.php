@@ -29,10 +29,10 @@ class BasicSalaryByRoleController extends BaseController
     public function index()
     {
         try {
-            if(request()->has('search')){
+            if (request()->has('search')) {
                 return $this->search(request());
             }
-            $salaryRole = (New Collection(BasicSalaryByRoleResource::collection(BasicSalaryByRole::get())))->paginate(self::NumPaginate);
+            $salaryRole = (new Collection(BasicSalaryByRoleResource::collection(BasicSalaryByRole::get())))->paginate(self::NumPaginate);
             return $this->sendResponse($salaryRole, "Basic salary by role retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError("Error retrieving basic salary by role", $th->getMessage());
@@ -49,6 +49,10 @@ class BasicSalaryByRoleController extends BaseController
     {
         try {
             $this->validate($request, self::VALIDATE_RULES, self::MessageError);
+            $check = BasicSalaryByRole::where('roleId', $request->roleId)->first();
+            if ($check) {
+                return $this->update($request, $check->basicSalaryByRoleId);
+            }
             $salaryRole = new BasicSalaryByRole;
             $salaryRole->roleId = $request->roleId;
             $salaryRole->fee = $request->fee;
@@ -116,13 +120,12 @@ class BasicSalaryByRoleController extends BaseController
     public function search(Request $request)
     {
         try {
-            if($request->filled('search')){
+            if ($request->filled('search')) {
                 $query = BasicSalaryByRole::join('roles', 'basic_salary_by_roles.roleId', '=', 'roles.roleId')
-                                    ->where('roles.nameRole', 'like', '%'.$request->search.'%')
-                                    ->get();
+                    ->where('roles.nameRole', 'like', '%' . $request->search . '%')
+                    ->get();
                 $users =   (new Collection(BasicSalaryByRoleResource::collection($query)))->paginate(self::NumPaginate);
-                
-            }else{
+            } else {
                 $users = (new Collection(BasicSalaryByRoleResource::collection(BasicSalaryByRole::all())))->paginate(self::NumPaginate);
             }
             return $this->sendResponse($users, "employee search successfully");

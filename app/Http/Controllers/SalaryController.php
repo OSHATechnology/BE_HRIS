@@ -19,7 +19,9 @@ use App\Models\Loan;
 use App\Models\Overtime;
 use App\Models\Role;
 use App\Models\Salary;
+use App\Models\SalaryAllowance;
 use App\Models\SalaryCutDetail;
+use App\Models\SalaryInsuranceDetail;
 use App\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -82,10 +84,12 @@ class SalaryController extends BaseController
         }
     }
 
-    public function getTotalOvertime($empId)
+    public function getTotalOvertime($empId, $firstDay, $lastDay)
     {
         $totalOvertime = 0;
-        $overtimes = Overtime::where('employeeId', $empId)->where('isConfirmed', 1)->get();
+        $overtimes = Overtime::where('employeeId', $empId)
+            ->whereBetween('startAt', [$firstDay, $lastDay])
+            ->where('isConfirmed', 1)->get();
         foreach ($overtimes as $key => $overtime) {
             $startAt = new \DateTime($overtime->startAt);
             $endAt = new \DateTime($overtime->endAt);
@@ -164,8 +168,8 @@ class SalaryController extends BaseController
         }
         $employees = Employee::all();
 
-        $firstDay = date('Y-m-01');
-        $lastDay = date('Y-m-t');
+        $lastDay = date('Y-m-d', strtotime($payroll_date . "-" . $month));
+        $firstDay = date('Y-m-d', strtotime($lastDay . ' -1 month'));
         foreach ($employees as $key => $emp) {
             if ($emp->basic_salary != null) {
                 $basicRole = $emp->role->basic_salary->fee ?? 0;
@@ -236,7 +240,6 @@ class SalaryController extends BaseController
         if ($dataFromDB) {
             foreach ($GrossEmployee as $key => $value) {
                 $SalaryCutDetails = SalaryCutDetail::where('salaryId', $value['salaryId'])->first();
-                // dd($SalaryCutDetails, $value);
                 $totalAttendance = 0;
                 $totalLeave = 0;
                 $totalLate = 0;
@@ -250,7 +253,6 @@ class SalaryController extends BaseController
                         $totalAbsent++;
                     }
                 }
-
                 $dataDeduction[] = [
                     'empId' => $value["empId"],
                     'empName' => $value["empName"] ?? '',
@@ -261,7 +263,7 @@ class SalaryController extends BaseController
                     'totalLoan' => 0,
                     'totalTax' => Salary::TAX,
                     'totalInsurance' => $totalInsurance,
-                    'totalDeduction' => $SalaryCutDetails->total,
+                    'totalDeduction' => $SalaryCutDetails->total ?? 0,
                     'percentAttendance' => round($totalAttendance / count($dateWorking) * 100),
                 ];
             }
@@ -287,11 +289,6 @@ class SalaryController extends BaseController
 
             $idxGross = array_keys(array_column($GrossEmployee, 'empId'), $value->employeeId);
             $Gross = $GrossEmployee[$idxGross[0]];
-
-            // $allowances = $value->role->type_of_allowances;
-            // foreach ($allowances as $key => $itemAllowance) {
-            //     $allowanceDeduction += $itemAllowance->nominal;
-            // }
 
             foreach ($dateWorking as $date) {
                 $attendance = Attendance::where('employeeId', $value->employeeId)->whereDate('timeAttend', $date)->first();
@@ -344,6 +341,7 @@ class SalaryController extends BaseController
                 'totalInsurance' => $totalInsurance,
                 'totalDeduction' => $totalDeduction,
                 'percentAttendance' => $percentAttendance,
+                'attdFeeReduction' => $totalDeductionAttendance,
             ];
         }
 
@@ -742,5 +740,99 @@ class SalaryController extends BaseController
         } catch (\Throwable $th) {
             return $this->sendResponse("error deleting salary", $th->getMessage());
         }
+    }
+
+    /**
+     * Generate salary for all employee
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generateSalary(Request $request)
+    {
+        try {
+            $request->validate([
+                'month' => 'required',
+            ]);
+            $payroll_date = Salary::PAYROLLDATE;
+            $monthPayroll = date('Y-m-d', strtotime($payroll_date . "-" . $request->month));
+            $grossData = $this->getGrossSalary($request->month);
+            $deductionData = $this->getDeduction($request->month);
+            $netData = $this->getNetSalary($request->month);
+
+            $mergedData = $this->mergeSalaryData($grossData, $deductionData, $netData);
+
+            foreach ($mergedData as $data) {
+                $Employee = Employee::find($data['empId']);
+                if ($Employee == null) {
+                    continue;
+                }
+                $salary = new Salary();
+                $salary->empId = $Employee->employeeId;
+                $salary->salaryDate = $monthPayroll;
+                $salary->basic = $data["basicSalary"];
+                $salary->totalOvertime = $data["totalOvertime"];
+                $salary->overtimeFee = $data["overtimeFee"];
+                $salary->bonus = $data["totalBonus"];
+                $salary->gross = $data["total"];
+                if ($salary->save()) {
+                    // details allowance
+                    if ($Employee->role != null) {
+                        $allowances = $Employee->role->type_of_allowances;
+                        foreach ($allowances as $key => $allowance) {
+                            $SalaryAllowance = new SalaryAllowance();
+                            $SalaryAllowance->salaryId = $salary->salaryId;
+                            $SalaryAllowance->allowanceName = $allowance->name;
+                            $SalaryAllowance->nominal = $allowance->nominal;
+                            $SalaryAllowance->save();
+                        }
+                    }
+
+                    $Insurances = $Employee->role->insurance_items;
+                    foreach ($Insurances as $val_ins_item) {
+                        $SalaryInsurances = new SalaryInsuranceDetail();
+                        $SalaryInsurances->salaryId = $salary->salaryId;
+                        $SalaryInsurances->insItemId = $val_ins_item->insItemId;
+                        $SalaryInsurances->nominal = $val_ins_item->percent * $salary->basic / 100;
+                        $SalaryInsurances->date = $monthPayroll;
+                        $SalaryInsurances->save();
+                    }
+                    // cut details
+                    if (array_key_exists("deduction", $data) && count($data["deduction"]) > 0) {
+                        $deduction = $data["deduction"];
+                        $SalaryDeduction = new SalaryCutDetail();
+                        $SalaryDeduction->salaryId = $salary->salaryId;
+                        $SalaryDeduction->totalAttendance = $deduction["totalAttendance"];
+                        $SalaryDeduction->attdFeeReduction = $deduction["attdFeeReduction"];
+                        $SalaryDeduction->loanId = null;
+                        $SalaryDeduction->etc = 0;
+                        $SalaryDeduction->total = $deduction["totalDeduction"];
+                        $SalaryDeduction->net = $data["net_salary"];
+                        $SalaryDeduction->save();
+                    }
+                }
+            }
+            return $this->sendResponse("success", "success generating salary");
+        } catch (\Throwable $th) {
+            return $this->sendError("error generating salary", $th->getMessage());
+        }
+    }
+
+    public function mergeSalaryData($grossArray, $deductionArray, $netArray)
+    {
+        $mergedData = [];
+        foreach ($grossArray as $key => $gross) {
+            $mergedData[$key] = $gross;
+            foreach ($deductionArray as $deduction) {
+                if ($deduction['empId'] == $gross['empId']) {
+                    $mergedData[$key]['deduction'] = $deduction;
+                }
+            }
+            foreach ($netArray as $net) {
+                if ($net['empId'] == $gross['empId']) {
+                    $mergedData[$key]['net_salary'] = $net["net_salary"];
+                }
+            }
+        }
+        return $mergedData;
     }
 }

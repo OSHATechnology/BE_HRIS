@@ -82,4 +82,24 @@ class WorkPermitFileController extends Controller
     {
         //
     }
+
+    public function WorkPermitFileController($id, Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:pdf|max:2048',
+        ]);
+
+        $fileName = time() . '.' . $request->file->extension();
+        $request->file->move(public_path('uploads'), $fileName);
+
+        $workPermitFile = new WorkPermitFile;
+        $workPermitFile->workPermitId = $id;
+        $workPermitFile->name = $fileName;
+        $workPermitFile->path = public_path('uploads') . '/' . $fileName;
+        $workPermitFile->save();
+
+        return back()
+            ->with('success', 'You have successfully upload file.')
+            ->with('file', $fileName);
+    }
 }
