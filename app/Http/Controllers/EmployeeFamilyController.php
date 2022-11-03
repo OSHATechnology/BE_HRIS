@@ -13,9 +13,17 @@ class EmployeeFamilyController extends BaseController
     const VALIDATION_RULES = [
         'empId' => 'required|integer',
         'identityNumber' => 'required|string|unique:employee_families|max:255',
-        'name' => 'required|string|max:255',
+        'name' => 'required|string|min:4|max:30',
         'statusId' => 'required|integer',
         'isAlive' => 'boolean'
+    ];
+
+    const MessageError = [
+        'name.required' => 'Nama tidak boleh kosong',
+        'name.min' => 'Nama minimal 4 karakter',
+        'name.max' => 'Nama maksimal 30 karakter',
+        'statusId.required' => 'Status tidak boleh kosong',
+        'identityNumber.required' => 'Nomor identitas tidak boleh kosong',
     ];
 
     const NumPaginate = 10;
@@ -49,7 +57,7 @@ class EmployeeFamilyController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $empFam = new EmployeeFamily;
             // dd($empFam);
             $empFam->empId = $request->empId;
@@ -90,11 +98,7 @@ class EmployeeFamilyController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'statusId' => 'required|integer',
-                'isAlive' => 'required|boolean'
-            ]);
+            $request->validate(self::VALIDATION_RULES, self::MessageError);
             $empFam = EmployeeFamily::findOrFail($id);
             $empFam->identityNumber = $request->identityNumber;
             $empFam->name = $request->name;
