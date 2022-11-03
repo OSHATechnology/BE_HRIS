@@ -17,21 +17,52 @@ use Illuminate\Support\Facades\Hash;
 class EmployeeController extends BaseController
 {
     const VALIDATION_RULES = [
-        'firstName' => 'required|string|max:255',
-        'lastName' => 'required|string|max:255',
-        'phone' => 'required|string|max:255',
-        'email' => 'required|string|unique:employees|max:255',
-        'password' => 'required|',
+        'firstName' => 'required|string|min:3|max:15',
+        'lastName' => 'required|string|min:3|max:15',
+        'birthDate' => 'required|date',
+        'phone' => 'required|string|min:10|max:13',
+        'email' => 'required|email|unique:employees|max:255',
+        'password' => 'required|string|min:6|max:24',
         'gender' => 'required|string|max:255',
-        'address' => 'required|string|max:255',
-        'city' => 'required|string|max:255',
-        'nation' => 'required|string|max:255',
+        'address' => 'required|string|min:6|max:50',
+        'city' => 'required|string|min:3|max:30',
+        'nation' => 'required|string|min:3|max:30',
         'roleId' => 'required|integer',
         'isActive' => 'required|boolean',
         'emailVerifiedAt' => 'date',
-        'joinedAt' => 'date',
+        'joinedAt' => 'required|date',
         'resignedAt' => 'date',
         'statusHireId' => 'required|boolean'
+    ];
+
+    const MessageError = [
+        'firstName.required' => 'Nama depan tidak boleh kosong',
+        'firstName.min' => 'Nama depan minimal 3 karakter',
+        'firstName.max' => 'Nama depan maksimal 15',
+        'lastName.required' => 'Nama akhir tidak boleh kosong',
+        'lastName.min' => 'Nama akhir minimal 3 karakter',
+        'lastName.max' => 'Nama akhir maksimal 15',
+        'birthDate.required' => 'Tanggal lahir tidak boleh kosong',
+        'phone.required' => 'Nomor Telepon tidak boleh kosong',
+        'phone.min' => 'Nomor Telepon minimal 10 karakter',
+        'phone.max' => 'Nomor Telepon tidak boleh lebih dari 13 karakter',
+        'email.required' => 'Email tidak boleh kosong',
+        'email.email' => 'format email tidak sesuai',
+        'password.required' => 'password tidak boleh kosong',
+        'password.min' => 'password minimal 6 karakter',
+        'password.max' => 'password maksimal 24 karakter',
+        'gender.required' => 'gender tidak boleh kosong',
+        'address.required' => 'address tidak boleh kosong',
+        'address.min' => 'address minimal 6 karakter',
+        'address.max' => 'address maksimal 50 karakter',
+        'city.required' => 'city tidak boleh kosong',
+        'city.min' => 'city minimal 3 karakter',
+        'city.max' => 'city maksimal 30 karakter',
+        'nation.required' => 'nation tidak boleh kosong',
+        'nation.min' => 'nation minimal 3 karakter',
+        'nation.max' => 'nation maksimal 30 karakter',
+        'roleId.required' => 'role tidak boleh kosong',
+        'joinedAt.required' => 'joinedAt tidak boleh kosong',
     ];
 
     const numPaginate = 10;
@@ -75,7 +106,7 @@ class EmployeeController extends BaseController
     public function store(Request $request)
     {
         try {
-            $this->validate($request, self::VALIDATION_RULES);
+            $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $employee = new Employee;
             $employee->firstName = $request->firstName;
             $employee->lastName = $request->lastName;
@@ -136,19 +167,43 @@ class EmployeeController extends BaseController
     {
         try {
             $request->validate([
-                'firstName' => 'required|string|max:255',
-                'lastName' => 'required|string|max:255',
-                'phone' => 'required|string|max:255',
+                'firstName' => 'required|string|min:3|max:15',
+                'lastName' => 'required|string|min:3|max:15',
+                'birthDate' => 'required|date',
+                'phone' => 'required|string|min:10|max:13',
                 'gender' => 'required|string|max:255',
-                'address' => 'required|string|max:255',
-                'city' => 'required|string|max:255',
-                'nation' => 'required|string|max:255',
+                'address' => 'required|string|min:6|max:50',
+                'city' => 'required|string|min:3|max:30',
+                'nation' => 'required|string|min:3|max:30',
                 'roleId' => 'required|integer',
                 'isActive' => 'required|boolean',
                 'emailVerifiedAt' => 'date',
-                'joinedAt' => 'date',
+                'joinedAt' => 'required|date',
                 'resignedAt' => 'date',
                 'statusHireId' => 'required|boolean'
+            ],[
+                'firstName.required' => 'Nama depan tidak boleh kosong',
+                'firstName.min' => 'Nama depan minimal 3 karakter',
+                'firstName.max' => 'Nama depan maksimal 15',
+                'lastName.required' => 'Nama akhir tidak boleh kosong',
+                'lastName.min' => 'Nama akhir minimal 3 karakter',
+                'lastName.max' => 'Nama akhir maksimal 15',
+                'birthDate.required' => 'Tanggal lahir tidak boleh kosong',
+                'phone.required' => 'Nomor Telepon tidak boleh kosong',
+                'phone.min' => 'Nomor Telepon minimal 10 karakter',
+                'phone.max' => 'Nomor Telepon tidak boleh lebih dari 13 karakter',
+                'gender.required' => 'gender tidak boleh kosong',
+                'address.required' => 'address tidak boleh kosong',
+                'address.min' => 'address minimal 6 karakter',
+                'address.max' => 'address maksimal 50 karakter',
+                'city.required' => 'city tidak boleh kosong',
+                'city.min' => 'city minimal 3 karakter',
+                'city.max' => 'city maksimal 30 karakter',
+                'nation.required' => 'nation tidak boleh kosong',
+                'nation.min' => 'nation minimal 3 karakter',
+                'nation.max' => 'nation maksimal 30 karakter',
+                'roleId.required' => 'role tidak boleh kosong',
+                'joinedAt.required' => 'joinedAt tidak boleh kosong',
             ]);
             $employee = Employee::findOrFail($id);
             $employee->firstName = $request->firstName;
