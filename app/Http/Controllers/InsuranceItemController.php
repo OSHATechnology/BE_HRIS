@@ -7,6 +7,7 @@ use App\Http\Resources\InsuranceItemResource;
 use App\Http\Resources\InsuranceResource;
 use App\Models\InsuranceItem;
 use App\Support\Collection;
+use Exception;
 use Illuminate\Http\Request;
 
 class InsuranceItemController extends BaseController
@@ -53,13 +54,17 @@ class InsuranceItemController extends BaseController
     {
         try {
             $this->validate($request, self::VALIDATION_RULES, self::MessageError);
-            $insItem = new InsuranceItem;
-            $insItem->insuranceId = $request->insuranceId;
-            $insItem->name = $request->name;
-            $insItem->type = $request->type;
-            $insItem->percent = $request->percent;
-            $insItem->save();
-            return $this->sendResponse(new InsuranceItemResource($insItem), "Insurance item created successfully");
+            if ($request->percent >= 1 && $request->percent <= 100) {
+                $insItem = new InsuranceItem;
+                $insItem->insuranceId = $request->insuranceId;
+                $insItem->name = $request->name;
+                $insItem->type = $request->type;
+                $insItem->percent = $request->percent;
+                $insItem->save();
+                return $this->sendResponse(new InsuranceItemResource($insItem), "Insurance item created successfully");
+            } else { 
+                throw new Exception('percent diantara 1 - 100');
+            }
         } catch (\Throwable $th) {
             return $this->sendError("Error creating insurance item", $th->getMessage());
         }
@@ -97,12 +102,16 @@ class InsuranceItemController extends BaseController
                 'percent' => 'required',
             ],
             self::MessageError);
-            $insItem = InsuranceItem::findOrFail($id);
-            $insItem->name = $request->name;
-            $insItem->type = $request->type;
-            $insItem->percent = $request->percent;
-            $insItem->save();
-            return $this->sendResponse($insItem, "Insurance item updated successfully");
+            if ($request->percent >= 1 && $request->percent <= 100) {
+                $insItem = InsuranceItem::findOrFail($id);
+                $insItem->name = $request->name;
+                $insItem->type = $request->type;
+                $insItem->percent = $request->percent;
+                $insItem->save();
+                return $this->sendResponse($insItem, "Insurance item updated successfully");
+            } else {
+                throw new Exception('percent diantara 1 - 100');
+            }
         } catch (\Throwable $th) {
             return $this->sendError("Error updating insurance item", $th->getMessage());
         }
