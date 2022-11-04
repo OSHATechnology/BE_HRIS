@@ -23,6 +23,8 @@ class Loan extends Model
 
     protected $primaryKey = 'loanId';
 
+    const PERCENTREDUCTION = 5;
+
     public function employee()
     {
         return $this->hasOne(Employee::class, 'employeeId', 'empId');

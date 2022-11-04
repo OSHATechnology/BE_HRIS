@@ -245,6 +245,7 @@ class SalaryController extends BaseController
                 $totalLate = 0;
                 $totalAbsent = 0;
                 $totalInsurance = 0;
+                $totalLoan = 0;
                 foreach ($dateWorking as $date) {
                     $attendance = Attendance::where('employeeId', $value["empId"])->whereDate('timeAttend', $date)->first();
                     if ($attendance) {
@@ -260,7 +261,7 @@ class SalaryController extends BaseController
                     'totalLeave' => $totalLeave,
                     'totalLate' => $totalLate,
                     'totalAbsent' => $totalAbsent,
-                    'totalLoan' => 0,
+                    'totalLoan' => $totalLoan,
                     'totalTax' => Salary::TAX,
                     'totalInsurance' => $totalInsurance,
                     'totalDeduction' => $SalaryCutDetails->total ?? 0,
@@ -272,7 +273,6 @@ class SalaryController extends BaseController
         }
 
         $employees = Employee::all();
-        $insurances = Insurance::all();
 
         foreach ($employees as $key => $value) {
             $totalAttendance = 0;
@@ -305,29 +305,33 @@ class SalaryController extends BaseController
             $totalDeductionAttendance = round($Gross['basicSalary'] - (($totalAttendance / count($dateWorking)) * $Gross['basicSalary']));
 
             if (count($idxGross) > 0) {
-                foreach ($insurances as $item) {
-                    foreach ($item->insurance_items as $item_insurance) {
-                        if ($item_insurance->type == 'deduction') {
-                            // $totalInsurance += $item_insurance->percent * $GrossEmployee[$idxGross[0]]['total'] / 100;
-                            $totalInsurance += $item_insurance->percent * $Gross['basicSalary'] / 100;
-                        }
+                $Insurances = $value->role->insurance_items;
+                foreach ($Insurances as $itemIns) {
+                    if ($itemIns->type == 'deduction') {
+                        $totalInsurance += $itemIns->percent * $Gross['basicSalary'] / 100;
                     }
                 }
             }
 
-            $dataLoan = Loan::where('empId', $value->employeeId)->where('status', 0)->get();
+            $dataLoan = Loan::where('empId', $value->employeeId)->where('status', 0)->oldest()->first();
 
-            foreach ($dataLoan as $loanItem) {
-                // $remaining = $value->amount - $value->paid;
-                if (count($loanItem->instalments) > 0) {
+            // foreach ($dataLoan as $loanItem) {
+            // $remaining = $value->amount - $value->paid;
+            //     if (count($loanItem->instalments) > 0) {
+            //     } else {
+            //         $totalLoan += round($loanItem->nominal * 5 / 100); //5 for percent loan 
+            //     }
+            // }
+            if ($dataLoan != null) {
+                if (count($dataLoan->instalments) > 0) {
                 } else {
-                    $totalLoan += round($loanItem->nominal * 5 / 100); //5 for percent loan 
+                    $totalLoan = round($dataLoan->nominal * LOAN::PERCENTREDUCTION / 100);  //5 for percent loan 
                 }
             }
 
             $percentAttendance = round($totalAttendance / count($dateWorking) * 100);
 
-            $totalDeduction = $totalDeductionAttendance +  $totalInsurance + $totalLoan + ($totalTax * $Gross['total'] / 100);
+            $totalDeduction = $totalDeductionAttendance +  $totalInsurance + $totalLoan + ($Gross['basicSalary'] * $totalTax / 100);
 
             $dataDeduction[] = [
                 'empId' => $value->employeeId,
@@ -760,7 +764,6 @@ class SalaryController extends BaseController
             $netData = $this->getNetSalary($request->month);
 
             $mergedData = $this->mergeSalaryData($grossData, $deductionData, $netData);
-
             foreach ($mergedData as $data) {
                 $Employee = Employee::find($data['empId']);
                 if ($Employee == null) {
@@ -799,6 +802,22 @@ class SalaryController extends BaseController
                     // cut details
                     if (array_key_exists("deduction", $data) && count($data["deduction"]) > 0) {
                         $deduction = $data["deduction"];
+
+                        $dataLoan = Loan::where('empId', $Employee->employeeId)->where('status', 0)->oldest()->first();
+                        if ($dataLoan != null) {
+                            $InstalmentPayment = new Instalment();
+                            $InstalmentPayment->loanId = $dataLoan->loanId;
+                            $InstalmentPayment->date = $monthPayroll;
+                            $InstalmentPayment->nominal = $deduction["totalLoan"];
+                            $remaining = $dataLoan->nominal - $deduction["totalLoan"];
+                            $InstalmentPayment->remainder = $remaining;
+                            if ($InstalmentPayment->save()) {
+                                if ($remaining <= 0) {
+                                    $dataLoan->status = 1;
+                                    $dataLoan->save();
+                                }
+                            }
+                        }
                         $SalaryDeduction = new SalaryCutDetail();
                         $SalaryDeduction->salaryId = $salary->salaryId;
                         $SalaryDeduction->totalAttendance = $deduction["totalAttendance"];

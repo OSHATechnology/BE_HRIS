@@ -23,7 +23,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('salary:cron')->everyMinute()->sendOutputTo(storage_path('logs/cron.log'));
         // schedule call controller
         $schedule->call(function () {
-            $request = new Request(['month' => '10-2022']);
+            $request = new Request(['month' => date('m-Y')]);
             $controller = app()->make('App\Http\Controllers\SalaryController');
             $controller->generateSalary($request);
         })->monthlyOn(Salary::PAYROLLDATE, '00:10')->sendOutputTo(storage_path('logs/cron.log'));

@@ -62,7 +62,7 @@ class TypeOfAllowanceController extends BaseController
             $type->save();
             return $this->sendResponse(new TypeOfAllowanceResource($type), "type of allowance created successfully");
         } catch (\Throwable $th) {
-            return $this->sendResponse("error creating type of allowance", $th->getMessage());
+            return $this->sendError("error creating type of allowance", $th->getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ class TypeOfAllowanceController extends BaseController
             $type = TypeOfAllowance::findOrFail($id);
             return $this->sendResponse(new TypeOfAllowanceResource($type), "type of allowance retrieved successfully");
         } catch (\Throwable $th) {
-            return $this->sendResponse("error retrieving type of allowance", $th->getMessage());
+            return $this->sendError("error retrieving type of allowance", $th->getMessage());
         }
     }
 
@@ -99,7 +99,7 @@ class TypeOfAllowanceController extends BaseController
             $type->save();
             return $this->sendResponse($type, "type of allowance updated successfully");
         } catch (\Throwable $th) {
-            return $this->sendResponse("error updating type of allowance", $th->getMessage());
+            return $this->sendError("error updating type of allowance", $th->getMessage());
         }
     }
 
@@ -116,7 +116,7 @@ class TypeOfAllowanceController extends BaseController
             $type->delete();
             return $this->sendResponse($type, "type of allowance deleted successfully");
         } catch (\Throwable $th) {
-            return $this->sendResponse("error deleting type of allowance", $th->getMessage());
+            return $this->sendError("error deleting type of allowance", $th->getMessage());
         }
     }
 
