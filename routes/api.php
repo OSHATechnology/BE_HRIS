@@ -77,6 +77,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('employee/{id}/basic_salary', [EmployeeController::class, 'basic_salary']);
     Route::apiResource('employee', EmployeeController::class);
     Route::apiResource('notification', NotificationController::class);
+    Route::get('notification/employee/{id}', [NotificationController::class, 'showByEmployee']);
     Route::apiResource('status_hire', StatusHireController::class);
     Route::apiResource('attendance_status', AttendanceStatusController::class);
     Route::get('attendance/today', [AttendanceController::class, 'today']);

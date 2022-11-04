@@ -78,6 +78,16 @@ class NotificationController extends BaseController
         }
     }
 
+    public function showByEmployee($id)
+    {
+        try {
+            $notification = (new Collection(NotificationResource::collection(Notification::where('empId',$id)->get())))->paginate(self::NumPaginate);
+            return $this->sendResponse($notification, "notification retrieved successfully");
+        } catch (\Throwable $th) {
+            return $this->sendError('Error retrieving notification', $th->getMessage());
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *
