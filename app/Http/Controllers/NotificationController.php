@@ -59,7 +59,6 @@ class NotificationController extends BaseController
         } catch (\Throwable $th) {
             return $this->sendError("Error creating notification", $th->getMessage());
         }
-
     }
 
     /**

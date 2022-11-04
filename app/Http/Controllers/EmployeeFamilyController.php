@@ -98,7 +98,12 @@ class EmployeeFamilyController extends BaseController
     public function update(Request $request, $id)
     {
         try {
-            $request->validate(self::VALIDATION_RULES, self::MessageError);
+            $request->validate([
+                'identityNumber' => 'required|string|unique:employee_families|max:255',
+                'name' => 'required|string|min:4|max:30',
+                'statusId' => 'required|integer',
+                'isAlive' => 'boolean'
+            ], self::MessageError);
             $empFam = EmployeeFamily::findOrFail($id);
             $empFam->identityNumber = $request->identityNumber;
             $empFam->name = $request->name;
