@@ -34,6 +34,9 @@ class InsuranceItemController extends BaseController
     public function index()
     {
         try {
+            //gate
+            $this->authorize('viewAny', InsuranceItem::class);
+
             if (request()->has('search')) {
                 return $this->search(request());
             }
@@ -53,6 +56,8 @@ class InsuranceItemController extends BaseController
     public function store(Request $request)
     {
         try {
+            $this->authorize('create', InsuranceItem::class);
+
             $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             if ($request->percent >= 1 && $request->percent <= 100) {
                 $insItem = new InsuranceItem;
@@ -79,6 +84,8 @@ class InsuranceItemController extends BaseController
     public function show($id)
     {
         try {
+            $this->authorize('view', InsuranceItem::class);
+
             $insItem = InsuranceItem::findOrFail($id);
             return $this->sendResponse(new InsuranceItemResource($insItem), "Insurance item retrieved successfully");
         } catch (\Throwable $th) {
@@ -96,6 +103,8 @@ class InsuranceItemController extends BaseController
     public function update(Request $request, $id)
     {
         try {
+            $this->authorize('update', InsuranceItem::class);
+
             $this->validate($request, [
                 'name' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
@@ -126,6 +135,8 @@ class InsuranceItemController extends BaseController
     public function destroy($id)
     {
         try {
+            $this->authorize('delete', InsuranceItem::class);
+
             $insItem = InsuranceItem::findOrFail($id);
             $insItem->delete();
             return $this->sendResponse(new InsuranceItemResource($insItem), "Insurance item deleted successfully");

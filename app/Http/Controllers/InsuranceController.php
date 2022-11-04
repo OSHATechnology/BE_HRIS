@@ -39,6 +39,8 @@ class InsuranceController extends BaseController
     public function index()
     {
         try {
+            $this->authorize('viewAny', Insurance::class);
+
             if (request()->has('search')) {
                 return $this->search(request());
             }
@@ -58,6 +60,7 @@ class InsuranceController extends BaseController
     public function store(Request $request)
     {
         try {
+            $this->authorize('create', Insurance::class);
             $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $insurance = new Insurance;
             $insurance->name = $request->name;
@@ -66,7 +69,7 @@ class InsuranceController extends BaseController
             $insurance->save();
             return $this->sendResponse(new InsuranceResource($insurance), 'Insurance created successfully');
         } catch (\Throwable $th) {
-            return $this->sendError('Error creating insurance');
+            return $this->sendError('Error creating insurance', $th->getMessage());
         }
     }
 
@@ -79,6 +82,7 @@ class InsuranceController extends BaseController
     public function show($id, Request $request)
     {
         try {
+            $this->authorize('view', Insurance::class);
             $insurance = Insurance::findOrFail($id);
             if ($request->search != null) {
                 $search = $request->search;
@@ -111,6 +115,7 @@ class InsuranceController extends BaseController
     public function update(Request $request, $id)
     {
         try {
+            $this->authorize('update', Insurance::class);
             $this->validate($request, self::VALIDATION_RULES, self::MessageError);
             $insurance = Insurance::findOrFail($id);
             $insurance->name = $request->name;
@@ -132,6 +137,7 @@ class InsuranceController extends BaseController
     public function destroy($id)
     {
         try {
+            $this->authorize('delete', Insurance::class);
             $insurance = Insurance::findOrFail($id);
             $insurance->delete();
             return $this->sendResponse($insurance, 'Insurance deleted successfully');
