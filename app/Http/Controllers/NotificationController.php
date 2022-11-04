@@ -7,6 +7,7 @@ use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
 use App\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends BaseController
 {
@@ -80,11 +81,16 @@ class NotificationController extends BaseController
     public function showByEmployee($id)
     {
         try {
-            $notification = (new Collection(NotificationResource::collection(Notification::where('empId',$id)->get())))->paginate(self::NumPaginate);
+            $notification = (new Collection(NotificationResource::collection(Notification::where('empId', $id)->get())))->paginate(self::NumPaginate);
             return $this->sendResponse($notification, "notification retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving notification', $th->getMessage());
         }
+    }
+
+    public function myNotifications()
+    {
+        return $this->showByEmployee(Auth::user()->employeeId);
     }
 
     /**

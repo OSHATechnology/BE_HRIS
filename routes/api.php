@@ -121,3 +121,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('upload-files-work-permit/{id}', [WorkPermitFileController::class, 'uploadFiles']);
 });
+
+Route::get('/my/notifications', [NotificationController::class, 'myNotifications']);
