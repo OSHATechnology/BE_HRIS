@@ -67,6 +67,15 @@ class PermissionSeeder extends Seeder
                     'delete',
                 ],
             ],
+            'Insurance Item Management' => [
+                'insurance_item' => [
+                    'view_all',
+                    'view',
+                    'create',
+                    'update',
+                    'delete',
+                ],
+            ],
         ];
         foreach ($permisManagement as $keyP => $item) {
             foreach ($item as $key => $value) {
