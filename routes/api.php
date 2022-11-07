@@ -115,11 +115,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/my/loan', [LoanController::class, 'myLoan']);
     Route::get('/my/leave-requests', [EmployeeController::class, 'myLeaveRequests']);
     Route::post('/my/add-leave-request', [EmployeeController::class, 'addLeaveRequest']);
+    Route::get('/my/notifications', [NotificationController::class, 'myNotifications']);
     Route::get('salary', [SalaryController::class, 'index']);
     Route::get('generate-salary', [SalaryController::class, 'generateSalary']);
     Route::apiResource('salary', SalaryController::class)->only(['show']);
 
     Route::post('upload-files-work-permit/{id}', [WorkPermitFileController::class, 'uploadFiles']);
 });
-
-Route::get('/my/notifications', [NotificationController::class, 'myNotifications']);
