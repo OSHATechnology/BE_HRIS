@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\PerformanceEmployeeResource;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Month;
 
 class PerformanceEmployeeController extends BaseController
@@ -32,7 +33,7 @@ class PerformanceEmployeeController extends BaseController
             $arrayDate = explode('-', $date);
             $month = $arrayDate[1];
             $year = $arrayDate[0];
-            $startDate = $date . '-1';
+            $startDate = $date . '-01';
             $endDate = $date . '-' . cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $attendanceArray = Attendance::where('employeeId', $id)
                 ->whereBetween('timeAttend', [$startDate, $endDate])
@@ -43,9 +44,13 @@ class PerformanceEmployeeController extends BaseController
                 })
                 ->get();
 
+            $attendTime = [];
+            foreach ($attendanceArray as $key => $value) {
+                $attendTime[date('Y-m-d', strtotime($value->timeAttend))] =  $value->timeAttend;
+            }
+
             $daysWorking = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
             $dateWorking = [];
-            $dateOff = [];
 
             $dateArray = $this->getDates($startDate, $endDate);
             for ($i = 0; $i < count($dateArray); $i++) {
@@ -53,56 +58,33 @@ class PerformanceEmployeeController extends BaseController
                 $day = date('D', strtotime($date));
                 if (in_array($day, $daysWorking)) {
                     $dateWorking[] = $date;
-                } else {
-                    $dateOff[] = $date;
-                }
-            }
-
-            $dateAttendance = [];
-            for ($j = 0; $j < count($attendanceArray); $j++) {
-                $dataAttendance = $attendanceArray[$j];
-                $dateCheck = date('Y-m-d', strtotime($dataAttendance->timeAttend));
-                $day = date('Y-m-d', strtotime($dateCheck));
-                if (in_array($day, $dateWorking)) {
-                    $dateAttendance[] = $dataAttendance;
                 }
             }
 
             $result = [];
-            for ($k = 0; $k < count($dateWorking); $k++) {
-                if ($k < count($dateAttendance)) {
-                    if (in_array(date('Y-m-d', strtotime($dateAttendance[$k]->timeAttend)), $dateWorking)) {
-                        $tmp = [
-                            'date' => $dateWorking[$k],
-                            'status' => true,
-                            'timestamp' => $dateAttendance[$k]->timeAttend
-                        ];
-                    }
+            foreach ($dateWorking as $value) {
+                if (in_array($value, array_keys($attendTime))) {
+                    $result[] = [
+                        'date' => $value,
+                        'status' => true,
+                        'timestamp' => $attendTime[$value]
+                    ];
                 } else {
-                    $tmp = [
-                        'date' => $dateWorking[$k],
+                    $result[] = [
+                        'date' => $value,
                         'status' => false,
-                        'timestamp' => '-'
+                        'timestamp' => null
                     ];
                 }
-                array_push($result, $tmp);
             }
-            return response()->json([
-                'success' => true,
-                'data' => $result,
-                'message' => "performance retrieved successfully"
-            ]);
+            return $this->sendResponse($result, 'Get attendance performance successfully');
         } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'data' => [],
-                'message' => "error retrieving performance"
-            ]);
+            return $this->sendError($th->getMessage(), 'Get attendance performance failed');
         }
     }
 
     public function myAttendancePerformance(Request $request)
     {
-        return $this->attendancePerformance($request, auth()->user()->id);
+        return $this->attendancePerformance($request, Auth::user()->employeeId);
     }
 }
