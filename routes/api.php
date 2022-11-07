@@ -27,6 +27,7 @@ use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PerformanceEmployeeController;
 use App\Http\Controllers\SalaryAllowanceController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SalaryCutDetailController;
@@ -118,6 +119,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('salary', [SalaryController::class, 'index']);
     Route::get('generate-salary', [SalaryController::class, 'generateSalary']);
     Route::apiResource('salary', SalaryController::class)->only(['show']);
+    Route::get('/performance/attendance/{id}', [PerformanceEmployeeController::class, 'attendancePerformance']);
 
     Route::post('upload-files-work-permit/{id}', [WorkPermitFileController::class, 'uploadFiles']);
 });
