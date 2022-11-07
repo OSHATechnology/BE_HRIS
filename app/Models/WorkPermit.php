@@ -53,7 +53,7 @@ class WorkPermit extends Model
             $dataWp = self::findOrFail($wid);
             $dataWp->isConfirmed = 2;
             $dataWp->confirmedBy = auth()->user()->employeeId;
-            $dataWp->message = $message;
+            $dataWp->confirmedAt = now();
             if (!$dataWp->save()) {
                 return false;
             }
