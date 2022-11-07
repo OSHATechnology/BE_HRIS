@@ -121,6 +121,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('generate-salary', [SalaryController::class, 'generateSalary']);
     Route::apiResource('salary', SalaryController::class)->only(['show']);
     Route::get('/performance/attendance/{id}', [PerformanceEmployeeController::class, 'attendancePerformance']);
+    Route::get('/my/performance/attendance', [PerformanceEmployeeController::class, 'myAttendancePerformance']);
 
     Route::post('upload-files-work-permit/{id}', [WorkPermitFileController::class, 'uploadFiles']);
 });
