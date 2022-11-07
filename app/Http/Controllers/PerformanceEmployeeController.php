@@ -24,8 +24,8 @@ class PerformanceEmployeeController extends BaseController
     public function attendancePerformance(Request $request, $id)
     {
         try {
-            if ($request->yearMonth != null) {
-                $date = $request->yearMonth;
+            if ($request->month != null) {
+                $date = $request->month;
             } else {
                 $date = date('Y-m', strtotime(now()));
             }
