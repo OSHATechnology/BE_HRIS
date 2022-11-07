@@ -182,7 +182,7 @@ class EmployeeController extends BaseController
                 'joinedAt' => 'required|date',
                 'resignedAt' => 'date',
                 'statusHireId' => 'required|boolean'
-            ],[
+            ], [
                 'firstName.required' => 'Nama depan tidak boleh kosong',
                 'firstName.min' => 'Nama depan minimal 3 karakter',
                 'firstName.max' => 'Nama depan maksimal 15',
@@ -257,7 +257,7 @@ class EmployeeController extends BaseController
                 'oldPassword' => 'required|string|min:6|max:24',
                 'newPassword' => 'required|string|min:6|max:24',
                 'confirmPassword' => 'required|string|min:6|max:24',
-            ],[
+            ], [
                 'oldPassword.required' => 'password lama tidak boleh kosong',
                 'oldPassword.min' => 'password lama minimal 6 karakter',
                 'oldPassword.max' => 'password lama minimal 24 karakter',
@@ -358,7 +358,7 @@ class EmployeeController extends BaseController
         try {
             $request->validate([
                 'file' => 'required|mimes:xls,xlsx'
-            ],[
+            ], [
                 'file.required' => 'file tidak boleh kosong',
                 'file.mimes' => 'format yang digunakan adalah xls, xlsx'
             ]);
@@ -473,8 +473,8 @@ class EmployeeController extends BaseController
                 case 'furlough':
                     $request->validate([
                         'type_furlough' => 'required',
-                        'start_at' => 'required',
-                        'end_at' => 'required',
+                        'start_at' => 'required|date_format:Y-m-d\TH:i',
+                        'end_at' => 'required|date_format:Y-m-d\TH:i|after:start_at',
                     ]);
 
                     $furlough = new Furlough();
@@ -488,8 +488,8 @@ class EmployeeController extends BaseController
 
                 case 'work_permit':
                     $request->validate([
-                        'start_at' => 'required',
-                        'end_at' => 'required',
+                        'start_at' => 'required|date_format:Y-m-d\TH:i',
+                        'end_at' => 'required|date_format:Y-m-d\TH:i|after_or_equal:start_at',
                     ]);
 
                     $workPermit = new WorkPermit();
@@ -501,8 +501,8 @@ class EmployeeController extends BaseController
 
                 case "overtime":
                     $request->validate([
-                        'start_at' => 'required',
-                        'end_at' => 'required',
+                        'start_at' => 'required|date_format:Y-m-d\TH:i',
+                        'end_at' => 'required|date_format:Y-m-d\TH:i|after_or_equal:start_at',
                     ]);
 
                     $overtime = new Overtime();

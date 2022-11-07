@@ -7,6 +7,7 @@ use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
 use App\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends BaseController
 {
@@ -77,14 +78,26 @@ class NotificationController extends BaseController
         }
     }
 
-    public function showByEmployee($id)
+    public function showByEmployee($id, Request $request)
     {
         try {
-            $notification = (new Collection(NotificationResource::collection(Notification::where('empId',$id)->get())))->paginate(self::NumPaginate);
+            if ($request->has('limit')) {
+                $limit = $request->limit;
+                $payload = Notification::where('empId', $id)->orderBy('notifId', 'desc')->take($limit)->get();
+            } else {
+                $payload = Notification::where('empId', $id)->orderBy('notifId', 'desc')->get();
+            }
+
+            $notification = (new Collection(NotificationResource::collection($payload)))->paginate(self::NumPaginate);
             return $this->sendResponse($notification, "notification retrieved successfully");
         } catch (\Throwable $th) {
             return $this->sendError('Error retrieving notification', $th->getMessage());
         }
+    }
+
+    public function myNotifications(Request $request)
+    {
+        return $this->showByEmployee(Auth::user()->employeeId, $request);
     }
 
     /**
