@@ -87,8 +87,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('overtime/confirm', [OvertimeController::class, 'confirm']);
     Route::post('overtime/decline', [OvertimeController::class, 'decline']);
     Route::apiResource('overtime', OvertimeController::class);
-    Route::post('work_permit/confirm', [WorkPermitController::class, 'confirm']);
-    Route::post('work_permit/decline', [WorkPermitController::class, 'decline']);
+    Route::post('workpermit/confirm', [WorkPermitController::class, 'confirm']);
+    Route::post('workpermit/decline', [WorkPermitController::class, 'decline']);
     Route::apiResource('work_permit', WorkPermitController::class);
     Route::apiResource('team', TeamController::class);
     Route::apiResource('team_member', TeamMemberController::class);
