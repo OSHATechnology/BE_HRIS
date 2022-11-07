@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Auth;
 class WorkPermitController extends BaseController
 {
     const VALIDATION_RULES = [
-        'employeeId' => 'required|integer', 
-        'startAt' => 'required|date', 
-        'endAt' => 'required|date', 
+        'employeeId' => 'required|integer',
+        'startAt' => 'required|date',
+        'endAt' => 'required|date',
         'isConfirmed' => 'required|integer'
     ];
 
@@ -46,7 +46,7 @@ class WorkPermitController extends BaseController
     {
         try {
             $request->validate(self::VALIDATION_RULES);
-    
+
             $workPermit = new WorkPermit;
             $workPermit->employeeId = $request->employeeId;
             $workPermit->startAt = $request->startAt;
@@ -61,7 +61,7 @@ class WorkPermitController extends BaseController
             } else {
                 $workPermit->file = $request->file;
             }
-            $file = WorkPermitFile::store($workPermit->workPermitId,$request->name, $path);
+            $file = WorkPermitFile::store($workPermit->workPermitId, $request->name, $path);
             return $this->sendResponse(new WorkPermitResource($workPermit), 'Work Permit created successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error creating work permit.', $th->getMessage());
@@ -95,7 +95,7 @@ class WorkPermitController extends BaseController
     {
         try {
             $request->validate(self::VALIDATION_RULES);
-    
+
             $workPermit = WorkPermit::findOrFail($id);
             $workPermit->employeeId = $request->employeeId;
             $workPermit->startAt = $request->startAt;
@@ -111,13 +111,13 @@ class WorkPermitController extends BaseController
             } else {
                 $workPermit->file = $workPermit->file;
             }
-            $file = WorkPermitFile::updateFile($id,$workPermit->workPermitId,$request->name, $path);
+            $file = WorkPermitFile::updateFile($id, $workPermit->workPermitId, $request->name, $path);
             return $this->sendResponse($workPermit, 'Work Permit updated successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error updating work permit.', $th->getMessage());
         }
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
@@ -132,6 +132,58 @@ class WorkPermitController extends BaseController
             return $this->sendResponse($workPermit, 'Work Permit deleted successfully.');
         } catch (\Throwable $th) {
             return $this->sendError('Error deleting work permit.', $th->getMessage());
+        }
+    }
+
+    public function confirm(Request $request)
+    {
+        $request->validate([
+            'work_permit_id' => 'required|numeric',
+        ]);
+
+        try {
+            if ($request->has('assigned_by')) {
+                $assigned_by = $request->assigned_by;
+            } else {
+                $assigned_by = Auth::id();
+            }
+
+            if ($request->has('message')) {
+                $message = $request->message;
+            } else {
+                $message = '';
+            }
+
+            $workPermit = WorkPermit::confirmWP($request->work_permit_id, $assigned_by, $message);
+            if (!$workPermit) {
+                $this->sendError('Error confirming work permit', 'Error confirming work permit');
+            }
+            return $this->sendResponse("success", 'work permit confirmed successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error confirming work permit', $th->getMessage());
+        }
+    }
+
+    public function decline(Request $request)
+    {
+        $request->validate([
+            'work_permit_id' => 'required|numeric',
+        ]);
+
+        try {
+            if ($request->has('message')) {
+                $message = $request->message;
+            } else {
+                $message = '';
+            }
+
+            $workPermit = WorkPermit::declineWP($request->work_permit_id, $message);
+            if (!$workPermit) {
+                $this->sendError('Error declining work Permit', 'Error declining work permit');
+            }
+            return $this->sendResponse("success", 'work permit declined successfully.');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error declining work permit', $th->getMessage());
         }
     }
 }
