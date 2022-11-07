@@ -29,24 +29,24 @@ class PerformanceEmployeeController extends BaseController
             } else {
                 $date = date('Y-m', strtotime(now()));
             }
-            $arrayDate = explode('-',$date);
+            $arrayDate = explode('-', $date);
             $month = $arrayDate[1];
-            $year = $arrayDate[0]; 
+            $year = $arrayDate[0];
             $startDate = $date . '-1';
-            $endDate= $date . '-' . cal_days_in_month(CAL_GREGORIAN,$month,$year);
+            $endDate = $date . '-' . cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $attendanceArray = Attendance::where('employeeId', $id)
-                                ->whereBetween('timeAttend', [$startDate, $endDate])
-                                ->Where(function ($query) {
-                                    $query->where('attendanceStatusId', 1);
-                                })->Where(function ($query) {
-                                    $query->where('typeInOut', 'in');
-                                })
-                                ->get();
-            
+                ->whereBetween('timeAttend', [$startDate, $endDate])
+                ->Where(function ($query) {
+                    $query->where('attendanceStatusId', 1);
+                })->Where(function ($query) {
+                    $query->where('typeInOut', 'in');
+                })
+                ->get();
+
             $daysWorking = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
             $dateWorking = [];
             $dateOff = [];
-    
+
             $dateArray = $this->getDates($startDate, $endDate);
             for ($i = 0; $i < count($dateArray); $i++) {
                 $date = $dateArray[$i];
@@ -57,7 +57,7 @@ class PerformanceEmployeeController extends BaseController
                     $dateOff[] = $date;
                 }
             }
-            
+
             $dateAttendance = [];
             for ($j = 0; $j < count($attendanceArray); $j++) {
                 $dataAttendance = $attendanceArray[$j];
@@ -67,9 +67,9 @@ class PerformanceEmployeeController extends BaseController
                     $dateAttendance[] = $dataAttendance;
                 }
             }
-    
+
             $result = [];
-            for ($k=0; $k < count($dateWorking); $k++) {
+            for ($k = 0; $k < count($dateWorking); $k++) {
                 if ($k < count($dateAttendance)) {
                     if (in_array(date('Y-m-d', strtotime($dateAttendance[$k]->timeAttend)), $dateWorking)) {
                         $tmp = [
@@ -99,5 +99,10 @@ class PerformanceEmployeeController extends BaseController
                 'message' => "error retrieving performance"
             ]);
         }
+    }
+
+    public function myAttendancePerformance(Request $request)
+    {
+        return $this->attendancePerformance($request, auth()->user()->id);
     }
 }
