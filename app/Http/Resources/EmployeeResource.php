@@ -40,6 +40,7 @@ class EmployeeResource extends JsonResource
                 'id' => $this->statusHire->StatusHireId,
                 'status' => $this->statusHire->name,
             ] : '',
+            'google_id' => $this->google_id ?? '',
         ];
     }
 }
