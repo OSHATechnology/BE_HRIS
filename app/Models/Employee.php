@@ -34,6 +34,7 @@ class Employee extends Authenticatable
         'joinedAt',
         'resignedAt',
         'statusHireId',
+        'google_id',
         'created_at',
         'updated_at'
     ];

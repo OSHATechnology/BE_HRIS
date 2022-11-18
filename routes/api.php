@@ -18,6 +18,7 @@ use App\Http\Controllers\EmployeeFamilyController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\FurloughController;
 use App\Http\Controllers\FurloughTypeController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\InstalmentController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\InsuranceItemController;
@@ -126,4 +127,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/my/performance/attendance', [PerformanceEmployeeController::class, 'myAttendancePerformance']);
 
     Route::post('upload-files-work-permit/{id}', [WorkPermitFileController::class, 'uploadFiles']);
+});
+
+Route::controller(GoogleController::class)->group(function () {
+    Route::get('auth/google', 'redirectToGoogle');
+    Route::get('auth/google/callback', 'linkedGoogleAccount');
+    Route::get('auth/callback', 'callback');
 });
